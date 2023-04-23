@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uni-mapping">
+  <select id="selectInfo" resultType="HashMap" parameterType="HashMap">
+    select 'Y' AS IND, 1 AS NUM from dual
+    where 'hapje000' = #{userId}
+  </select>
+</mapper>

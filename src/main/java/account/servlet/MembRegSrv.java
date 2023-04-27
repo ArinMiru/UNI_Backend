@@ -1,4 +1,4 @@
-package community.suggestion.servlet;
+package account.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,14 +19,14 @@ import process.LonginTtableOut;
  */
 // ������̼� ������� �������� ��Ĺ web.xml �� Servlet �̶�� �����ؾ� �ߴµ� ������ �Ǹ鼭 �Ʒ��� ���� ������
 // URL http://43.201.59.250:8080/ATTENDANCE/Login �̶�� ȣ���ϸ� �� Ŭ������ �����
-@WebServlet("/Login")
-public class LoginSrv extends HttpServlet {
+@WebServlet("/MembRegSvc")
+public class MembRegSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginSrv() {
+    public MembRegSrv() {
         super();
         // TODO Auto-generated constructor stub    
     } 
@@ -99,10 +99,10 @@ public class LoginSrv extends HttpServlet {
 		
 		// �׸��� ���ڷ� �ؼ� ��ó�� Ŭ���� ȣ��
 		//LonginTtableOut longinTtableOut = new LonginTtableOut(userId,userType,userPasswrd);
-		LonginTtableOut longinTtableOut = new LonginTtableOut(param);
+		account.process.MembReglns membreglns = new account.process.MembReglns(param);
 		
 		// ȣ�� ó����� JSON �� ȣ���� Ŭ������ ���� ��������
-		resltObj = longinTtableOut.getResult();
+		resltObj = membreglns.getResult();
 		
 		//resltObj = jobj;
 		

@@ -1,4 +1,4 @@
-package community.suggestion.process;
+package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,12 +23,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class LonginTtableOut {    
+public class MembPassFnd {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobj = new JSONObject();
 	
-	public LonginTtableOut (Map<String, Object> param) throws IOException {
+	public MembPassFnd (Map<String, Object> param) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
 		// SQL ������ ���� �⺻ ���� ����

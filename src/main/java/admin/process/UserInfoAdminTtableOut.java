@@ -65,7 +65,6 @@ public class UserInfoAdminTtableOut {
 	}
     
 	public JSONObject getResult() {
-		// ������� ����
 		return jobj;
 	}
 

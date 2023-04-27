@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import process.LonginTtableOut;
+import account.process.MembReglns;
 
 /**
  * Servlet implementation class LoginSrv
@@ -51,7 +51,7 @@ public class MembRegSrv extends HttpServlet {
 		
 		// ��������
 		String userId=""; 		// �����ID
-		String userType="";		// �л�����
+		String userName="";		// �л�����
 		String userPasswrd="";	// ��й�ȣ
 		
 		StringBuffer jb = new StringBuffer();
@@ -83,19 +83,19 @@ public class MembRegSrv extends HttpServlet {
 		// JSON ���� ���޵� �׸��� ����
         // for(int i=0;i<jsonArr.size();i++){
 		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
-		userType = (jobj.get("userType") == null) ? "" : jobj.get("userType").toString();
+		userName = (jobj.get("userName") == null) ? "" : jobj.get("userName").toString();
 		userPasswrd = (jobj.get("pass") == null) ? "" : jobj.get("pass").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("userId", userId);
-		param.put("userType", userType);
 		param.put("userPasswrd", userPasswrd);
+		param.put("userType", userName);
 		
 		// ȭ�鿡 �����ֱ�
 		System.out.println("userId :".concat(userId));
 		System.out.println("userPasswrd :".concat(userPasswrd));
-		System.out.println("userType :".concat(userType));
+		System.out.println("userName :".concat(userName));
 		
 		// �׸��� ���ڷ� �ؼ� ��ó�� Ŭ���� ȣ��
 		//LonginTtableOut longinTtableOut = new LonginTtableOut(userId,userType,userPasswrd);

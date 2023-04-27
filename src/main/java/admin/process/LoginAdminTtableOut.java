@@ -64,7 +64,6 @@ public class LoginAdminTtableOut {
 	}
     
 	public JSONObject getResult() {
-		// ������� ����
 		return jobj;
 	}
 

@@ -21,21 +21,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import admin.process.UserInfoAdminTtableOut;
 import net.sf.json.JSONObject;
-import process.BudlistAdminTtableOut;
+import admin.process.BudlistAdminTtableOut;
 
 /**
  * Servlet implementation class LoginSrv
  */
 @WebServlet("/BudListAdmin")
-public class BudlistAdminTtableOutSrv extends HttpServlet {
+public class BudlistAdmintSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BudlistAdminTtableOutSrv() {
+    public BudlistAdmintSrv() {
         super();  
     } 
 
@@ -97,9 +96,9 @@ public class BudlistAdminTtableOutSrv extends HttpServlet {
 		System.out.println("cretime :".concat(cretime));
 		
 		
-		UserInfoAdminTtableOut userinfoadminTtableOut = new UserInfoAdminTtableOut(param);
+		BudlistAdminTtableOut budlistadminttableout = new BudlistAdminTtableOut(param);
 		
-		resltObj = userinfoadminTtableOut.getResult();
+		resltObj = budlistadminttableout.getResult();
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

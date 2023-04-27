@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import admin.process.UserInfoAdminTtableOut;
 import net.sf.json.JSONObject;
-import process.LonginTtableOut;
 
 /**
  * Servlet implementation class LoginSrv

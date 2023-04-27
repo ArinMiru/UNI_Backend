@@ -80,7 +80,6 @@ public class BudlistAdminTtableOut {
 	}
     
 	public JSONObject getResult() {
-		// ������� ����
 		return jobj;
 	}
 

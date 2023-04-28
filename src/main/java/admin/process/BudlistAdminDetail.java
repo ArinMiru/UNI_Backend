@@ -1,12 +1,14 @@
 /*
- * BudlistAdminTtableOut.java -> 공지사항리스트 명세서를 참조 게시글 관리자 모니터링 페이지 api
+ * BudlistAdminDetail.java -> 게시글관리자 상세페이지 api
  * 
  * JSON KEY
  * userId - 사용자 아이디
- * userschool - 학교 이름
- * userdep - 사용자 학과
+ * username - 사용자 닉네임
+ * userschool - 학교이름
+ * userdep - 학과이름
  * budname - 게시글 제목
  * cretime - 작성시간
+ * budcontent - 게시글 내용
  * 
  */
 
@@ -35,12 +37,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class BudlistAdminTtableOut {    
+public class BudlistAdminDetail {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobj = new JSONObject();
 	
-	public BudlistAdminTtableOut (Map<String, Object> param) throws IOException {
+	public BudlistAdminDetail (Map<String, Object> param) throws IOException {
 		
 		String resource = "/mybatis-config.xml"; // 변경 예정
 		InputStream inputStream = Resources.getResourceAsStream(resource);
@@ -56,10 +58,12 @@ public class BudlistAdminTtableOut {
 			System.out.println(rtn.get("IND"));
 			
 			jobj.put("userId", param.get("userId"));
+			jobj.put("username", param.get("username"));
 			jobj.put("userschool", param.get("userschool"));
 			jobj.put("userdep", param.get("userdep"));
 			jobj.put("budname", param.get("budname"));
 			jobj.put("cretime", param.get("cretime"));
+			jobj.put("budcontent", param.get("budcontent"));
 			
 			
             JSONObject jo=new JSONObject();
@@ -67,7 +71,7 @@ public class BudlistAdminTtableOut {
 			jo.put("FLAG1", rtn.get("NUM"));
 			jary.add(jo);
 		    
-			//mybatis query file 작성 후 변경 예정
+			//관련정보를 select -> 배열로 출력
 			
 			jobj.put("TT_LIST", jary);
 

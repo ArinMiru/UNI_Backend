@@ -1,13 +1,15 @@
 /*
- * BudlistAdminTtableOutSrv.java -> 공지사항리스트 명세서를 참조 게시글 관리자 모니터링 페이지 -> 서블릿파일
+ * BudlistAdminDetailSrv.java -> 게시판관리자 상세페이지 -> 서블릿파일
  * 
- * 서블릿 경로 -> /BudListAdmin
+ * -> 서블릿 경로 /BudListAdminDetail
  * 
  * userId - 사용자 아이디
+ * username - 사용자 닉네임
  * userschool - 학교 이름
  * userdep - 학과 이름
  * budname - 게시글 제목
- * cretime - 작성 시간
+ * cretime - 작성시간
+ * budcontent - 게시글 내용
  */
 
 package admin.servlet;
@@ -24,19 +26,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import admin.process.BudlistAdminTtableOut;
+import admin.process.BudlistAdminDetail;
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/BudListAdmin")
-public class BudlistAdminTtableOutSrv extends HttpServlet {
+@WebServlet("/BudListAdminDetail")
+public class BudlistAdminDetailSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BudlistAdminTtableOutSrv() {
+    public BudlistAdminDetailSrv() {
         super();  
     } 
 
@@ -53,10 +55,12 @@ public class BudlistAdminTtableOutSrv extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String userId="";
+		String username="";
 		String userschool="";
 		String userdep="";
 		String budname="";
 		String cretime="";
+		String budcontent="";
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -78,29 +82,35 @@ public class BudlistAdminTtableOutSrv extends HttpServlet {
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
 		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
+		username = (jobj.get("username") == null) ? "" : jobj.get("username").toString();
 		userschool = (jobj.get("school") == null) ? "" : jobj.get("school").toString();
 		userdep = (jobj.get("userdep") == null) ? "" : jobj.get("userdep").toString();
 		budname = (jobj.get("budname") == null) ? "" : jobj.get("budname").toString();
 		cretime = (jobj.get("cretime") == null) ? "" : jobj.get("cretime").toString();
+		budcontent = (jobj.get("budcontent") == null) ? "" : jobj.get("budcontent").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("userId", userId);
+		param.put("username", username);
 		param.put("userschool", userschool);
 		param.put("userdep", userdep);
 		param.put("budname", budname);
 		param.put("cretime", cretime);
+		param.put("budcontent", budcontent);
 		
 		System.out.println("userId :".concat(userId));
+		System.out.println("username :".concat(username));
 		System.out.println("userschool :".concat(userschool));
 		System.out.println("userdep :".concat(userdep));
 		System.out.println("budname :".concat(budname));
 		System.out.println("cretime :".concat(cretime));
+		System.out.println("budcontent :".concat(budcontent));
 		
 		
-		BudlistAdminTtableOut budlistadminTtableout= new BudlistAdminTtableOut(param);
+		BudlistAdminDetail budlistAdminDetail= new BudlistAdminDetail(param);
 		
-		resltObj = budlistadminTtableout.getResult();
+		resltObj = budlistAdminDetail.getResult();
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration> <!-- DB연결정보 속성 불러오기 -->
+<properties resource="/config/database.properties"></properties> <!-- 마이바티스 설정과 관련된 기본 세팅 선언 -->
+<settings>
+<!-- 데이터가 null로 전달이 되었으면 빈칸으로 인지말고 null로 인식
+(value에 들어가는 NULL은 무조건 대문자로 기입) -->
+<setting name="jdbcTypeForNull" value="NULL"/>
+<setting name="mapUnderscoreToCamelCase" value="true"/>
+
+<!-- <setting name="logImpl" value="LOG4J"/> -->
+</settings> <!-- Alias: 별명,별칭 <typeAlis>엘리먼트를 이용하여 특정 클래스의 별칭을 선언 -->
+<typeAliases>
+<!-- <typeAlias alias="worker" type="com.company.biz.worker.WorkerVO"/> -->
+</typeAliases>
+
+<!--데이터소스는 스프링 프레임워크에서 이미 등록하여 사용 중. 데이터 소스는 DB연동뿐만 아니라 트랜잭션 처리처럼-->
+<!--다양한 곳에서 사용할 수 있으므로 Mybatis설정이 아닌 스프링 설정 파일에서 제공하는 것이 맞다.-->
+<!-- environments : DB에 연결할 설정에 대한 정보 선언 -->
+<environments default="development">
+<!-- default : 연결 설정을 여러 개 생성하여 아이디로 구분하고 기본으로 연결할 설정 정보를 설정하는 속성 -->
+
+<!-- Database연결할 설정 정보 선언 => environment에 대한 이름을 development라고 부를게! -->
+<environment id="development">
+
+<!-- 트랜잭션을 제어를 누가 할 것인가에 대한 설정 -->
+<!-- -->
+<!-- JDBC : JDBC가 커밋/롤백을 직접 처리하기 위해 사용(수동 commit) -->
+<!-- MANAGED : 트랜잭션에 대해 직접적인 영향을 행사하지 않는 것 의미(자동 commit) -->
+<!--
+JDBC : JDBC가 커밋/롤백을 직접 처리하기 위해 사용(수동 commit)
+MANAGED : 트랜잭션에 대해 직접적인 영향을 행사하지 않는 것 의미(자동 commit) 
+-->
+<transactionManager type="JDBC"/>  <!-- 실제 DB접속에 관한 정보를 넣는 태그 -->
+<!--  -->
+<!-- type : ConnectionPool을 사용할건지에 대한 여부 -->
+<!-- UNPOOLED :Connection객체를 별도로 저장하지 않고 객체 호출 시 매번 생성하여 사용 -->
+<!-- POOLED : 최초 Connection객체를 생성할 때 그 정보를 pool 영역에 저장해두고 이후 재사용 가능 -->
+<!-- JNDI -->
+<!-- 실제 DB접속에 관한 정보를 넣는 태그 -->
+<dataSource type="POOLED">
+<property name="driver" value="${driver}"/>
+<property name="url" value="${url}"/>
+<property name="username" value="${username}"/>
+<property name="password" value="${password}"/>
+</dataSource>
+</environment>
+</environments>
+
+<!-- SQL쿼리문들이 저장된 SQL파일 등록 -->
+<mappers>
+<mapper resource="/mappings/uni-mapping.xml"/>
+</mappers>
+</configuration>

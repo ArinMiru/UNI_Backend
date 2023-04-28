@@ -1,4 +1,4 @@
-package admin.process;
+package process;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,19 +23,25 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class LoginAdminTtableOut {    
+public class LonginTtableOut {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobj = new JSONObject();
 	
-	public LoginAdminTtableOut (Map<String, Object> param) throws IOException {
+	public LonginTtableOut (Map<String, Object> param) throws IOException {
+	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
-		String resource = "/mybatis-config.xml"; // ë³€ê²½ ì˜ˆì •
+		// SQL ¿¬°áÀ» À§ÇÑ ±âº» ±¸¼º ¼±¾ð
+		String resource = "/mybatis-config.xml";
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
 		try {
 			SqlSession session = sqlSessionFactory.openSession();
+			
+			//pstmt.setString(1, userPasswrd);
+			//pstmt.setString(2, userId);
+			//pstmt.setString(3, userType);
 			
 			Map<String, Object> rtn = new HashMap<String, Object>();
 			
@@ -43,17 +49,24 @@ public class LoginAdminTtableOut {
 			
 			System.out.println(rtn.get("IND"));
 			
+			// rsltCd Ç×¸ñ Ãß°¡
+			// ÄÃ·³¸íÀ¸·Î JSON Ç×¸ñ ¹× °ªÀ» ±¸¼º
+			//jobj.put("FLAG", rtn.get("IND"));
+			// userId Ç×¸ñ Ãß°¡
 			jobj.put("userId", param.get("userId"));
+			// userType Ç×¸ñ Ãß°¡
 			jobj.put("userType", param.get("userType"));
+			// userPasswrd Ç×¸ñ Ãß°¡ ( º¸¾ÈÀ» À§ÇØ ¼ö·ÏÇÏÁö ¾ÊÀ½ )
+			jobj.put("userPasswrd", param.get("userPasswrd"));
 
+			// ¿¬°áÀÚ ¼±¾ðÇÑ°Å ´Ý¾ÆÁÖ½Ã
 			
             JSONObject jo=new JSONObject();
 			jo.put("FLAG", rtn.get("IND"));
 			jo.put("FLAG1", rtn.get("NUM"));
 			jary.add(jo);
 		    
-			//mybatis query file ìž‘ì„± í›„ ë³€ê²½ ì˜ˆì •
-			
+			// ½Ã°£Ç¥´Â TT_LIST ¶ó´Â ´ëÇ¥¸íÀ¸·Î ¹è¿­ ÇüÅÂ·Î Á¦°ø
 			jobj.put("TT_LIST", jary);
 
 	    } catch(Exception e) {
@@ -64,6 +77,7 @@ public class LoginAdminTtableOut {
 	}
     
 	public JSONObject getResult() {
+		// °á°ú°¡ºÌ ¸®ÅÏ
 		return jobj;
 	}
 

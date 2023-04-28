@@ -1,4 +1,4 @@
-package community.question.servlet;
+package servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import process.LonginTtableOut;
 /**
  * Servlet implementation class LoginSrv
  */
-// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¹ web.xml ï¿½ï¿½ Servlet ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ß´Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸é¼­ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-// URL http://43.201.59.250:8080/ATTENDANCE/Login ï¿½Ì¶ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+// ¾î³ëÅ×ÀÌ¼Ç ±â´ÉÀ¸·Î ÀÌÀü¿¡´Â ÅèÄ¹ web.xml ¿¡ Servlet ÀÌ¶ó°í ¼±¾ðÇØ¾ß Çß´Âµ¥ ¹öÀü¾÷ µÇ¸é¼­ ¾Æ·¡¿Í °°ÀÌ ½¬¿öÁü
+// URL http://43.201.59.250:8080/ATTENDANCE/Login ÀÌ¶ó°í È£ÃâÇÏ¸é º» Å¬·¡½º°¡ ¼öÇàµÊ
 @WebServlet("/Login")
 public class LoginSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -34,14 +34,14 @@ public class LoginSrv extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    // WEB È£ï¿½ï¿½ï¿½ GET ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½)
+    // WEB È£Ãâ½Ã GET ¹æ½Ä (Àü´ÞÇÏ°íÀÚ ÇÏ´Â Ç×¸ñÀ» Çì´õ¿¡ ³Ö´Â ¹æ½Ä)
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	// WEB È£ï¿½ï¿½ï¿½ POST ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½Ùµï¿½ ï¿½×¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½)
-	// ï¿½ì¸®ï¿½ï¿½ POST ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// WEB È£Ãâ½Ã POST ¹æ½Ä (Àü´ÞÇÏ°íÀÚ ÇÏ´Â Ç×¸ñÀ» ¹Ùµð¿¡ Ç×¸ñÀ¸·Î ³Ö´Â ¹æ½Ä)
+	// ¿ì¸®´Â POST ¹æ½ÄÀ¸·Î JSON ¹®ÀÚ¿­À» Àü¼ÛÇÏ°í ¹ÞÀ½
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -49,38 +49,38 @@ public class LoginSrv extends HttpServlet {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		
-		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String userId=""; 		// ï¿½ï¿½ï¿½ï¿½ï¿½ID
-		String userType="";		// ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½
-		String userPasswrd="";	// ï¿½ï¿½Ð¹ï¿½È£
+		// º¯¼ö¼±¾ð
+		String userId=""; 		// »ç¿ëÀÚID
+		String userType="";		// ÇÐ»ý±¸ºÐ
+		String userPasswrd="";	// ºñ¹Ð¹øÈ£
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		
 		System.out.println("start");
 		
-		// JSON ï¿½ï¿½ë¼±ï¿½ï¿½
+		// JSON »ç¿ë¼±¾ð
 		JSONObject resltObj = new JSONObject();
 		
 		System.out.println("start2");
 		
-		// UTF8 ï¿½ï¿½ï¿½ï¿½
+		// UTF8 ¼³Á¤
 		request.setCharacterEncoding("utf8");
 		response.setContentType("application/x-json; charset=UTF-8");
 		
 
 		
-		// ï¿½Ô·Âµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½
+		// ÀÔ·ÂµÈ °ªÀÌ ³¡±îÁö ´Ù ÀÐ¾îµéÀÓ
 		BufferedReader reader = request.getReader();
 		while (( line = reader.readLine()) != null )
 		{
-			// ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+			// ¹®ÀÚ¿­¿¡ °è¼Ó Ãß°¡
 			jb.append(line);
 		}
-		// ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+		// ¹®ÀÚ¿­À» JSON À¸·Î º¯È¯
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		// JSON ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Þµï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// JSON ¿¡¼­ Àü´ÞµÈ Ç×¸ñÀ» ÃßÃâ
         // for(int i=0;i<jsonArr.size();i++){
 		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
 		userType = (jobj.get("userType") == null) ? "" : jobj.get("userType").toString();
@@ -92,23 +92,23 @@ public class LoginSrv extends HttpServlet {
 		param.put("userType", userType);
 		param.put("userPasswrd", userPasswrd);
 		
-		// È­ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+		// È­¸é¿¡ º¸¿©ÁÖ±â
 		System.out.println("userId :".concat(userId));
 		System.out.println("userPasswrd :".concat(userPasswrd));
 		System.out.println("userType :".concat(userType));
 		
-		// ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½Ø¼ï¿½ ï¿½ï¿½Ã³ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½
+		// Ç×¸ñÀ» ÀÎÀÚ·Î ÇØ¼­ ÁÖÃ³¸® Å¬·¡½º È£Ãâ
 		//LonginTtableOut longinTtableOut = new LonginTtableOut(userId,userType,userPasswrd);
 		LonginTtableOut longinTtableOut = new LonginTtableOut(param);
 		
-		// È£ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// È£Ãâ Ã³¸®°á°ú JSON À» È£ÃâÇÑ Å¬·¡½º·Î ºÎÅÍ °¡Á®¿À±â
 		resltObj = longinTtableOut.getResult();
 		
 		//resltObj = jobj;
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		
-		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½Ñ¸ï¿½ï¿½ï¿½
+		// ÀÀ´äÀ¸·Î Å¬¶óÀÌ¾ðÆ®¿¡ »Ñ¸®±â
 		response.getWriter().print(resltObj);
 		
 		

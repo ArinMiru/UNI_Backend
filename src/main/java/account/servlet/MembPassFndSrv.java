@@ -12,21 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import account.process.LonginTtableOut;
+import account.process.MembPassFnd;
 
 /**
  * Servlet implementation class LoginSrv
  */
 // ������̼� ������� �������� ��Ĺ web.xml �� Servlet �̶�� �����ؾ� �ߴµ� ������ �Ǹ鼭 �Ʒ��� ���� ������
 // URL http://43.201.59.250:8080/ATTENDANCE/Login �̶�� ȣ���ϸ� �� Ŭ������ �����
-@WebServlet("/Login")
-public class LoginSrv extends HttpServlet {
+@WebServlet("/MembPassFndSvc")
+public class MembPassFndSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginSrv() {
+    public MembPassFndSrv() {
         super();
         // TODO Auto-generated constructor stub    
     } 
@@ -99,10 +99,10 @@ public class LoginSrv extends HttpServlet {
 		
 		// �׸��� ���ڷ� �ؼ� ��ó�� Ŭ���� ȣ��
 		//LonginTtableOut longinTtableOut = new LonginTtableOut(userId,userType,userPasswrd);
-		account.process.LonginTtableOut longinTtableOut = new account.process.LonginTtableOut(param);
+		account.process.MembPassFnd membpassfnd = new account.process.MembPassFnd(param);
 		
 		// ȣ�� ó����� JSON �� ȣ���� Ŭ������ ���� ��������
-		resltObj = longinTtableOut.getResult();
+		resltObj = membpassfnd.getResult();
 		
 		//resltObj = jobj;
 		

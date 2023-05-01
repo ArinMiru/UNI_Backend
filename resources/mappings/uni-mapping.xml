@@ -7,4 +7,5 @@
     select 'Y' AS IND, 1 AS NUM from dual
     where 'hapje000' = #{userId}
   </select>
+  
 </mapper>

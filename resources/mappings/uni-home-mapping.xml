@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uni-home-mapping">
+  
+  <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,MEMB_ID
+			,CRE_SEQ	
+			,TIT
+			,CONT
+			,LIKE_CNT
+			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		FROM OPEN_BUB_BAS
+		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
+		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectOpenImgInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.FILE_PATH
+		,B.IMG_SEQ
+	FROM OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+</mapper>

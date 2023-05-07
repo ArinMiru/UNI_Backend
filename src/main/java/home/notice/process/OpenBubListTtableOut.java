@@ -1,4 +1,4 @@
-package process;
+package home.notice.process;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -23,62 +24,84 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class LonginTtableOut {    
+public class OpenBubListTtableOut {    
 	
-	private JSONArray jary = new JSONArray();
-	private JSONObject jobj = new JSONObject();
+	// MAIN ìƒì„±ìš© OBJECT
+	private JSONObject jObjMain = new JSONObject();
+	private JSONArray jaryMain = new JSONArray();
 	
-	public LonginTtableOut (Map<String, Object> param) throws IOException {
+	public OpenBubListTtableOut (Map<String, Object> param) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
-		// SQL ¿¬°áÀ» À§ÇÑ ±âº» ±¸¼º ¼±¾ğ
+		// SQL ì ‘ì†ì¥ë²„
 		String resource = "/mybatis-config.xml";
+		// database.properties ì½ê¸°
 		InputStream inputStream = Resources.getResourceAsStream(resource);
+		// maria db ì ‘ì†í•˜ì—¬ db ì„¸ì…˜ íšë“
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		
+				
 		try {
+			// mybatis-config.xml ì„ ì´ìš©í•˜ì—¬ db ì»¤ë„¥ì…˜ ìƒì„±
 			SqlSession session = sqlSessionFactory.openSession();
-			
-			//pstmt.setString(1, userPasswrd);
-			//pstmt.setString(2, userId);
-			//pstmt.setString(3, userType);
-			
-			Map<String, Object> rtn = new HashMap<String, Object>();
-			
-			rtn = session.selectOne("uni-mapping.selectInfo",param);
-			
-			System.out.println(rtn.get("IND"));
-			
-			// rsltCd Ç×¸ñ Ãß°¡
-			// ÄÃ·³¸íÀ¸·Î JSON Ç×¸ñ ¹× °ªÀ» ±¸¼º
-			//jobj.put("FLAG", rtn.get("IND"));
-			// userId Ç×¸ñ Ãß°¡
-			jobj.put("userId", param.get("userId"));
-			// userType Ç×¸ñ Ãß°¡
-			jobj.put("userType", param.get("userType"));
-			// userPasswrd Ç×¸ñ Ãß°¡ ( º¸¾ÈÀ» À§ÇØ ¼ö·ÏÇÏÁö ¾ÊÀ½ )
-			jobj.put("userPasswrd", param.get("userPasswrd"));
+					
+			// sql í˜¸ì¶œ ê²°ê³¼ë¥¼ ë‹¨ê±´ìœ¼ë¡œ ë°›ì•„ì˜¤ê¸° ìœ„í•œ map ì„ ì–¸ (ì¡°íšŒìš© key,value )
+			Map<String, Object> rtn = null;
 
-			// ¿¬°áÀÚ ¼±¾ğÇÑ°Å ´İ¾ÆÁÖ½Ã
-			
-            JSONObject jo=new JSONObject();
-			jo.put("FLAG", rtn.get("IND"));
-			jo.put("FLAG1", rtn.get("NUM"));
-			jary.add(jo);
-		    
-			// ½Ã°£Ç¥´Â TT_LIST ¶ó´Â ´ëÇ¥¸íÀ¸·Î ¹è¿­ ÇüÅÂ·Î Á¦°ø
-			jobj.put("TT_LIST", jary);
+			// ê³µì§€ì‚¬í•­ì€ LIST í˜•íƒœë¡œ ì¡°íšŒë˜ê¸° ë•Œë¬¸ì— LIST ì„ ì–¸
+			List<Map<String, Object>> rtnList = null;
+						
+					
+			rtnList = session.selectList("uni-home-mapping.selectOpenBubInfo",param);	
+						
+			JSONArray jarySub = new JSONArray();
+			JSONObject jObjSub = new JSONObject();
+						
+						
+			// ê³µì§€ì‚¬í•­ì€ ë‹¤ê±´ì¼ìˆ˜ ìˆê¸°ì— selectList ë¡œ í˜¸ì¶œí•˜ë©° loop ë¥¼ ìˆ˜í–‰í•˜ì—¬ ë ˆì½”ë“œë³„ JSON í˜•íƒœë¡œ ë§Œë“¤ì–´ì¤€ë‹¤
+			for (int i=0; i < rtnList.size() ;i++)
+			{
+				jObjSub.put("MEMB_ID", rtnList.get(i).get("MEMB_ID"));
+				jObjSub.put("CRE_SEQ", rtnList.get(i).get("CRE_SEQ"));
+				jObjSub.put("TIT", rtnList.get(i).get("TIT"));
+				jObjSub.put("CONT", rtnList.get(i).get("CONT"));
+				jObjSub.put("LIKE_CNT", rtnList.get(i).get("LIKE_CNT"));
+				jObjSub.put("CRE_DAT", rtnList.get(i).get("CRE_DAT"));
+							
+				JSONArray jarySub2 = new JSONArray();
+				JSONObject jObjSub2 = new JSONObject();
+				List<Map<String, Object>> rtnListSub2 = null;
+							
+				param.put("CRE_SEQ", rtnList.get(i).get("CRE_SEQ"));
+							
+				// ê³µì§€ì‚¬í•­ì´ loop ìˆ˜í–‰ë§ˆë‹¤ í•´ë‹¹ ê³µì§€ì— ì²¨ë¶€ëœ ì´ë¯¸ì§€íŒŒì¼ì´ ìˆì„ìˆ˜ ìˆìœ¼ë‹ˆ ì¡°íšŒí•œë‹¤.
+				rtnListSub2 = session.selectList("uni-home-mapping.selectOpenImgInfo",param);	
+				// ì´ë¯¸ì§€ ë‹¤ê±´ìˆ˜ë§Œí¼ loop ìˆ˜í–‰í•´ì„œ json ë§Œë“¦
+				for (int j=0; j < rtnListSub2.size() ;j++)
+				{
+					jObjSub2.put("FILE_PATH", rtnListSub2.get(j).get("FILE_PATH"));
+					jObjSub2.put("IMG_SEQ", rtnListSub2.get(j).get("IMG_SEQ"));
+								
+					jarySub2.add(jObjSub2);
+				}
+							
+				jObjSub.put("IMAGE_INFO", jarySub2);
+					
+				jarySub.add(jObjSub);
+			}
+					
+			jObjMain.put("RSLT_CD", "00");
+			jObjMain.put("OPEN_BUB", jarySub);
 
-	    } catch(Exception e) {
+
+		} catch(Exception e) {
 			e.printStackTrace();
-	    } finally {
-	    	
-	    }
+		} finally {
+			    	
+		}
 	}
     
 	public JSONObject getResult() {
-		// °á°ú°¡ºÌ ¸®ÅÏ
-		return jobj;
+		return jObjMain;
 	}
 
 }

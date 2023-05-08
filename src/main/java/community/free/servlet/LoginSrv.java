@@ -11,15 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import community.free.process.LonginTtableOut;
 import net.sf.json.JSONObject;
-import process.LonginTtableOut;
+
 
 /**
  * Servlet implementation class LoginSrv
  */
 // ������̼� ������� �������� ��Ĺ web.xml �� Servlet �̶�� �����ؾ� �ߴµ� ������ �Ǹ鼭 �Ʒ��� ���� ������
 // URL http://43.201.59.250:8080/ATTENDANCE/Login �̶�� ȣ���ϸ� �� Ŭ������ �����
-@WebServlet("/Login")
+@WebServlet("/Login2")
 public class LoginSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

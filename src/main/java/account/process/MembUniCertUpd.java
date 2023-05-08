@@ -6,7 +6,7 @@
  * userNum : 학번
  * userEm : 이메일
  */
-package account.servlet;
+package account.process;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,13 +28,13 @@ import account.process.MembUniCertUpd;
 // 占쏙옙占쏙옙占쏙옙抉占� 占쏙옙占쏙옙占쏙옙占� 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙캣 web.xml 占쏙옙 Servlet 占싱띰옙占� 占쏙옙占쏙옙占쌔억옙 占쌩는듸옙 占쏙옙占쏙옙占쏙옙 占실면서 占싣뤄옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙
 // URL http://43.201.59.250:8080/ATTENDANCE/Login 占싱띰옙占� 호占쏙옙占싹몌옙 占쏙옙 클占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占�
 @WebServlet("/Login")
-public class MembUniCertUpdSrv extends HttpServlet {
+public class MembUniCertUpd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MembUniCertUpdSrv() {
+    public MembUniCertUpd() {
         super();
         // TODO Auto-generated constructor stub    
     } 

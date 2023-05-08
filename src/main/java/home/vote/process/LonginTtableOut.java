@@ -1,4 +1,4 @@
-package process;
+package home.vote.process;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public class LonginTtableOut {
 	public LonginTtableOut (Map<String, Object> param) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
-		// SQL ¿¬°áÀ» À§ÇÑ ±âº» ±¸¼º ¼±¾ð
+		// SQL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String resource = "/mybatis-config.xml";
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -49,24 +49,24 @@ public class LonginTtableOut {
 			
 			System.out.println(rtn.get("IND"));
 			
-			// rsltCd Ç×¸ñ Ãß°¡
-			// ÄÃ·³¸íÀ¸·Î JSON Ç×¸ñ ¹× °ªÀ» ±¸¼º
+			// rsltCd ï¿½×¸ï¿½ ï¿½ß°ï¿½
+			// ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½×¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			//jobj.put("FLAG", rtn.get("IND"));
-			// userId Ç×¸ñ Ãß°¡
+			// userId ï¿½×¸ï¿½ ï¿½ß°ï¿½
 			jobj.put("userId", param.get("userId"));
-			// userType Ç×¸ñ Ãß°¡
+			// userType ï¿½×¸ï¿½ ï¿½ß°ï¿½
 			jobj.put("userType", param.get("userType"));
-			// userPasswrd Ç×¸ñ Ãß°¡ ( º¸¾ÈÀ» À§ÇØ ¼ö·ÏÇÏÁö ¾ÊÀ½ )
+			// userPasswrd ï¿½×¸ï¿½ ï¿½ß°ï¿½ ( ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ )
 			jobj.put("userPasswrd", param.get("userPasswrd"));
 
-			// ¿¬°áÀÚ ¼±¾ðÇÑ°Å ´Ý¾ÆÁÖ½Ã
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ ï¿½Ý¾ï¿½ï¿½Ö½ï¿½
 			
             JSONObject jo=new JSONObject();
 			jo.put("FLAG", rtn.get("IND"));
 			jo.put("FLAG1", rtn.get("NUM"));
 			jary.add(jo);
 		    
-			// ½Ã°£Ç¥´Â TT_LIST ¶ó´Â ´ëÇ¥¸íÀ¸·Î ¹è¿­ ÇüÅÂ·Î Á¦°ø
+			// ï¿½Ã°ï¿½Ç¥ï¿½ï¿½ TT_LIST ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
 			jobj.put("TT_LIST", jary);
 
 	    } catch(Exception e) {
@@ -77,7 +77,7 @@ public class LonginTtableOut {
 	}
     
 	public JSONObject getResult() {
-		// °á°ú°¡ºÌ ¸®ÅÏ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		return jobj;
 	}
 

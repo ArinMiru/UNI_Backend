@@ -6,7 +6,7 @@
  * userNum : 학번
  * userEm : 이메일
  */
-package account.process;
+package account.servlet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,12 +31,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class MembUniCertUpd {    
+public class MembUniCertUpdSrv {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobj = new JSONObject();
 	
-	public MembUniCertUpd (Map<String, Object> param) throws IOException {
+	public MembUniCertUpdSrv (Map<String, Object> param) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
 		// SQL 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占썩본 占쏙옙占쏙옙 占쏙옙占쏙옙

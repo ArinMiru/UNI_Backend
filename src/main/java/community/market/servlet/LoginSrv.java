@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import process.LonginTtableOut;
+import community.market.process.LonginTtableOut;
 
 /**
  * Servlet implementation class LoginSrv

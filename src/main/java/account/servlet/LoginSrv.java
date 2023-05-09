@@ -1,3 +1,8 @@
+/*
+ * LonginSrv : 로그인_공통
+ * 
+ */
+
 package account.servlet;
 
 import java.io.BufferedReader;

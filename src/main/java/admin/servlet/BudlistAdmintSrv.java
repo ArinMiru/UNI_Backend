@@ -1,11 +1,6 @@
 /*
- * BudlistAdminTtableOutSrv.java -> 怨듭��궗�빆由ъ뒪�듃 紐낆꽭�꽌瑜� 李몄“ 寃뚯떆湲� 愿�由ъ옄 紐⑤땲�꽣留� �럹�씠吏� -> �꽌釉붾┸�뙆�씪
+ * 2023.05.09 김도원 <개발 중지>
  * 
- * userId - �궗�슜�옄 �씠由�
- * userschool - �븰援먯씠由�
- * userdep - �궗�슜�옄 �븰怨�
- * budname - 寃뚯떆湲� �젣紐�
- * cretime - �옉�꽦�떆媛�
  */
 
 package admin.servlet;

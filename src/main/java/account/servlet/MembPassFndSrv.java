@@ -1,6 +1,6 @@
 /*
  * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)\
- * 
+ * MembPassFndSrv : 비밀번호 찾기
  * 
  */
 
@@ -28,8 +28,7 @@ import account.process.MembPassFnd;
 /**
  * Servlet implementation class LoginSrv
  */
-// ������̼� ������� �������� ��Ĺ web.xml �� Servlet �̶�� �����ؾ� �ߴµ� ������ �Ǹ鼭 �Ʒ��� ���� ������
-// URL http://43.201.59.250:8080/ATTENDANCE/Login �̶�� ȣ���ϸ� �� Ŭ������ �����
+
 @WebServlet("/MembPassFndSvc")
 public class MembPassFndSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -1,6 +1,6 @@
 /*
  * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)\
- * 
+ * MembRegSrv : 회원가입
  * 
  */
 package account.servlet;

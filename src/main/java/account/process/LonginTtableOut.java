@@ -1,3 +1,8 @@
+/*
+ * LonginTtableOut : 로그인_공통
+ * 
+ */
+
 package account.process;
 
 import java.io.IOException;

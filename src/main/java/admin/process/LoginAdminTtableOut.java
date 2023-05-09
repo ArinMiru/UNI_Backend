@@ -1,3 +1,25 @@
+/*
+ * 2023.05.09 김도원 수정
+ * <개발 완료>
+ */
+
+/*
+ * 로그인결과코드 : RSLT_CD
+ * 회원명 : MEMB_NM
+ * 학교코드 : MEMB_SC_CD
+ * 학과코드 : MEMB_DEP_CD
+ * 학번 : MEMB_NUM
+ * 학교명 : MEMB_SC_NM
+ * 학과명 : MEMB_DEP_NM
+ * 직함코드 : TIT_CD
+ * 직함명 : TIT_NM
+ * 닉네임 : NICK_NM
+ * 학년 : MEMB_GRA
+ * 이메일 : MEMB_EM
+ * 프로필이미지경로 : PROF_IMG_PATH
+ * 대학인증여부 : COLL_CERT_IND
+ */
+
 package admin.process;
 
 import java.io.IOException;

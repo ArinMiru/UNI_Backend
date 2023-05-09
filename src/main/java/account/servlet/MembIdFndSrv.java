@@ -1,9 +1,13 @@
 /*
- * 2023.05.09 김도원 <개발 중지>
+ * 2023.05.09 김도원 생성 (API 상세명세서 기반 개발)
+ * MembIdFndSrv : 아이디찾기
  * 
  */
 
-package admin.servlet;
+/*
+ */
+
+package account.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,39 +20,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import admin.process.UserInfoAdminTtableOut;
 import net.sf.json.JSONObject;
+import account.process.MembIdFnd;
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/UserInfoAdmin")
-public class UserInfoAdminSrv extends HttpServlet {
+
+@WebServlet("/MembIdFndSvc")
+public class MembIdFndSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserInfoAdminSrv() {
-        super();  
+    public MembIdFndSrv() {
+        super();
+        // TODO Auto-generated constructor stub    
     } 
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		
-		String userId="";
-		String userType="";
-		String userschool="";
-		String usersdep="";
+		String userEmail="";	// 이메일 : MEMB_EM
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -61,7 +65,7 @@ public class UserInfoAdminSrv extends HttpServlet {
 		
 		request.setCharacterEncoding("utf8");
 		response.setContentType("application/x-json; charset=UTF-8");
-		
+				
 		BufferedReader reader = request.getReader();
 		while (( line = reader.readLine()) != null )
 		{
@@ -69,32 +73,22 @@ public class UserInfoAdminSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
-		userType = (jobj.get("userType") == null) ? "" : jobj.get("userType").toString();
-		userschool = (jobj.get("school") == null) ? "" : jobj.get("school").toString();
-		usersdep = (jobj.get("usersdep") == null) ? "" : jobj.get("usersdep").toString();
+		userEmail = (jobj.get("MEMB_EM") == null) ? "" : jobj.get("MEMB_EM").toString(); // 이메일 : MEMB_EM
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("userId", userId);
-		param.put("userType", userType);
-		param.put("userschool", userschool);
-		param.put("usersdep", usersdep);
+		param.put("MEMB_EM", userEmail);
 		
-		System.out.println("userId :".concat(userId));
-		System.out.println("userschool :".concat(userschool));
-		System.out.println("usersdep :".concat(usersdep));
+		System.out.println("userEmail :".concat(userEmail));
 		
+		account.process.MembIdFnd membidfnd = new account.process.MembIdFnd(param);
 		
-		UserInfoAdminTtableOut userinfoadminTtableOut = new UserInfoAdminTtableOut(param);
-		
-		resltObj = userinfoadminTtableOut.getResult();
-		
+		resltObj = membidfnd.getResult();
+	
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		
 		response.getWriter().print(resltObj);
-		
-		
+				
 	}
 
 }

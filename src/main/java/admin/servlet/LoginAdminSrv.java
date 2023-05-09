@@ -1,3 +1,13 @@
+/*
+ * 2023.05.09 김도원 수정
+ * <개발 완료>
+ */
+
+/*
+ * 로그인ID : LOGIN_ID
+ * 로그인 비밀번호 : LOGIN_PASS
+ */
+
 package admin.servlet;
 
 import java.io.BufferedReader;

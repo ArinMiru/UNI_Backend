@@ -1,9 +1,16 @@
 /*
- * 2023.05.09 김도원 <개발 중지>
+ * 2023.05.09 김도원 생성 (API 상세명세서 기반 개발)
+ * MembAlmInfoUpdSrv : 알림정보수정
  * 
  */
 
-package admin.servlet;
+/*
+ * 회원 ID : MEMB_ID
+ * 앱 알림 여부 : APP_NOTICE_YN
+ * 공지사항 알림 여부 : DEP_NOTICE_YN
+ */
+
+package account.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,39 +23,41 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import admin.process.UserInfoAdminTtableOut;
 import net.sf.json.JSONObject;
+import account.process.MembAlmInfoUpd;
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/UserInfoAdmin")
-public class UserInfoAdminSrv extends HttpServlet {
+
+@WebServlet("/MembAlmInfoUpd")
+public class MembAlmInfoUpdSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserInfoAdminSrv() {
-        super();  
+    public MembAlmInfoUpdSrv() {
+        super();
+        // TODO Auto-generated constructor stub    
     } 
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		
-		String userId="";
-		String userType="";
-		String userschool="";
-		String usersdep="";
+		String userId="";	// 회원 ID : MEMB_ID
+		String appNotice_YN="";	// 앱 알림 여부 : APP_NOTICE_YN
+		String depNotice_YN="";	// 공지사항 알림 여부 : DEP_NOTICE_YN
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -61,7 +70,7 @@ public class UserInfoAdminSrv extends HttpServlet {
 		
 		request.setCharacterEncoding("utf8");
 		response.setContentType("application/x-json; charset=UTF-8");
-		
+				
 		BufferedReader reader = request.getReader();
 		while (( line = reader.readLine()) != null )
 		{
@@ -69,32 +78,28 @@ public class UserInfoAdminSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
-		userType = (jobj.get("userType") == null) ? "" : jobj.get("userType").toString();
-		userschool = (jobj.get("school") == null) ? "" : jobj.get("school").toString();
-		usersdep = (jobj.get("usersdep") == null) ? "" : jobj.get("usersdep").toString();
+		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString(); 			 // 회원 ID : MEMB_ID
+		appNotice_YN = (jobj.get("APP_NOTICE_YN") == null) ? "" : jobj.get("APP_NOTICE_YN").toString(); // 앱 알림 여부 : APP_NOTICE_YN
+		depNotice_YN = (jobj.get("DEP_NOTICE_YN") == null) ? "" : jobj.get("DEP_NOTICE_YN").toString(); // 공지사항 알림 여부 : DEP_NOTICE_YN
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("userId", userId);
-		param.put("userType", userType);
-		param.put("userschool", userschool);
-		param.put("usersdep", usersdep);
+		param.put("MEMB_EM", userId);
+		param.put("APP_NOTICE_YN", appNotice_YN);
+		param.put("DEP_NOTICE_YN", depNotice_YN);
 		
-		System.out.println("userId :".concat(userId));
-		System.out.println("userschool :".concat(userschool));
-		System.out.println("usersdep :".concat(usersdep));
+		System.out.println("userEmail :".concat(userId));
+		System.out.println("userEmail :".concat(appNotice_YN));
+		System.out.println("userEmail :".concat(depNotice_YN));
 		
+		account.process.MembAlmInfoUpd membalminfoupd = new account.process.MembAlmInfoUpd(param);
 		
-		UserInfoAdminTtableOut userinfoadminTtableOut = new UserInfoAdminTtableOut(param);
-		
-		resltObj = userinfoadminTtableOut.getResult();
-		
+		resltObj = membalminfoupd.getResult();
+	
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		
 		response.getWriter().print(resltObj);
-		
-		
+				
 	}
 
 }

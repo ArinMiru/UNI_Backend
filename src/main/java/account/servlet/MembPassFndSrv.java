@@ -1,3 +1,14 @@
+/*
+ * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)\
+ * 
+ * 
+ */
+
+/*
+ * 회원ID	 : MEMB_ID
+ * 이메일 : MEMB_EM
+ */
+
 package account.servlet;
 
 import java.io.BufferedReader;
@@ -34,84 +45,57 @@ public class MembPassFndSrv extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    // WEB ȣ��� GET ��� (�����ϰ��� �ϴ� �׸��� ����� �ִ� ���)
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-
-	// WEB ȣ��� POST ��� (�����ϰ��� �ϴ� �׸��� �ٵ� �׸����� �ִ� ���)
-	// �츮�� POST ������� JSON ���ڿ��� �����ϰ� ����
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//doGet(request, response);
 		
-		// ��������
-		String userId=""; 		// �����ID
-		String userType="";		// �л�����
-		String userPasswrd="";	// ��й�ȣ
+		String userId=""; 		// 회원ID	 : MEMB_ID
+		String userEmail="";	// 이메일 : MEMB_EM
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		
 		System.out.println("start");
 		
-		// JSON ��뼱��
 		JSONObject resltObj = new JSONObject();
 		
 		System.out.println("start2");
 		
-		// UTF8 ����
 		request.setCharacterEncoding("utf8");
 		response.setContentType("application/x-json; charset=UTF-8");
-		
-
-		
-		// �Էµ� ���� ������ �� �о����
+				
 		BufferedReader reader = request.getReader();
 		while (( line = reader.readLine()) != null )
 		{
-			// ���ڿ��� ��� �߰�
 			jb.append(line);
 		}
-		// ���ڿ��� JSON ���� ��ȯ
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		// JSON ���� ���޵� �׸��� ����
-        // for(int i=0;i<jsonArr.size();i++){
-		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
-		userType = (jobj.get("userType") == null) ? "" : jobj.get("userType").toString();
-		userPasswrd = (jobj.get("pass") == null) ? "" : jobj.get("pass").toString();
+		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString();    // 회원ID : MEMB_ID
+		userEmail = (jobj.get("MEMB_EM") == null) ? "" : jobj.get("MEMB_EM").toString(); // 이메일 : MEMB_EM
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("userId", userId);
-		param.put("userType", userType);
-		param.put("userPasswrd", userPasswrd);
+		param.put("MEMB_ID", userId);
+		param.put("MEMB_EM", userEmail);
 		
-		// ȭ�鿡 �����ֱ�
 		System.out.println("userId :".concat(userId));
-		System.out.println("userPasswrd :".concat(userPasswrd));
-		System.out.println("userType :".concat(userType));
+		System.out.println("userEmail :".concat(userEmail));
 		
-		// �׸��� ���ڷ� �ؼ� ��ó�� Ŭ���� ȣ��
-		//LonginTtableOut longinTtableOut = new LonginTtableOut(userId,userType,userPasswrd);
 		account.process.MembPassFnd membpassfnd = new account.process.MembPassFnd(param);
 		
-		// ȣ�� ó����� JSON �� ȣ���� Ŭ������ ���� ��������
 		resltObj = membpassfnd.getResult();
-		
-		//resltObj = jobj;
-		
+	
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		
-		// �������� Ŭ���̾�Ʈ�� �Ѹ���
 		response.getWriter().print(resltObj);
-		
-		
+				
 	}
 
 }

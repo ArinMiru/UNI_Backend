@@ -1,96 +1,115 @@
 /*
- * 대학인증 회원수정 부분 수정
- * userId : 회원 아이디
- * userSccd : 학교코드
- * userDepcd : 학과코드
- * userNum : 학번
- * userEm : 이메일
+ * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)\
+ * 
+ * 
+ */
+
+/*	
+ * 회원ID	 : MEMB_ID
+ * 학교코드 : MEMB_SC_CD
+ * 학과코드 : MEMB_DEP_CD
+ * 학번 : MEMB_NUM
+ * 이메일 : MEMB_EM
  */
 package account.servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class MembUniCertUpdSrv {    
-	
-	private JSONArray jary = new JSONArray();
-	private JSONObject jobj = new JSONObject();
-	
-	public MembUniCertUpdSrv (Map<String, Object> param) throws IOException {
-	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
-		
-		// SQL 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占썩본 占쏙옙占쏙옙 占쏙옙占쏙옙
-		String resource = "/mybatis-config.xml";
-		InputStream inputStream = Resources.getResourceAsStream(resource);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		
-		try {
-			SqlSession session = sqlSessionFactory.openSession();
-			
-			//pstmt.setString(1, userPasswrd);
-			//pstmt.setString(2, userId);
-			//pstmt.setString(3, userType);
-			
-			Map<String, Object> rtn = new HashMap<String, Object>();
-			
-			rtn = session.selectOne("uni-mapping.selectInfo",param);
-			
-			System.out.println(rtn.get("IND"));
-			
-			// rsltCd 占쌓몌옙 占쌩곤옙
-			// 占시뤄옙占쏙옙占쏙옙占쏙옙 JSON 占쌓몌옙 占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙
-			//jobj.put("FLAG", rtn.get("IND"));
-			// userId 요청변수
-			jobj.put("userId", param.get("userId"));
-			// userType 요청변수
-			jobj.put("userSccd", param.get("userSccd"));
-			// userDepcd 요청변수
-			jobj.put("userDepcd", param.get("userDepcd"));
-			// userNum 요청변수
-			jobj.put("userNum", param.get("userNum"));
-			// userEm 요청변수
-			jobj.put("userEm", param.get("userEm"));
+/**
+ * Servlet implementation class LoginSrv
+ */
+@WebServlet("/MembUniCertUpdSvc")
+public class MembUniCertUpdSrv extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public MembUniCertUpdSrv() {
+        super();  
+    } 
 
-			// 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占싼곤옙 占쌥억옙占쌍쏙옙
-			
-            JSONObject jo=new JSONObject();
-			jo.put("FLAG", rtn.get("IND"));
-			jo.put("FLAG1", rtn.get("NUM"));
-			jary.add(jo);
-		    
-			// 占시곤옙표占쏙옙 TT_LIST 占쏙옙占� 占쏙옙표占쏙옙占쏙옙占쏙옙 占썼열 占쏙옙占승뤄옙 占쏙옙占쏙옙
-			jobj.put("TT_LIST", jary);
-
-	    } catch(Exception e) {
-			e.printStackTrace();
-	    } finally {
-	    	
-	    }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-    
-	public JSONObject getResult() {
-		// 占쏙옙占쏙옙占쏙옙占� 占쏙옙占쏙옙
-		return jobj;
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		String userId="";	// 회원 ID
+		String userSccd=""; // 학교코드
+		String userDepcd=""; // 학과코드
+		String userNum=""; // 학번
+		String userEm=""; // 이메일
+		
+		StringBuffer jb = new StringBuffer();
+		String line = null;
+		
+		System.out.println("start");
+		
+		JSONObject resltObj = new JSONObject();
+		
+		System.out.println("start2");
+		
+		request.setCharacterEncoding("utf8");
+		response.setContentType("application/x-json; charset=UTF-8");
+		
+		BufferedReader reader = request.getReader();
+		while (( line = reader.readLine()) != null )
+		{
+			jb.append(line);
+		}
+		JSONObject jobj = JSONObject.fromObject(jb.toString());
+		
+		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString();
+		userSccd = (jobj.get("MEMB_SC_CD") == null) ? "" : jobj.get("MEMB_SC_CD").toString();
+		userDepcd = (jobj.get("MEMB_DEP_CD") == null) ? "" : jobj.get("MEMB_DEP_CD").toString();
+		userNum = (jobj.get("MEMB_NUM") == null) ? "" : jobj.get("MEMB_NUM").toString();
+		userEm = (jobj.get("MEMB_EM") == null) ? "" : jobj.get("MEMB_EM").toString();
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("MEMB_ID", userId);
+		param.put("MEMB_SC_CD", userSccd);
+		param.put("MEMB_DEP_CD", userDepcd);
+		param.put("MEMB_NUM", userNum);
+		param.put("MEMB_EM", userEm);
+		
+		System.out.println("userId :".concat(userId)); 		 // 회원ID : MEMB_ID
+		System.out.println("userSccd :".concat(userSccd));   // 학교코드 : MEMB_SC_CD
+		System.out.println("userDepcd :".concat(userDepcd)); // 학과코드 : MEMB_DEP_CD
+		System.out.println("userNum :".concat(userNum));     // 학번 : MEMB_NUM
+		System.out.println("userEm :".concat(userEm));       // 이메일 : MEMB_EM
+		
+		
+		account.process.MembUniCertUpd membunicertupd = new account.process.MembUniCertUpd(param);
+		
+		resltObj = membunicertupd.getResult();
+		
+		
+		System.out.println("resltObj :".concat(resltObj.toString()));
+		
+		response.getWriter().print(resltObj);
+		
+		
 	}
 
 }

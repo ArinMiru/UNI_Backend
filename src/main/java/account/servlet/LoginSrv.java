@@ -1,3 +1,8 @@
+/*
+ * LonginSrv : 로그인_공통
+ * 
+ */
+
 package account.servlet;
 
 import java.io.BufferedReader;
@@ -76,8 +81,8 @@ public class LoginSrv extends HttpServlet {
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
 
-		userId = (jobj.get("LOGIN_ID") == null) ? "" : jobj.get("LOGIN_ID").toString();
-		userPasswrd = (jobj.get("LOGIN_PASS") == null) ? "" : jobj.get("LOGIN_PASS").toString();
+		userId = (jobj.get("LOGIN_ID") == null) ? "" : jobj.get("LOGIN_ID").toString(); // 로그인 ID : LOGIN_ID 
+		userPasswrd = (jobj.get("LOGIN_PASS") == null) ? "" : jobj.get("LOGIN_PASS").toString(); // 로그인 비밀번호 : LOGIN_PASS
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
@@ -91,7 +96,6 @@ public class LoginSrv extends HttpServlet {
 		
 		resltObj = longinTtableOut.getResult();
 		
-		//resltObj = jobj;
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 

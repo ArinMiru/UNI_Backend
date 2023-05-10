@@ -1,13 +1,10 @@
 /*
- * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)
- * MembInfoUpd : 프로파일 이미지변경
+ * 2023.05.10 김도원 생성 (API 상세명세서 기반 개발)
+ * ChkAndCert : 코드검증 및 인증완료
  * 
- * 2023.05.10 김도원 수정 (uni-account-mapping.xml query 작성 및 try{} 코드 수정)
- * updateMembInfoUpd : 프로파일 이미지변경
  */
 
 /*
- * 로그인결과코드 : RSLT_CD
  * 
  */
 
@@ -25,12 +22,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import net.sf.json.JSONObject;
 
-public class MembInfoUpd {    
+public class ChkAndCert {    
 	
 	// MAIN 생성용 OBJECT
 	private JSONObject jObjMain = new JSONObject();
 	
-	public MembInfoUpd (Map<String, Object> param) throws IOException {
+	public ChkAndCert (Map<String, Object> param) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
 		// SQL 접속장버
@@ -47,16 +44,20 @@ public class MembInfoUpd {
             System.out.println("param :"+param.toString());
 
             // 수정된 부분: update 메소드를 사용하도록 변경
-            int updatedRows = session.update("uni-account-mapping.updateMembInfoUpd",param);
+            int updatedRows = session.update("uni-account-mapping.**",param);
             rtn = new HashMap<String, Object>();
 
-            if (updatedRows > 0) {
+            if (updatedRows == 0) {
                 rtn.put("RSLT_CD", "00"); // 00: 정상
+                jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
+                jObjMain.put("MEMB_ID", rtn.get("MEMB_ID"));
+            } else if (updatedRows > 0){
+                rtn.put("RSLT_CD", "05"); // 05: 인증코드불일치
+                jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
             } else {
                 rtn.put("RSLT_CD", "99"); // 99: 기타 오류
+                jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
             }
-
-            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			
 	    } catch(Exception e) {
 			e.printStackTrace();

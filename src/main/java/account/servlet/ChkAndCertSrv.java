@@ -1,11 +1,13 @@
 /*
- * 2023.05.09 김도원 생성 (API 상세명세서 기반 개발)
- * MembIdChkSrv : 회원 ID 중복체크
+ * 2023.05.10 김도원 생성 (API 상세명세서 기반 개발)
+ * ChkAndCertSrv : 코드검증 및 인증완료
  * 
  */
 
 /*
- * 
+ * 회원ID : MEMB_ID / userId
+ * 인증일련번호 : CERT_SEQ / certSeq
+ * 입력코드 : INPUT_CD / inputCd
  */
 
 package account.servlet;
@@ -22,20 +24,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import account.process.MembIdChk;
+import account.process.ChkAndCert;
 
 /**
  * Servlet implementation class LoginSrv
  */
 
-@WebServlet("/MembIdChkSvc")
-public class MembIdChkSrv extends HttpServlet {
+@WebServlet("/ChkAndCertSvc")
+public class ChkAndCertSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MembIdChkSrv() {
+    public ChkAndCertSrv() {
         super();
         // TODO Auto-generated constructor stub    
     } 
@@ -53,7 +55,9 @@ public class MembIdChkSrv extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String userId="";	// 회원 ID : MEMB_ID
+		String userId="";	// 회원ID : MEMB_ID
+		String certSeq="";	// 인증일련번호 : CERT_SEQ
+		String inputCd="";	// 입력코드 : INPUT_CD
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -74,17 +78,24 @@ public class MembIdChkSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString(); // 회원 ID : MEMB_ID
+		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString(); // 회원ID : MEMB_ID
+		certSeq = (jobj.get("CERT_SEQ") == null) ? "" : jobj.get("CERT_SEQ").toString(); // 인증일련번호 : CERT_SEQ
+		inputCd = (jobj.get("INPUT_CD") == null) ? "" : jobj.get("INPUT_CD").toString(); // 입력코드 : INPUT_CD
+		
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("MEMB_ID", userId);
+		param.put("CERT_SEQ", certSeq);
+		param.put("INPUT_CD", inputCd);
 		
 		System.out.println("userId :".concat(userId));
+		System.out.println("certSeq :".concat(certSeq));
+		System.out.println("inputCd :".concat(inputCd));
 		
-		account.process.MembIdChk membidchk = new account.process.MembIdChk(param);
+		account.process.ChkAndCert chkandcert = new account.process.ChkAndCert(param);
 		
-		resltObj = membidchk.getResult();
+		resltObj = chkandcert.getResult();
 	
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

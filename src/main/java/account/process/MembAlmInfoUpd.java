@@ -2,6 +2,8 @@
  * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)
  * MembAlmInfoUpd : 알림정보수정
  * 
+ * 2023.05.10 김도원 수정 (uni-account-mapping.xml query 작성 및 try{} 코드 수정)
+ * updateMembAlmInfoUpd : 알림정보수정
  */
 
 /*
@@ -13,6 +15,7 @@ package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -37,27 +40,25 @@ public class MembAlmInfoUpd {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
-		try {
-			SqlSession session = sqlSessionFactory.openSession();
+        try {
+            SqlSession session = sqlSessionFactory.openSession();
+            Map<String, Object> rtn = null;
+
+            System.out.println("param :"+param.toString());
+
+            // 수정된 부분: update 메소드를 사용하도록 변경
+            int updatedRows = session.update("uni-account-mapping.updateMembAlmInfoUpd",param);
+            rtn = new HashMap<String, Object>();
+
+            if (updatedRows > 0) {
+                rtn.put("RSLT_CD", "00"); // 00: 정상
+            } else {
+                rtn.put("RSLT_CD", "99"); // 99: 기타 오류
+            }
+
+            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			
-			Map<String, Object> rtn = null;
-			
-			System.out.println("param :"+param.toString());
-			
-			rtn = session.selectOne("uni-account-mapping.**",param);
-			
-			
-			if ("99".equals(rtn.get("RSLT_CD"))) {	
-				// 99 : 기타오류
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			}			
-			
-			
-			if ("00".equals(rtn.get("RSLT_CD"))) {
-				// 00 : 정상 (코드 이메일로 정상 발송)
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			}
-			
+            
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {

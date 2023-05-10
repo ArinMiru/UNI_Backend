@@ -50,12 +50,8 @@ public class OpenBubSrv extends HttpServlet {
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		
-		System.out.println("start");
-		
 		// JSON
 		JSONObject resltObj = new JSONObject();
-		
-		System.out.println("start2");
 		
 		// UTF8 
 		request.setCharacterEncoding("utf8");
@@ -73,7 +69,7 @@ public class OpenBubSrv extends HttpServlet {
 		//Map<String, Object> param = new HashMap<String, Object>();
 		
         // JSONObject 를 그냥 인자로 넘긴다.
-		OpenBubTtableOut openBubListTtableOut = new OpenBubTtableOut(jobj,request);
+		OpenBubTtableOut openBubListTtableOut = new OpenBubTtableOut(jobj);
 		
 		resltObj = openBubListTtableOut.getResult();
 		

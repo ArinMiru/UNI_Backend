@@ -2,6 +2,8 @@
  * 2023.05.09 김도원 생성 (API 상세명세서 기반 개발)
  * MembNicChk : 닉네임 중복 체크
  * 
+ * 2023.05.10 김도원 수정 (uni-account-mapping.xml query 작성 및 try{} 코드 수정)
+ * selectMembNicchk : 닉네임 중복 체크
  */
 
 /*
@@ -37,30 +39,25 @@ public class MembNicChk {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
-		try {
-			SqlSession session = sqlSessionFactory.openSession();
-			
-			Map<String, Object> rtn = null;
-			
-			System.out.println("param :"+param.toString());
-			
-			rtn = session.selectOne("uni-account-mapping.**",param);
-			
-			
-			if ("99".equals(rtn.get("RSLT_CD"))) {	
-				// 99 : 기타오류
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			}			
-			
-			if ("00".equals(rtn.get("RSLT_CD"))) {
-				// 00 : 정상
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			}
-			
-			if ("06".equals(rtn.get("RSLT_CD"))) {
-				// 06 : 닉네임 중복
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			}
+	       try {
+	            SqlSession session = sqlSessionFactory.openSession();
+	            Map<String, Object> rtn = null;
+
+	            System.out.println("param :"+param.toString());
+
+	            // 수정된 부분: update 메소드를 사용하도록 변경
+	            int updatedRows = session.update("uni-account-mapping.selectMembNicchk",param);
+	            rtn = new HashMap<String, Object>();
+
+	            if (updatedRows == 0) {
+	                rtn.put("RSLT_CD", "00"); // 00: 정상
+	            } else if (updatedRows > 0){
+	                rtn.put("RSLT_CD", "06"); // 06: 닉네임 중복
+	            } else {
+	                rtn.put("RSLT_CD", "99"); // 99: 기타 오류
+	            }
+	            
+	            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			
 	    } catch(Exception e) {
 			e.printStackTrace();

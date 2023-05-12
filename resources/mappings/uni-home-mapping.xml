@@ -130,6 +130,4 @@
     WHERE 	CRE_SEQ 	= #{CRE_SEQ}
   </select>
   
-  
-  
 </mapper>

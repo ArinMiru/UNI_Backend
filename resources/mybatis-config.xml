@@ -53,5 +53,6 @@ MANAGED : 트랜잭션에 대해 직접적인 영향을 행사하지 않는 것 
 <mapper resource="/mappings/uni-mapping.xml"/>
 <mapper resource="/mappings/uni-account-mapping.xml"/>
 <mapper resource="/mappings/uni-home-mapping.xml"/>
+<mapper resource="/mappings/uni-community-mapping.xml"/>
 </mappers>
 </configuration>

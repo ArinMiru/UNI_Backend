@@ -96,7 +96,7 @@
 		,MEMB_NUM 		= #{MEMB_NUM}
 		,MEMB_EM 		= #{MEMB_EM}
 		,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{MEMB_ID};
+	WHERE MEMB_ID = #{MEMB_ID}
   </update>
   
   <update id="updateMembPassUpd" parameterType="Hashmap">
@@ -104,7 +104,7 @@
   	UPDATE MEMB_BAS set
 		PASS 		= #{PASS}
 		,UPD_DAT	= SYSDATE()
-	WHERE MEMB_ID = #{MEMB_ID};
+	WHERE MEMB_ID = #{MEMB_ID}
   </update>
   
   <update id="updateMembNicUpd" parameterType="Hashmap">
@@ -112,7 +112,7 @@
   	UPDATE MEMB_BAS set
  		NICK_NM 	= #{NICK_NM}
  		,UPD_DAT	= SYSDATE()
-	WHERE MEMB_ID = #{MEMB_ID};
+	WHERE MEMB_ID = #{MEMB_ID}
   </update>
   
   <update id="updateMembAlmInfoUpd" parameterType="Hashmap">
@@ -121,7 +121,7 @@
 		APP_NOTICE_YN 	= #{APP_NOTICE_YN}
 		,DEP_NOTICE_YN 	= #{DEP_NOTICE_YN}
 		,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{MEMB_ID};	
+	WHERE MEMB_ID = #{MEMB_ID}	
   </update>
   
   <update id="updateMembInfoUpd" parameterType="Hashmap">
@@ -130,7 +130,7 @@
 	UPDATE MEMB_BAS set
  		PROF_IMG_PATH = #{PROF_IMG_PATH}
  		,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{MEMB_ID};
+	WHERE MEMB_ID = #{MEMB_ID}
   </update>  
   
   <select id="selectMembIdchk" resultType="String" parameterType="HashMap">
@@ -138,7 +138,7 @@
   	SELECT 'Y' FROM dual
    	WHERE EXISTS (
    		SELECT MEMB_ID FROM MEMB_BAS 
-   		WHERE MEMB_ID = #{MEMB_ID});
+   		WHERE MEMB_ID = #{MEMB_ID})
   </select>
   
   <select id="selectMembNicchk" resultType="String" parameterType="HashMap">
@@ -146,7 +146,56 @@
 	SELECT 'Y' FROM dual
    	WHERE EXISTS (
    		SELECT MEMB_ID FROM MEMB_BAS 
-   		WHERE NICK_NM = #{NICK_NM});
+   		WHERE NICK_NM = #{NICK_NM})
   </select>  
+  
+  <update id="updateOpenLikeUpd" parameterType="Hashmap">
+	UPDATE OPEN_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateFreeLikeUpd" parameterType="Hashmap">
+	UPDATE FREE_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateQuesLikeUpd" parameterType="Hashmap">
+	UPDATE QUES_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateSugLikeUpd" parameterType="Hashmap">
+	UPDATE SUG_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateGallLikeUpd" parameterType="Hashmap">
+	UPDATE GALL_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateMarkLikeUpd" parameterType="Hashmap">
+	UPDATE MARK_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
   
 </mapper>

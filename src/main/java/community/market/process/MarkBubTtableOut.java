@@ -1,4 +1,4 @@
-package home.notice.process;
+package community.market.process;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,14 +19,14 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class OpenBubTtableOut {    
+public class MarkBubTtableOut {    
 	
 	// MAIN 생성용 OBJECT
 	private JSONObject jObjRtn = new JSONObject();
 	private JSONObject jObjMain = new JSONObject();
 	private JSONArray jaryMain = new JSONArray();
 	
-	public OpenBubTtableOut (JSONObject jobj) throws IOException {
+	public MarkBubTtableOut (JSONObject jobj) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
 		// SQL 접속장버
@@ -106,11 +106,11 @@ public class OpenBubTtableOut {
 				if ("01".equals(jobj.getString("PROC_TYPE")))
 				{
 					// 공지 게시판 생성일련번호 채번
-					long creSeq = session.selectOne("uni-home-mapping.selectOpenBubSeq");
+					long creSeq = session.selectOne("uni-community-mapping.selectMarkBubSeq");
 					param.put("CRE_SEQ", creSeq);
 				
 					// 공지사항 등록
-					session.insert("uni-home-mapping.insertOpenBubInfo",param);
+					session.insert("uni-community-mapping.insertMarkBubInfo",param);
 				
 					for(int i=0;i < fileAddList.size();i++)
 					{
@@ -124,7 +124,7 @@ public class OpenBubTtableOut {
 
 
 						// 이미지 파일 등록
-						session.insert("uni-home-mapping.insertOpenImgInfo",imgParam);
+						session.insert("uni-community-mapping.insertMarkImgInfo",imgParam);
 					}
 				
 				}
@@ -134,7 +134,7 @@ public class OpenBubTtableOut {
 				{
 					// 공지사항 수정
 					param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
-					session.update("uni-home-mapping.updateOpenBubInfo",param);
+					session.update("uni-community-mapping.updateMarkBubInfo",param);
 							
 					for(int i=0;i<fileAddList.size();i++)
 					{
@@ -147,7 +147,7 @@ public class OpenBubTtableOut {
 						imgParam.put("MOD_FILE_NM", "MOD_FILE_NM");	
 
 						// 이미지 파일 등록
-						session.insert("uni-home-mapping.insertOpenImgInfo",imgParam);
+						session.insert("uni-community-mapping.insertMarkImgInfo",imgParam);
 					}
 					
 					for(int i=0;i<fileDelList.size();i++)
@@ -159,7 +159,7 @@ public class OpenBubTtableOut {
 						imgParam.put("CRE_SEQ", jobj.get("CRE_SEQ"));	
 
 						// 이미지 파일명 가져오기
-						String filePath = session.selectOne("uni-home-mapping.selectOpenDelImgInfo",imgParam);
+						String filePath = session.selectOne("uni-community-mapping.selectMarkDelImgInfo",imgParam);
 						
 						// 파일 삭제
 						try {
@@ -170,7 +170,7 @@ public class OpenBubTtableOut {
 						}
 						
 						// 이미지 파일 삭제
-						session.delete("uni-home-mapping.deleteOpenImgInfo",imgParam);
+						session.delete("uni-community-mapping.deleteMarkImgInfo",imgParam);
 					}
 
 				}
@@ -188,7 +188,7 @@ public class OpenBubTtableOut {
 				
 				// 삭제할 이미지 목록 가져오기
 				List<String> rtnList = null;	
-				rtnList = session.selectList("uni-home-mapping.selectOpenDelAllImgInfo",param);
+				rtnList = session.selectList("uni-community-mapping.selectMarkDelAllImgInfo",param);
 				
 				// 실제경로 파일 삭제
 				for (int i=0; i < rtnList.size() ;i++)
@@ -203,9 +203,9 @@ public class OpenBubTtableOut {
 				}
 				
 				// 공지사항 삭제
-				session.delete("uni-home-mapping.deleteOpenBubInfo",param);	
+				session.delete("uni-community-mapping.deleteMarkBubInfo",param);	
 				// 공지사항 이미지 파일 삭제
-				session.delete("uni-home-mapping.deleteOpenAllImgInfo",param);
+				session.delete("uni-community-mapping.deleteMarkAllImgInfo",param);
 				
 				
 			}

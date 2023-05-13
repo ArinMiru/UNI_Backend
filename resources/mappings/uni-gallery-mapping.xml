@@ -18,7 +18,7 @@
 			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
 		FROM GALL_BUB_BAS
 		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
-		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		<if test='!"04".equals(TIT_CD)'> 
 		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
 		ORDER BY CRE_DAT DESC
@@ -38,7 +38,7 @@
 	FROM GALL_BUB_BAS A , GALL_BUB_ANS_BAS B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	<if test='!"04".equals(TIT_CD)'> 
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -79,7 +79,9 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -87,7 +89,9 @@
    <delete id="deleteGallBubInfo" parameterType="HashMap">
     DELETE FROM GALL_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>

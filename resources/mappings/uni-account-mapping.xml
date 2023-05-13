@@ -69,10 +69,11 @@
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
   </select>
   
-  <select id="insertMembInfo" resultType="HashMap" parameterType="HashMap">
+  <insert id="insertMembInfo" parameterType="HashMap">
   <!-- 23.05.10 회원가입 (김도원) -->
+  <!-- 23.05.13 select -> insert 로 수정 완료 -->
   	INSERT INTO MEMB_BAS (MEMB_ID,PASS,MEMB_NM) VALUES ('userId','userPasswrd','userName');
-  </select>
+  </insert>
   
   <update id="updateMembuniCertUpd" parameterType="Hashmap"> 
   <!-- 23.05.10 대학인증 회원수정 (김도원) -->

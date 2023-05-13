@@ -82,6 +82,7 @@
 	,MEMB_DEP_CD = #{userDepcd}
 	,MEMB_NUM = #{userNum}
 	,MEMB_EM = #{userEm}
+	,UPD_DAT		= SYSDATE()
 	WHERE MEMB_ID = #{userId};
   </update>
   
@@ -89,6 +90,7 @@
   <!-- 23.05.10 비밀번호 변경 (김도원) -->
   	UPDATE MEMB_BAS set
 	PASS = #{userPass}
+	,UPD_DAT		= SYSDATE()
 	WHERE MEMB_ID = #{userId};
   </update>
   
@@ -96,6 +98,7 @@
   	<!-- 23.05.10 닉네임 변경 (김도원) -->
   	UPDATE MEMB_BAS set
  	NICK_NM = #{userNic}
+ 	,UPD_DAT		= SYSDATE()
 	WHERE MEMB_ID = #{userId};
   </update>
   
@@ -103,7 +106,8 @@
   	<!-- 23.05.10 알림정보수정 (김도원) -->
   	UPDATE USE_NOTICE_BAS set
 	APP_NOTICE_YN = #{depNotice_YN}
-	DEP_NOTICE_YN = #{appNotice_YN}
+	,DEP_NOTICE_YN = #{appNotice_YN}
+	,UPD_DAT		= SYSDATE()
 	WHERE MEMB_ID = #{userId};	
   </update>
   
@@ -112,6 +116,7 @@
   	<!-- 주의사항 이미지 파일명을 회원 id 로 변경하여 저장한다.(확장자는 유지) -->
 	UPDATE MEMB_BAS set
  	PROF_IMG_PATH = #{prof_img_path}
+ 	,UPD_DAT		= SYSDATE()
 	WHERE MEMB_ID = #{userId};
   </update>  
   

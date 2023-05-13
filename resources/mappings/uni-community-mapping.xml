@@ -77,6 +77,7 @@
     UPDATE FREE_BUB_BAS SET
     	TIT 	= #{TIT}
 		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
@@ -121,6 +122,7 @@
   <update id="updateFreeAnsBubInfo" parameterType="HashMap">
     UPDATE FREE_BUB_ANS_BAS SET
 		CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	ANS_SEQ 	= #{ANS_SEQ}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -204,6 +206,7 @@
     UPDATE QUES_BUB_BAS SET
     	TIT 	= #{TIT}
 		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
@@ -248,6 +251,7 @@
   <update id="updateQuesAnsBubInfo" parameterType="HashMap">
     UPDATE QUES_BUB_ANS_BAS SET
 		CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	ANS_SEQ 	= #{ANS_SEQ}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -337,6 +341,7 @@
     	TIT 	= #{TIT}
 		,CONT 	= #{CONT}
 		,SEC_YN = #{SEC_YN}
+		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
@@ -384,6 +389,7 @@
     UPDATE SUG_BUB_ANS_BAS SET
 		CONT 	= #{CONT}
 		,SEC_YN = #{SEC_YN}
+		,UPD_DAT		= SYSDATE()
     WHERE 	ANS_SEQ 	= #{ANS_SEQ}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -471,6 +477,7 @@
     UPDATE MARK_BUB_BAS SET
     	TIT 	= #{TIT}
 		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
@@ -518,6 +525,7 @@
     UPDATE MARK_BUB_ANS_BAS SET
 		CONT 	= #{CONT}
 		,SEC_YN = #{SEC_YN}
+		,UPD_DAT		= SYSDATE()
     WHERE 	ANS_SEQ 	= #{ANS_SEQ}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>

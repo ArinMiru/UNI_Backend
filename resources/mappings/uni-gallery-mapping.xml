@@ -77,6 +77,7 @@
     UPDATE GALL_BUB_BAS SET
     	TIT 	= #{TIT}
 		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
@@ -121,6 +122,7 @@
   <update id="updateGallAnsBubInfo" parameterType="HashMap">
     UPDATE GALL_BUB_ANS_BAS SET
 		CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
     WHERE 	ANS_SEQ 	= #{ANS_SEQ}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>

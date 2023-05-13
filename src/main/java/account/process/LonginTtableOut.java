@@ -1,4 +1,11 @@
 /*
+ * 최초 생성 hapje000
+ * 
+ * 2023.05.12 김도원 session commit, close 코드 작성 및 미사용 import 제거
+ * 
+ */
+
+/*
  * LonginTtableOut : 로그인_공통
  * 
  */
@@ -34,10 +41,10 @@ public class LonginTtableOut {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
+		// mybatis-config.xml 을 이용하여 db 커넥션 생성
+		SqlSession session = sqlSessionFactory.openSession();
+		
 		try {
-			// mybatis-config.xml 을 이용하여 db 커넥션 생성
-			SqlSession session = sqlSessionFactory.openSession();
-			
 			// sql 호출 결과를 단건으로 받아오기 위한 map 선언 (조회용 key,value )
 			Map<String, Object> rtn = null;
 			
@@ -127,11 +134,12 @@ public class LonginTtableOut {
 				jObjMain.put("OPEN_BUB", jarySub);
 			}
 
+			session.commit();
 
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {
-	    	
+			if (session != null) session.close();
 	    }
 	}
     

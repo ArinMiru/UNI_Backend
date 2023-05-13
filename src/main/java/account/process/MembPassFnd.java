@@ -2,6 +2,8 @@
  * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)
  * MembPassFnd : 비밀번호 찾기
  * 
+ * 2023.05.12 김도원 session commit, close 코드 작성 및 미사용 import 제거
+ * 
  */
 
 /*
@@ -37,12 +39,12 @@ public class MembPassFnd {
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+		SqlSession session = sqlSessionFactory.openSession();
+		
+		Map<String, Object> rtn = null;
 		
 		try {
-			SqlSession session = sqlSessionFactory.openSession();
-			
-			Map<String, Object> rtn = null;
-			
 			System.out.println("param :"+param.toString());
 			
 			rtn = session.selectOne("uni-account-mapping.**",param);
@@ -66,10 +68,12 @@ public class MembPassFnd {
 				jObjMain.put("CERT_SEQ", rtn.get("CERT_SEQ"));
 			}
 			
+			session.commit();
+			
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {
-	    	
+			if (session != null) session.close();   	
 	    }
 	}
     

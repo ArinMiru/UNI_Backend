@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+import account.process.MembIdChk;
 
 /**
  * Servlet implementation class LoginSrv

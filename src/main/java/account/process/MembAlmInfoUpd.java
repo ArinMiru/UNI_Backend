@@ -4,9 +4,6 @@
  * 
  * 2023.05.10 김도원 수정 (uni-account-mapping.xml query 작성 및 try{} 코드 수정)
  * updateMembAlmInfoUpd : 알림정보수정
- * 
- * 2023.05.12 김도원 session commit, close 코드 작성 및 미사용 import 제거
- * 
  */
 
 /*
@@ -42,11 +39,11 @@ public class MembAlmInfoUpd {
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
-        SqlSession session = sqlSessionFactory.openSession();
-        Map<String, Object> rtn = null;
 		
         try {
+            SqlSession session = sqlSessionFactory.openSession();
+            Map<String, Object> rtn = null;
+
             System.out.println("param :"+param.toString());
 
             // 수정된 부분: update 메소드를 사용하도록 변경
@@ -61,12 +58,11 @@ public class MembAlmInfoUpd {
 
             jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			
-			session.commit();
-			
+            
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {
-			if (session != null) session.close();   	    	
+	    	
 	    }
 	}
     

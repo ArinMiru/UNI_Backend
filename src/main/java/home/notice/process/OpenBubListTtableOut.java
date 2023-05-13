@@ -27,14 +27,14 @@ public class OpenBubListTtableOut {
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		// mybatis-config.xml 을 이용하여 db 커넥션 생성				
-		SqlSession session = sqlSessionFactory.openSession();
-		// sql 호출 결과를 단건으로 받아오기 위한 map 선언 (조회용 key,value )
 		
+		// mybatis-config.xml 을 이용하여 db 커넥션 생성
+		SqlSession session = sqlSessionFactory.openSession();
+				
 		try {
+					
 			// 공지사항은 LIST 형태로 조회되기 때문에 LIST 선언
-			List<Map<String, Object>> rtnList = null;
-						
+			List<Map<String, Object>> rtnList = null;			
 					
 			rtnList = session.selectList("uni-home-mapping.selectOpenBubInfo",param);	
 						
@@ -77,12 +77,13 @@ public class OpenBubListTtableOut {
 			jObjMain.put("RSLT_CD", "00");
 			jObjMain.put("OPEN_BUB", jarySub);
 
-			session.commit();
 
 		} catch(Exception e) {
 			e.printStackTrace();
+			jObjMain.put("RSLT_CD", "99");
 		} finally {
-			if (session != null) session.close();
+			// 사용다한 세션 닫아주기
+			if (session != null) session.close();    	
 		}
 	}
     

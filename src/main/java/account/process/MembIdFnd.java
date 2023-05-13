@@ -2,6 +2,8 @@
  * 2023.05.09 김도원 생성 (API 상세명세서 기반 개발)
  * MembIdFnd : 아이디찾기
  * 
+ * 2023.05.12 김도원 session commit, close 코드 작성 및 미사용 import 제거
+ * 
  */
 
 /*
@@ -12,7 +14,6 @@ package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -37,11 +38,11 @@ public class MembIdFnd {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
+		SqlSession session = sqlSessionFactory.openSession();
+		
+		Map<String, Object> rtn = null;
+		
 		try {
-			SqlSession session = sqlSessionFactory.openSession();
-			
-			Map<String, Object> rtn = null;
-			
 			System.out.println("param :"+param.toString());
 			
 			rtn = session.selectOne("uni-account-mapping.**",param);
@@ -58,10 +59,12 @@ public class MembIdFnd {
 				jObjMain.put("CERT_SEQ", rtn.get("CERT_SEQ"));
 			}
 			
+			session.commit();
+			
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {
-	    	
+			if (session != null) session.close();	
 	    }
 	}
     

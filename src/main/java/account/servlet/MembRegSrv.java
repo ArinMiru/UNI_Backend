@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import account.process.MembReglns;
 
 /**
  * Servlet implementation class LoginSrv

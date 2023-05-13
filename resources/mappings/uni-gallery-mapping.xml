@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uni-gallery-mapping">
+  
+  <select id="selectGallBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,MEMB_ID
+			,CRE_SEQ	
+			,TIT
+			,CONT
+			,LIKE_CNT
+			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		FROM GALL_BUB_BAS
+		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
+		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectGallAnsInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.ANS_MEMB_ID
+		,B.ANS_SEQ
+		,B.CONT
+		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM GALL_BUB_BAS A , GALL_BUB_ANS_BAS B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  
+  <select id="selectGallBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(gall_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertGallBubInfo" parameterType="HashMap">
+    INSERT INTO GALL_BUB_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,LIKE_CNT
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,0
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateGallBubInfo" parameterType="HashMap">
+    UPDATE GALL_BUB_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+   <delete id="deleteGallBubInfo" parameterType="HashMap">
+    DELETE FROM GALL_BUB_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteGallAnsAllInfo" parameterType="HashMap">
+    DELETE FROM GALL_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectGallAnsBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(gall_ans_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertGallAnsBubInfo" parameterType="HashMap">
+    INSERT INTO GALL_BUB_ANS_BAS(
+		ANS_MEMB_ID
+		,CRE_SEQ
+		,ANS_SEQ
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{ANS_SEQ}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateGallAnsBubInfo" parameterType="HashMap">
+    UPDATE GALL_BUB_ANS_BAS SET
+		CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	ANS_SEQ 	= #{ANS_SEQ}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteGallAnsInfo" parameterType="HashMap">
+    DELETE FROM GALL_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+    AND		ANS_SEQ 	= #{ANS_SEQ}
+  </delete>
+  
+  <insert id="insertGallImgInfo" parameterType="HashMap">
+    INSERT INTO GALL_BUB_IMG_HIST(
+    	CRE_SEQ
+		,IMG_SEQ
+		,ORIG_FILE_NM
+		,MOD_FILE_NM
+		,FILE_PATH
+		,CRE_DAT
+    ) VALUES (
+    	#{CRE_SEQ}
+		,NEXTVAL(gall_img_seq)
+		,#{ORIG_FILE_NM}
+		,#{MOD_FILE_NM}
+		,#{FILE_PATH}
+		,SYSDATE()
+    )
+  </insert>
+  
+   <delete id="deleteGallImgInfo" parameterType="HashMap">
+    DELETE FROM GALL_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </delete>
+  
+  <delete id="deleteGallAllImgInfo" parameterType="HashMap">
+    DELETE FROM GALL_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectGallDelImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	GALL_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </select>
+  
+  <select id="selectGallDelAllImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	GALL_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </select>
+  
+  
+</mapper>

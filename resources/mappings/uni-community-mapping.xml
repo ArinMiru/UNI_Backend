@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uni-community-mapping">
+  
+  <select id="selectFreeBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,MEMB_ID
+			,CRE_SEQ	
+			,TIT
+			,CONT
+			,LIKE_CNT
+			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		FROM FREE_BUB_BAS
+		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
+		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectFreeAnsInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.ANS_MEMB_ID
+		,B.ANS_SEQ
+		,B.CONT
+		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM FREE_BUB_BAS A , FREE_BUB_ANS_BAS B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  
+  <select id="selectFreeBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(free_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertFreeBubInfo" parameterType="HashMap">
+    INSERT INTO FREE_BUB_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,LIKE_CNT
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,0
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateFreeBubInfo" parameterType="HashMap">
+    UPDATE FREE_BUB_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+   <delete id="deleteFreeBubInfo" parameterType="HashMap">
+    DELETE FROM FREE_BUB_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteFreeAnsAllInfo" parameterType="HashMap">
+    DELETE FROM FREE_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectFreeAnsBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(free_ans_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertFreeAnsBubInfo" parameterType="HashMap">
+    INSERT INTO FREE_BUB_ANS_BAS(
+		ANS_MEMB_ID
+		,CRE_SEQ
+		,ANS_SEQ
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{ANS_SEQ}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateFreeAnsBubInfo" parameterType="HashMap">
+    UPDATE FREE_BUB_ANS_BAS SET
+		CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	ANS_SEQ 	= #{ANS_SEQ}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteFreeAnsInfo" parameterType="HashMap">
+    DELETE FROM FREE_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+    AND		ANS_SEQ 	= #{ANS_SEQ}
+  </delete>
+  
+  <select id="selectQuesBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,MEMB_ID
+			,CRE_SEQ	
+			,TIT
+			,CONT
+			,LIKE_CNT
+			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		FROM QUES_BUB_BAS
+		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
+		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectQuesAnsInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.ANS_MEMB_ID
+		,B.ANS_SEQ
+		,B.CONT
+		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM QUES_BUB_BAS A , QUES_BUB_ANS_BAS B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  
+  <select id="selectQuesBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(ques_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertQuesBubInfo" parameterType="HashMap">
+    INSERT INTO QUES_BUB_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,LIKE_CNT
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,0
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateQuesBubInfo" parameterType="HashMap">
+    UPDATE QUES_BUB_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+   <delete id="deleteQuesBubInfo" parameterType="HashMap">
+    DELETE FROM QUES_BUB_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteQuesAnsAllInfo" parameterType="HashMap">
+    DELETE FROM QUES_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectQuesAnsBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(ques_ans_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertQuesAnsBubInfo" parameterType="HashMap">
+    INSERT INTO QUES_BUB_ANS_BAS(
+		ANS_MEMB_ID
+		,CRE_SEQ
+		,ANS_SEQ
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{ANS_SEQ}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateQuesAnsBubInfo" parameterType="HashMap">
+    UPDATE QUES_BUB_ANS_BAS SET
+		CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	ANS_SEQ 	= #{ANS_SEQ}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteQuesAnsInfo" parameterType="HashMap">
+    DELETE FROM QUES_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+    AND		ANS_SEQ 	= #{ANS_SEQ}
+  </delete>
+  
+  
+  <select id="selectSugBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,MEMB_ID
+			,CRE_SEQ	
+			,TIT
+			,CONT
+			,LIKE_CNT
+			,SEC_YN
+			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		FROM SUG_BUB_BAS
+		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
+		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectSugAnsInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.ANS_MEMB_ID
+		,B.ANS_SEQ
+		,B.CONT
+		,B.SEC_YN
+		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM SUG_BUB_BAS A , SUG_BUB_ANS_BAS B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  
+  <select id="selectSugBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(sug_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertSugBubInfo" parameterType="HashMap">
+    INSERT INTO SUG_BUB_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,LIKE_CNT
+		,TIT
+		,CONT
+		,SEC_YN
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,0
+		,#{TIT}
+		,#{CONT}
+		,#{SEC_YN}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateSugBubInfo" parameterType="HashMap">
+    UPDATE SUG_BUB_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,SEC_YN = #{SEC_YN}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+   <delete id="deleteSugBubInfo" parameterType="HashMap">
+    DELETE FROM SUG_BUB_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteSugAnsAllInfo" parameterType="HashMap">
+    DELETE FROM SUG_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectSugAnsBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(sug_ans_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertSugAnsBubInfo" parameterType="HashMap">
+    INSERT INTO SUG_BUB_ANS_BAS(
+		ANS_MEMB_ID
+		,CRE_SEQ
+		,ANS_SEQ
+		,CONT
+		,SEC_YN
+		,CRE_DAT    
+    ) VALUES (
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{ANS_SEQ}
+		,#{CONT}
+		,#{SEC_YN}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateSugAnsBubInfo" parameterType="HashMap">
+    UPDATE SUG_BUB_ANS_BAS SET
+		CONT 	= #{CONT}
+		,SEC_YN = #{SEC_YN}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	ANS_SEQ 	= #{ANS_SEQ}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteSugAnsInfo" parameterType="HashMap">
+    DELETE FROM SUG_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+    AND		ANS_SEQ 	= #{ANS_SEQ}
+  </delete>
+  
+  
+  
+  
+  <select id="selectMarkBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,MEMB_ID
+			,CRE_SEQ	
+			,TIT
+			,CONT
+			,LIKE_CNT
+			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		FROM MARK_BUB_BAS
+		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
+		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectMarkAnsInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.ANS_MEMB_ID
+		,B.ANS_SEQ
+		,B.CONT
+		,B.SEC_YN
+		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM MARK_BUB_BAS A , MARK_BUB_ANS_BAS B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  
+  <select id="selectMarkBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(mark_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertMarkBubInfo" parameterType="HashMap">
+    INSERT INTO MARK_BUB_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,LIKE_CNT
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,0
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateMarkBubInfo" parameterType="HashMap">
+    UPDATE MARK_BUB_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+   <delete id="deleteMarkBubInfo" parameterType="HashMap">
+    DELETE FROM MARK_BUB_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteMarkAnsAllInfo" parameterType="HashMap">
+    DELETE FROM MARK_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectMarkAnsBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(mark_ans_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertMarkAnsBubInfo" parameterType="HashMap">
+    INSERT INTO MARK_BUB_ANS_BAS(
+		ANS_MEMB_ID
+		,CRE_SEQ
+		,ANS_SEQ
+		,CONT
+		,SEC_YN
+		,CRE_DAT    
+    ) VALUES (
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{ANS_SEQ}
+		,#{CONT}
+		,#{SEC_YN}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateMarkAnsBubInfo" parameterType="HashMap">
+    UPDATE MARK_BUB_ANS_BAS SET
+		CONT 	= #{CONT}
+		,SEC_YN = #{SEC_YN}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	ANS_SEQ 	= #{ANS_SEQ}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteMarkAnsInfo" parameterType="HashMap">
+    DELETE FROM MARK_BUB_ANS_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+    AND		ANS_SEQ 	= #{ANS_SEQ}
+  </delete>
+  
+  <insert id="insertMarkImgInfo" parameterType="HashMap">
+    INSERT INTO MARK_BUB_IMG_HIST(
+    	CRE_SEQ
+		,IMG_SEQ
+		,ORIG_FILE_NM
+		,MOD_FILE_NM
+		,FILE_PATH
+		,CRE_DAT
+    ) VALUES (
+    	#{CRE_SEQ}
+		,NEXTVAL(mark_img_seq)
+		,#{ORIG_FILE_NM}
+		,#{MOD_FILE_NM}
+		,#{FILE_PATH}
+		,SYSDATE()
+    )
+  </insert>
+  
+   <delete id="deleteMarkImgInfo" parameterType="HashMap">
+    DELETE FROM MARK_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </delete>
+  
+  <delete id="deleteMarkAllImgInfo" parameterType="HashMap">
+    DELETE FROM MARK_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectMarkDelImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	MARK_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </select>
+  
+  <select id="selectMarkDelAllImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	MARK_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </select>
+  
+  
+</mapper>

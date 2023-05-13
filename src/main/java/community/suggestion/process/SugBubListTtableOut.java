@@ -50,11 +50,6 @@ public class SugBubListTtableOut {
 				jObjSub.put("SEC_YN", rtnList.get(i).get("SEC_YN"));
 
 				jObjSub.put("CRE_DAT", rtnList.get(i).get("CRE_DAT"));
-				
-				jObjSub.put("MEMB_SC_NM", rtnList.get(i).get("MEMB_SC_NM"));
-				jObjSub.put("MEMB_DEP_NM", rtnList.get(i).get("MEMB_DEP_NM"));
-				jObjSub.put("TIT_NM", rtnList.get(i).get("TIT_NM"));
-				jObjSub.put("NICK_NM", rtnList.get(i).get("NICK_NM"));
 										
 				JSONArray jarySub2 = new JSONArray();
 				JSONObject jObjSub2 = new JSONObject();

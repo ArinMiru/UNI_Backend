@@ -82,11 +82,11 @@
   </select>
   
 
-  <insert id="insertMembInfo" parameterType="HashMap">
+  <update id="insertMembInfo" parameterType="HashMap">
   <!-- 23.05.13 select -> insert 로 수정 완료 -->
   <!-- 23.05.13 value 값 수정 완료 -->
   	INSERT INTO MEMB_BAS (MEMB_ID,PASS,MEMB_NM) VALUES (#{MEMB_ID},#{PASS},#{MEMB_NM})
-  </insert>
+  </update>
   
   <update id="updateMembuniCertUpd" parameterType="Hashmap"> 
   <!-- 23.05.10 대학인증 회원수정 (김도원) -->

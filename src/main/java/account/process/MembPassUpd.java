@@ -40,10 +40,8 @@ public class MembPassUpd {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
-		SqlSession session = sqlSessionFactory.openSession();
-		
         try {
-           
+            SqlSession session = sqlSessionFactory.openSession();
             Map<String, Object> rtn = null;
 
             System.out.println("param :"+param.toString());
@@ -59,15 +57,11 @@ public class MembPassUpd {
             }
 
             jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-            
-            session.commit();
 			
 	    } catch(Exception e) {
 			e.printStackTrace();
-			jObjMain.put("RSLT_CD","99");
 	    } finally {
-	    	// 사용다한 세션 닫아주기
-	    	if (session != null) session.close();
+	    	
 	    }
 	}
     

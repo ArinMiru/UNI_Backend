@@ -4,6 +4,9 @@
  * 
  * 2023.05.10 김도원 수정 (uni-account-mapping.xml query 작성 및 try{} 코드 수정)
  * updateMembNicUpd : 닉네임 변경
+ * 
+ * 2023.05.12 김도원 session commit, close 코드 작성 및 미사용 import 제거
+ * 
  */
 
 /*
@@ -40,8 +43,9 @@ public class MembNicUpd {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
+        SqlSession session = sqlSessionFactory.openSession();
+		
         try {
-            SqlSession session = sqlSessionFactory.openSession();
             Map<String, Object> rtn = null;
 
             System.out.println("param :"+param.toString());
@@ -58,10 +62,12 @@ public class MembNicUpd {
 
             jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			
+	    	if (session != null) session.close();
+            
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {
-	    	
+	    	if (session != null) session.close();	
 	    }
 	}
     

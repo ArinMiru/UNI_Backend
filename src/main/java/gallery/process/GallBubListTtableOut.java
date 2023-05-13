@@ -51,6 +51,11 @@ public class GallBubListTtableOut {
 				jObjSub.put("CONT", rtnList.get(i).get("CONT"));
 				jObjSub.put("LIKE_CNT", rtnList.get(i).get("LIKE_CNT"));
 				jObjSub.put("CRE_DAT", rtnList.get(i).get("CRE_DAT"));
+				
+				jObjSub.put("MEMB_SC_NM", rtnList.get(i).get("MEMB_SC_NM"));
+				jObjSub.put("MEMB_DEP_NM", rtnList.get(i).get("MEMB_DEP_NM"));
+				jObjSub.put("TIT_NM", rtnList.get(i).get("TIT_NM"));
+				jObjSub.put("NICK_NM", rtnList.get(i).get("NICK_NM"));
 							
 				JSONArray jarySub2 = new JSONArray();
 				JSONArray jarySub3 = new JSONArray();

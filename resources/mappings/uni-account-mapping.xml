@@ -19,7 +19,7 @@
 		,A.MEMB_DEP_CD
 		,A.MEMB_NUM
 		,B.CODE_VAL AS MEMB_SC_NM
-		,C.CODE_VAL AS MEMB_DEP_NM
+		,C.CODE_DESC AS MEMB_DEP_NM
 		,A.TIT_CD
 		,D.CODE_VAL AS TIT_NM
 		,A.NICK_NM
@@ -41,20 +41,30 @@
 	FROM (
 		SELECT
 			ROW_NUMBER() OVER() AS R_NUM
-			,MEMB_ID
-			,CRE_SEQ	
-			,TIT
-			,CONT
-			,LIKE_CNT
-			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-		FROM OPEN_BUB_BAS
-		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
-		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
-		ORDER BY CRE_DAT DESC
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM OPEN_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'> 
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
+		</if>
+		ORDER BY Z.CRE_DAT DESC
  	) A
  	<![CDATA[
-	WHERE A.R_NUM >= 1 
-	AND A.R_NUM <= 10
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
 	]]>
   </select>
   
@@ -62,79 +72,81 @@
     SELECT 
 		B.FILE_PATH
 		,B.IMG_SEQ
-	FROM OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
+	FROM 	OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='!"04".equals(TIT_CD)'> 
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
   </select>
   
+
   <insert id="insertMembInfo" parameterType="HashMap">
-  <!-- 23.05.10 회원가입 (김도원) -->
   <!-- 23.05.13 select -> insert 로 수정 완료 -->
-  	INSERT INTO MEMB_BAS (MEMB_ID,PASS,MEMB_NM) VALUES ('userId','userPasswrd','userName');
+  <!-- 23.05.13 value 값 수정 완료 -->
+  	INSERT INTO MEMB_BAS (MEMB_ID,PASS,MEMB_NM) VALUES (#{MEMB_ID},#{PASS},#{MEMB_NM})
   </insert>
   
   <update id="updateMembuniCertUpd" parameterType="Hashmap"> 
   <!-- 23.05.10 대학인증 회원수정 (김도원) -->
   	UPDATE MEMB_BAS set
- 	MEMB_ID = #{userId}
-	,MEMB_SC_CD = #{userSccd}
-	,MEMB_DEP_CD = #{userDepcd}
-	,MEMB_NUM = #{userNum}
-	,MEMB_EM = #{userEm}
-	,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{userId};
+		MEMB_SC_CD 		= #{MEMB_SC_CD}
+		,MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+		,MEMB_NUM 		= #{MEMB_NUM}
+		,MEMB_EM 		= #{MEMB_EM}
+		,UPD_DAT		= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID};
   </update>
   
   <update id="updateMembPassUpd" parameterType="Hashmap">
   <!-- 23.05.10 비밀번호 변경 (김도원) -->
   	UPDATE MEMB_BAS set
-	PASS = #{userPass}
-	,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{userId};
+		PASS 		= #{PASS}
+		,UPD_DAT	= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID};
   </update>
   
   <update id="updateMembNicUpd" parameterType="Hashmap">
   	<!-- 23.05.10 닉네임 변경 (김도원) -->
   	UPDATE MEMB_BAS set
- 	NICK_NM = #{userNic}
- 	,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{userId};
+ 		NICK_NM 	= #{NICK_NM}
+ 		,UPD_DAT	= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID};
   </update>
   
   <update id="updateMembAlmInfoUpd" parameterType="Hashmap">
   	<!-- 23.05.10 알림정보수정 (김도원) -->
   	UPDATE USE_NOTICE_BAS set
-	APP_NOTICE_YN = #{depNotice_YN}
-	,DEP_NOTICE_YN = #{appNotice_YN}
-	,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{userId};	
+		APP_NOTICE_YN 	= #{APP_NOTICE_YN}
+		,DEP_NOTICE_YN 	= #{DEP_NOTICE_YN}
+		,UPD_DAT		= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID};	
   </update>
   
   <update id="updateMembInfoUpd" parameterType="Hashmap">
   	<!-- 23.05.10 프로파일 이미지변경 (김도원) -->
   	<!-- 주의사항 이미지 파일명을 회원 id 로 변경하여 저장한다.(확장자는 유지) -->
 	UPDATE MEMB_BAS set
- 	PROF_IMG_PATH = #{prof_img_path}
- 	,UPD_DAT		= SYSDATE()
-	WHERE MEMB_ID = #{userId};
+ 		PROF_IMG_PATH = #{PROF_IMG_PATH}
+ 		,UPD_DAT		= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID};
   </update>  
   
-  <select id="selectMembIdchk" resultType="HashMap" parameterType="HashMap">
+  <select id="selectMembIdchk" resultType="String" parameterType="HashMap">
   	<!-- 23.05.10 회원 ID 중복 체크 (김도원) -->
   	SELECT 'Y' FROM dual
    	WHERE EXISTS (
-   	SELECT MEMB_ID FROM MEMB_BAS 
-   	WHERE MEMB_ID = #{userId});
+   		SELECT MEMB_ID FROM MEMB_BAS 
+   		WHERE MEMB_ID = #{MEMB_ID});
   </select>
   
-  <select id="selectMembNicchk" resultType="HashMap" parameterType="HashMap">
+  <select id="selectMembNicchk" resultType="String" parameterType="HashMap">
   	<!-- 23.05.10 닉네임 중복 체크 (김도원) -->
 	SELECT 'Y' FROM dual
    	WHERE EXISTS (
-   	SELECT MEMB_ID FROM MEMB_BAS 
-   	WHERE NICK_NM = #{userNic});
+   		SELECT MEMB_ID FROM MEMB_BAS 
+   		WHERE NICK_NM = #{NICK_NM});
   </select>  
   
 </mapper>

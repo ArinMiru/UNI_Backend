@@ -1,4 +1,4 @@
-package home.schedule.servlet;
+package gallery.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,21 +11,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import home.schedule.process.SchdBubListTtableOut;
+import gallery.process.GallBubListTtableOut;
 import net.sf.json.JSONObject;
-
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/SchdBubListSvc")
-public class SchdBubListSrv extends HttpServlet {
+
+@WebServlet("/GallBubListSvc")
+public class GallBubListSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SchdBubListSrv() {
+    public GallBubListSrv() {
         super();
         // TODO Auto-generated constructor stub    
     } 
@@ -33,11 +33,13 @@ public class SchdBubListSrv extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    // WEB
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
+	// WEB 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -48,10 +50,14 @@ public class SchdBubListSrv extends HttpServlet {
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		
+		System.out.println("start");
+		
 		// JSON
 		JSONObject resltObj = new JSONObject();
 		
-		// UTF8
+		System.out.println("start2");
+		
+		// UTF8 
 		request.setCharacterEncoding("utf8");
 		response.setContentType("application/x-json; charset=UTF-8");
 		
@@ -65,16 +71,21 @@ public class SchdBubListSrv extends HttpServlet {
 		
 		// MAP
 		Map<String, Object> param = new HashMap<String, Object>();
-				
-		param.put("MEMB_ID",jobj.get("LOGIN_ID"));
+		
+		param.put("LOGIN_ID",jobj.get("LOGIN_ID"));
 		param.put("MEMB_SC_CD",jobj.get("MEMB_SC_CD"));
 		param.put("MEMB_DEP_CD",jobj.get("MEMB_DEP_CD"));
 		param.put("TIT_CD",jobj.get("TIT_CD"));
-		
+		param.put("LIST_UNIT_CNT",jobj.get("LIST_UNIT_CNT"));
+		param.put("REQ_PAGE",jobj.get("REQ_PAGE"));
 
-		SchdBubListTtableOut schdTtableOut = new SchdBubListTtableOut(param);
 		
-		resltObj = schdTtableOut.getResult();
+		//LonginTtableOut longinTtableOut = new LonginTtableOut(userId,userType,userPasswrd);
+		GallBubListTtableOut gallBubListTtableOut = new GallBubListTtableOut(param);
+		
+		resltObj = gallBubListTtableOut.getResult();
+		
+		//resltObj = jobj;
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

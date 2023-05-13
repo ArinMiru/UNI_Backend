@@ -30,7 +30,7 @@ public class SchdBubListTtableOut {
 		
 		try {
 			
-			// 공지사항은 LIST 형태로 조회되기 때문에 LIST 선언
+			// 스케쥴은 LIST 형태로 조회되기 때문에 LIST 선언
 			List<Map<String, Object>> rtnList = null;			
 								
 			rtnList = session.selectList("uni-home-mapping.selectSchdBubInfo",param);	
@@ -40,7 +40,7 @@ public class SchdBubListTtableOut {
 			JSONObject jObjHead = new JSONObject();		
 			JSONObject jObjTail = new JSONObject();		
 									
-			// 공지사항은 다건일수 있기에 selectList 로 호출하며 loop 를 수행하여 레코드별 JSON 형태로 만들어준다
+			// 스케쥴은 다건일수 있기에 selectList 로 호출하며 loop 를 수행하여 레코드별 JSON 형태로 만들어준다
 			for (int i=0; i < rtnList.size() ;i++)
 			{
 				
@@ -53,7 +53,7 @@ public class SchdBubListTtableOut {
 				if (i == 0 && yoil > 1) 
 				{
 					
-					for (int j=0;j<yoil;j++)
+					for (int j=1;j<yoil;j++)
 					{
 						if (j == 1) jObjHead.put("DAY_DESC", "일");
 						if (j == 2) jObjHead.put("DAY_DESC", "월");
@@ -63,12 +63,13 @@ public class SchdBubListTtableOut {
 						if (j == 6) jObjHead.put("DAY_DESC", "금");
 						if (j == 7) jObjHead.put("DAY_DESC", "토");
 						jObjHead.put("THIS_MON_YN", "N");
-						jObjHead.put("STAT", "02");
+						//jObjHead.put("STAT", "02");
 						
 						jarySub.add(jObjHead);
 					}
+					
 				}
-				
+				/*
 				jObjSub.put("DAY", rtnList.get(i).get("DAY"));
 				jObjSub.put("DAY_DESC", rtnList.get(i).get("DAY_DESC"));
 				jObjSub.put("CRE_SEQ", rtnList.get(i).get("CRE_SEQ"));
@@ -77,7 +78,14 @@ public class SchdBubListTtableOut {
 				jObjSub.put("STRT_SCHD_YMD", rtnList.get(i).get("STRT_SCHD_YMD"));
 				jObjSub.put("END_SCHD_YMD", rtnList.get(i).get("END_SCHD_YMD"));
 				jObjSub.put("THIS_MON_YN", "Y");
+				jObjSub.put("CRE_DAT", rtnList.get(i).get("CRE_DAT"));
+				*/
+				jObjSub.put("CNT", rtnList.get(i).get("CNT"));
+				jObjSub.put("THIS_MON_YN", "Y");
+				jObjSub.put("DAY", rtnList.get(i).get("DAY"));
+				jObjSub.put("DAY_DESC", rtnList.get(i).get("DAY_DESC"));
 		
+				/*
 				if (rtnList.get(i).get("STRT_SCHD_YMD") == null)
 				{
 					jObjSub.put("STAT", "02");
@@ -85,17 +93,17 @@ public class SchdBubListTtableOut {
 				else {
 					jObjSub.put("STAT", "01");
 				}
+				*/
 				
-				jObjSub.put("CRE_DAT", rtnList.get(i).get("CRE_DAT"));
 								
 				jarySub.add(jObjSub);
 				
 				// 마지막 일자이거 주중에 말일이 끝나면
 				if (i == rtnList.size()-1 && yoil < 7) 
 				{
-					int yoile = (int) rtnList.get(0).get("YOIL");
+					int yoile = (int) rtnList.get(i).get("YOIL");
 					
-					for (int j=yoile;j<=7;j++)
+					for (int j=yoile+1;j<=7;j++)
 					{
 						if (j == 1) jObjTail.put("DAY_DESC", "일");
 						if (j == 2) jObjTail.put("DAY_DESC", "월");
@@ -105,7 +113,7 @@ public class SchdBubListTtableOut {
 						if (j == 6) jObjTail.put("DAY_DESC", "금");
 						if (j == 7) jObjTail.put("DAY_DESC", "토");
 						jObjTail.put("THIS_MON_YN", "N");
-						jObjTail.put("STAT", "02");
+						//jObjTail.put("STAT", "02");
 						
 						jarySub.add(jObjTail);
 					}

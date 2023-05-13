@@ -137,12 +137,7 @@
 		,DATE_FORMAT(A.DAY1,'%d') AS DAY
 		,SUBSTR(_UTF8'일월화수목금토',A.YOIL,1) AS DAY_DESC
 		,A.YOIL
-		,B.CRE_SEQ
-		,B.STRT_SCHD_YMD
-		,B.END_SCHD_YMD
-		,B.TIT
-		,B.CONT
-		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+		,COUNT(B.CRE_SEQ) AS CNT
 	FROM (
  		WITH RECURSIVE MON_CAL AS (
     		SELECT 1 AS NO
@@ -158,7 +153,66 @@
  			DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY) AS DAY1,
  			DAYOFWEEK(DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY)) AS YOIL
  	FROM MON_CAL) A LEFT JOIN SCHD_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD AND B.MEMB_ID = #{MEMB_ID}
+ 	GROUP BY YEAR,MONTH,DAY,YOIL
  	ORDER BY A.DAY1
   </select>
+  
+  <select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT
+		CRE_SEQ
+		,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d') AS STRT_SCHD_YMD
+		,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d') AS END_SCHD_YMD
+		,TIT
+		,CONT
+		,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM 	SCHD_BAS 
+  	WHERE 	CONVERT(#{SEARCH_DATE},DATE) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
+  	AND 	MEMB_ID = #{MEMB_ID}
+  </select>
+  
+  <select id="selectSchdBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(schd_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertSchdBubInfo" parameterType="HashMap">
+    INSERT INTO SCHD_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,STRT_SCHD_YMD
+		,END_SCHD_YMD
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{STRT_SCHD_YMD}
+		,#{END_SCHD_YMD}
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateSchdBubInfo" parameterType="HashMap">
+    UPDATE SCHD_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteSchdImgInfo" parameterType="HashMap">
+    DELETE FROM SCHD_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
   
 </mapper>

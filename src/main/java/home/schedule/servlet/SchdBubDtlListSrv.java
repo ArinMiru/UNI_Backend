@@ -11,21 +11,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import home.schedule.process.SchdBubListTtableOut;
+import home.schedule.process.SchdBubDtlListTtableOut;
 import net.sf.json.JSONObject;
 
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/SchdBubListSvc")
-public class SchdBubListSrv extends HttpServlet {
+@WebServlet("/SchdBubDtlListSvc")
+public class SchdBubDtlListSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SchdBubListSrv() {
+    public SchdBubDtlListSrv() {
         super();
         // TODO Auto-generated constructor stub    
     } 
@@ -70,9 +70,10 @@ public class SchdBubListSrv extends HttpServlet {
 		param.put("MEMB_SC_CD",jobj.get("MEMB_SC_CD"));
 		param.put("MEMB_DEP_CD",jobj.get("MEMB_DEP_CD"));
 		param.put("TIT_CD",jobj.get("TIT_CD"));
+		param.put("SEARCH_DATE",jobj.get("SEARCH_DATE"));
 		
 
-		SchdBubListTtableOut schdTtableOut = new SchdBubListTtableOut(param);
+		SchdBubDtlListTtableOut schdTtableOut = new SchdBubDtlListTtableOut(param);
 		
 		resltObj = schdTtableOut.getResult();
 		

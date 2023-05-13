@@ -2,8 +2,19 @@ package home.notice.process;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -17,6 +28,7 @@ public class OpenBubListTtableOut {
 	
 	// MAIN 생성용 OBJECT
 	private JSONObject jObjMain = new JSONObject();
+	private JSONArray jaryMain = new JSONArray();
 	
 	public OpenBubListTtableOut (Map<String, Object> param) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
@@ -27,11 +39,14 @@ public class OpenBubListTtableOut {
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		// mybatis-config.xml 을 이용하여 db 커넥션 생성				
-		SqlSession session = sqlSessionFactory.openSession();
-		// sql 호출 결과를 단건으로 받아오기 위한 map 선언 (조회용 key,value )
-		
+				
 		try {
+			// mybatis-config.xml 을 이용하여 db 커넥션 생성
+			SqlSession session = sqlSessionFactory.openSession();
+					
+			// sql 호출 결과를 단건으로 받아오기 위한 map 선언 (조회용 key,value )
+			Map<String, Object> rtn = null;
+
 			// 공지사항은 LIST 형태로 조회되기 때문에 LIST 선언
 			List<Map<String, Object>> rtnList = null;
 						
@@ -77,12 +92,11 @@ public class OpenBubListTtableOut {
 			jObjMain.put("RSLT_CD", "00");
 			jObjMain.put("OPEN_BUB", jarySub);
 
-			session.commit();
 
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (session != null) session.close();
+			    	
 		}
 	}
     

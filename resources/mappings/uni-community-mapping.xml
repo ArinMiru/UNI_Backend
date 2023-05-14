@@ -10,18 +10,26 @@
 	FROM (
 		SELECT
 			ROW_NUMBER() OVER() AS R_NUM
-			,MEMB_ID
-			,CRE_SEQ	
-			,TIT
-			,CONT
-			,LIKE_CNT
-			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-		FROM FREE_BUB_BAS
-		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
-		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
-		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM FREE_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'> 
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
-		ORDER BY CRE_DAT DESC
+		ORDER BY Z.CRE_DAT DESC
  	) A
  	<![CDATA[
 	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
@@ -38,7 +46,7 @@
 	FROM FREE_BUB_BAS A , FREE_BUB_ANS_BAS B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	<if test='!"04".equals(TIT_CD)'> 
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -79,7 +87,9 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -87,7 +97,9 @@
    <delete id="deleteFreeBubInfo" parameterType="HashMap">
     DELETE FROM FREE_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
@@ -139,18 +151,26 @@
 	FROM (
 		SELECT
 			ROW_NUMBER() OVER() AS R_NUM
-			,MEMB_ID
-			,CRE_SEQ	
-			,TIT
-			,CONT
-			,LIKE_CNT
-			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-		FROM QUES_BUB_BAS
-		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
-		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
-		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM QUES_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'> 
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
-		ORDER BY CRE_DAT DESC
+		ORDER BY Z.CRE_DAT DESC
  	) A
  	<![CDATA[
 	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
@@ -167,7 +187,7 @@
 	FROM QUES_BUB_BAS A , QUES_BUB_ANS_BAS B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	<if test='!"04".equals(TIT_CD)'> 
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -208,7 +228,9 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -216,7 +238,9 @@
    <delete id="deleteQuesBubInfo" parameterType="HashMap">
     DELETE FROM QUES_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
@@ -269,19 +293,27 @@
 	FROM (
 		SELECT
 			ROW_NUMBER() OVER() AS R_NUM
-			,MEMB_ID
-			,CRE_SEQ	
-			,TIT
-			,CONT
-			,LIKE_CNT
-			,SEC_YN
-			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-		FROM SUG_BUB_BAS
-		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
-		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
-		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,Z.SEC_YN
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM SUG_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'> 
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
-		ORDER BY CRE_DAT DESC
+		ORDER BY Z.CRE_DAT DESC
  	) A
  	<![CDATA[
 	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
@@ -299,7 +331,7 @@
 	FROM SUG_BUB_BAS A , SUG_BUB_ANS_BAS B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	<if test='!"04".equals(TIT_CD)'> 
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -343,7 +375,9 @@
 		,SEC_YN = #{SEC_YN}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -351,7 +385,9 @@
    <delete id="deleteSugBubInfo" parameterType="HashMap">
     DELETE FROM SUG_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
@@ -409,18 +445,26 @@
 	FROM (
 		SELECT
 			ROW_NUMBER() OVER() AS R_NUM
-			,MEMB_ID
-			,CRE_SEQ	
-			,TIT
-			,CONT
-			,LIKE_CNT
-			,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-		FROM MARK_BUB_BAS
-		WHERE MEMB_SC_CD = #{MEMB_SC_CD}
-		<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
-		AND MEMB_DEP_CD = #{MEMB_DEP_CD}
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM MARK_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'> 
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
-		ORDER BY CRE_DAT DESC
+		ORDER BY Z.CRE_DAT DESC
  	) A
  	<![CDATA[
 	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
@@ -438,7 +482,7 @@
 	FROM MARK_BUB_BAS A , MARK_BUB_ANS_BAS B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='"00".equals(TIT_CD) or "01".equals(TIT_CD)'>
+	<if test='!"04".equals(TIT_CD)'> 
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -479,7 +523,9 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
@@ -487,7 +533,9 @@
    <delete id="deleteMarkBubInfo" parameterType="HashMap">
     DELETE FROM MARK_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>

@@ -39,30 +39,32 @@ public class MembIdChk {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
+		SqlSession session = sqlSessionFactory.openSession();
+		
         try {
-            SqlSession session = sqlSessionFactory.openSession();
+            
             Map<String, Object> rtn = null;
 
             System.out.println("param :"+param.toString());
 
             // 수정된 부분: update 메소드를 사용하도록 변경
-            int updatedRows = session.update("uni-account-mapping.selectMembIdchk",param);
+            String chkInd = session.selectOne("uni-account-mapping.selectMembIdchk",param);
             rtn = new HashMap<String, Object>();
 
-            if (updatedRows == 0) {
+            if (chkInd == null) {
                 rtn.put("RSLT_CD", "00"); // 00: 정상
-            } else if (updatedRows > 0){
-                rtn.put("RSLT_CD", "03"); // 03: 중복된 ID
             } else {
-                rtn.put("RSLT_CD", "99"); // 99: 기타 오류
-            }
+                rtn.put("RSLT_CD", "03"); // 03: 중복된 ID
+            } 
             
             jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			
 	    } catch(Exception e) {
 			e.printStackTrace();
+			jObjMain.put("RSLT_CD","99");
 	    } finally {
-	    	
+	    	// 사용다한 세션 닫아주기
+	    	if (session != null) session.close();
 	    }
 	}
     

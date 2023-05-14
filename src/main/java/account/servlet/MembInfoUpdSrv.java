@@ -55,7 +55,7 @@ public class MembInfoUpdSrv extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		String userId="";	// 회원 ID : MEMB_ID
-		String prof_img_path="";	// 업로드 파일 경로 : PROF_IMG_PATH
+		String fileBase64="";	// 업로드 파일 경로 : PROF_IMG_PATH
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -76,20 +76,20 @@ public class MembInfoUpdSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString(); 			 // 회원 ID : MEMB_ID
-		prof_img_path = (jobj.get("PROF_IMG_PATH") == null) ? "" : jobj.get("PROF_IMG_PATH").toString(); // 업로드 파일 경로 : PROF_IMG_PATH
+		//userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString(); 			 // 회원 ID : MEMB_ID
+		//fileBase64 = (jobj.get("FILE_BASE64") == null) ? "" : jobj.get("FILE_BASE64").toString(); // 업로드 파일 경로 : PROF_IMG_PATH
 
 		
-		Map<String, Object> param = new HashMap<String, Object>();
+		//Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("MEMB_EM", userId);
-		param.put("PROF_IMG_PATH", prof_img_path);
+		//param.put("MEMB_ID", userId);
+		//param.put("FILE_BASE64", fileBase64);
 
 		
-		System.out.println("userId :".concat(userId));
-		System.out.println("prof_img_path :".concat(prof_img_path));
+		//System.out.println("userId :".concat(userId));
+		//System.out.println("prof_img_path :".concat(prof_img_path));
 		
-		account.process.MembInfoUpd membinfoupd = new account.process.MembInfoUpd(param);
+		account.process.MembInfoUpd membinfoupd = new account.process.MembInfoUpd(jobj);
 		
 		resltObj = membinfoupd.getResult();
 	

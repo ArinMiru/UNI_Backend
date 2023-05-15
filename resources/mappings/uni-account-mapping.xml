@@ -197,5 +197,28 @@
 	AND   CRE_SEQ 		= #{CRE_SEQ}
   </update>  
   
+  <select id="selectCheckEmail" resultType="hashMap" parameterType="hashMap">
+    SELECT 	IF(MEMB_EM = #{MEMB_EM},'00','07') AS RSLT_CD 
+    FROM 	MEMB_BAS
+	WHERE 	MEMB_ID = #{MEMB_ID}
+  </select>
+  
+  <insert id="insertCertInfo" parameterType="Hashmap">
+	INSERT INTO CERT_MEMB_HIST(
+		MEMB_ID
+		,CRE_SEQ
+		,CERT_DIV_CD
+		,CERT_DATE
+		,CERT_NUM
+		,CHK_NUM
+	) VALUES (
+		#{MEMB_ID}
+		,NEXTVAL(cert_cre_seq)
+		,#{CERT_DIV_CD}
+		,SYSDATE()
+		,#{CERT_NUM}
+		,#{CHK_NUM}
+	)
+  </insert>  
   
 </mapper>

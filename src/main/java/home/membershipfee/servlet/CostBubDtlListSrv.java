@@ -18,7 +18,7 @@ import net.sf.json.JSONObject;
  * Servlet implementation class LoginSrv
  */
 
-@WebServlet("/CostBubListSvc")
+@WebServlet("/CostBubDtlListSvc")
 public class CostBubDtlListSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

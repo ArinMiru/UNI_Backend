@@ -1,4 +1,4 @@
-package community.question.process;
+package home.vote.process;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,12 +10,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONObject;
 
-public class QuesAnsBubTtableOut {    
+public class VotVotTtableOut {    
 	
 	// MAIN 생성용 OBJECT
 	private JSONObject jObjRtn = new JSONObject();
 	
-	public QuesAnsBubTtableOut (JSONObject jobj) throws IOException {
+	public VotVotTtableOut (JSONObject jobj) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
 		// SQL 접속장버
@@ -33,40 +33,14 @@ public class QuesAnsBubTtableOut {
 			// MAIN 데이터 MAP 먼저등록
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("MEMB_ID", jobj.get("LOGIN_ID"));
-			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
-			param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
-			param.put("TIT_CD", jobj.get("TIT_CD"));
 			param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
-			param.put("TIT", jobj.get("TIT"));
-			param.put("CONT", jobj.get("CONT"));
 			
-			// 01 등록
-			if ("01".equals(jobj.getString("PROC_TYPE")))
-			{
-				// 자유 게시판 답변 생성일련번호 채번
-				long ansSeq = session.selectOne("uni-community-mapping.selectQuesAnsBubSeq");
-				param.put("ANS_SEQ", ansSeq);
-				
-				// 자유게시판 답변 등록
-				session.insert("uni-community-mapping.insertQuesAnsBubInfo",param);
-								
-			}
-			
-			// 02 수정
-			if ("02".equals(jobj.getString("PROC_TYPE")))
-			{
-				// 자유게시판 답변 수정
-				param.put("ANS_SEQ", jobj.get("ANS_SEQ"));
-				session.update("uni-community-mapping.updateQuesAnsBubInfo",param);
-			}
-			
-			// 03 삭제
-			if ("03".equals(jobj.getString("PROC_TYPE")))
-			{
-				// 자유게시판 답변 삭제
-				param.put("ANS_SEQ", jobj.get("ANS_SEQ"));
-				session.delete("uni-community-mapping.deleteQuesAnsInfo",param);
-			}
+			String votSeq = jobj.getString("VOT_SEQ");
+			String[] listVot = votSeq.split(","); 	
+			param.put("VOT_SEQ", listVot);
+
+			// 투표 통계 등록
+			session.insert("uni-home-mapping.insertVotVotInfo",param);
 					
 			jObjRtn.put("RSLT_CD", "00");
 			
@@ -76,7 +50,6 @@ public class QuesAnsBubTtableOut {
 		} catch(Exception e) {
 			e.printStackTrace();
 			
-			// 등록,수정 실패시 첨부파일 위치에서 삭제
 			jObjRtn.put("RSLT_CD", "99");
 		} finally {
 			// 사용다한 세션 닫아주기

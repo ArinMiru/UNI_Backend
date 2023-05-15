@@ -89,8 +89,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -99,8 +99,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   

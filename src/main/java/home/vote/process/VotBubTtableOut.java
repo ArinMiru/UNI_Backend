@@ -1,4 +1,4 @@
-package community.question.process;
+package home.vote.process;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,12 +10,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONObject;
 
-public class QuesAnsBubTtableOut {    
+public class VotBubTtableOut {    
 	
 	// MAIN 생성용 OBJECT
 	private JSONObject jObjRtn = new JSONObject();
 	
-	public QuesAnsBubTtableOut (JSONObject jobj) throws IOException {
+	public VotBubTtableOut (JSONObject jobj) throws IOException {
 	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
 		// SQL 접속장버
@@ -36,36 +36,55 @@ public class QuesAnsBubTtableOut {
 			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
 			param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
 			param.put("TIT_CD", jobj.get("TIT_CD"));
-			param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
-			param.put("TIT", jobj.get("TIT"));
-			param.put("CONT", jobj.get("CONT"));
+			param.put("VOT_TITLE", jobj.get("VOT_TITLE"));
+			param.put("VOT_TYPE_CD", jobj.get("VOT_TYPE_CD"));
+			param.put("VOT_EXPR_DATE", jobj.get("VOT_EXPR_DATE"));
+			param.put("VOT_DESC", jobj.get("VOT_DESC"));
 			
 			// 01 등록
 			if ("01".equals(jobj.getString("PROC_TYPE")))
 			{
-				// 자유 게시판 답변 생성일련번호 채번
-				long ansSeq = session.selectOne("uni-community-mapping.selectQuesAnsBubSeq");
-				param.put("ANS_SEQ", ansSeq);
+				// 투표 생성일련번호 채번
+				long creSeq = session.selectOne("uni-home-mapping.selectVotBubSeq");
 				
-				// 자유게시판 답변 등록
-				session.insert("uni-community-mapping.insertQuesAnsBubInfo",param);
+				String votInfo = jobj.getString("VOT_INFO");
+				String[] listVot = votInfo.split(","); 	
+				param.put("VOT_INFO", listVot);
+				param.put("CRE_SEQ", creSeq);
+				
+				// 투표 등록
+				session.insert("uni-home-mapping.insertVotBubInfo",param);
+				// 보기정보 등록
+				session.insert("uni-home-mapping.insertVotDtlInfo",param);
 								
 			}
 			
 			// 02 수정
 			if ("02".equals(jobj.getString("PROC_TYPE")))
 			{
-				// 자유게시판 답변 수정
-				param.put("ANS_SEQ", jobj.get("ANS_SEQ"));
-				session.update("uni-community-mapping.updateQuesAnsBubInfo",param);
+				String votInfo = jobj.getString("VOT_INFO");
+				String[] listVot = votInfo.split(","); 	
+				param.put("VOT_INFO", listVot);
+				param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
+				// 투표 수정
+				session.update("uni-home-mapping.updateVotBubInfo",param);
+				
+				// 보기정보 삭제 후 등록
+				session.delete("uni-home-mapping.deleteVotDtlInfo",param);
+				session.insert("uni-home-mapping.insertVotDtlInfo",param);
+				// 통계 삭제
+				session.delete("uni-home-mapping.deleteVotStatInfo",param);
 			}
 			
 			// 03 삭제
 			if ("03".equals(jobj.getString("PROC_TYPE")))
 			{
-				// 자유게시판 답변 삭제
-				param.put("ANS_SEQ", jobj.get("ANS_SEQ"));
-				session.delete("uni-community-mapping.deleteQuesAnsInfo",param);
+				// 투표 삭제
+				session.delete("uni-home-mapping.deleteVotBubInfo",param);	
+				// 투표 답변 삭제
+				session.delete("uni-home-mapping.deleteVotDtlInfo",param);
+				// 통계 삭제
+				session.delete("uni-home-mapping.deleteVotStatInfo",param);
 			}
 					
 			jObjRtn.put("RSLT_CD", "00");
@@ -77,6 +96,7 @@ public class QuesAnsBubTtableOut {
 			e.printStackTrace();
 			
 			// 등록,수정 실패시 첨부파일 위치에서 삭제
+			
 			jObjRtn.put("RSLT_CD", "99");
 		} finally {
 			// 사용다한 세션 닫아주기

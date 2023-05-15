@@ -99,6 +99,7 @@ public class CostBubTtableOut {
 				param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
 				param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
 				param.put("TIT", jobj.get("TIT"));
+				param.put("TIT_CD", jobj.get("TIT_CD"));
 				param.put("CONT", jobj.get("CONT"));
 				param.put("COST_ATM_TYPE", jobj.get("COST_ATM_TYPE"));
 				param.put("COST_AMT", jobj.get("COST_AMT"));

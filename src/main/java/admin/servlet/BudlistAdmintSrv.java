@@ -1,11 +1,8 @@
 /*
- * BudlistAdminTtableOutSrv.java -> 공지사항리스트 명세서를 참조 게시글 관리자 모니터링 페이지 -> 서블릿파일
+ * 2023.05.09 김도원 <생성>
  * 
- * userId - 사용자 이름
- * userschool - 학교이름
- * userdep - 사용자 학과
- * budname - 게시글 제목
- * cretime - 작성시간
+ * 2023.05.15 개발 담당 : 안재경
+ * 게시물 모니터링
  */
 
 package admin.servlet;
@@ -27,7 +24,7 @@ import admin.process.BudlistAdminTtableOut;
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/BudListAdmin")
+@WebServlet("/BudListAdminSvc")
 public class BudlistAdmintSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -55,6 +52,7 @@ public class BudlistAdmintSrv extends HttpServlet {
 		String userdep="";
 		String budname="";
 		String cretime="";
+		String content="";
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -75,25 +73,28 @@ public class BudlistAdmintSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
-		userschool = (jobj.get("school") == null) ? "" : jobj.get("school").toString();
-		userdep = (jobj.get("userdep") == null) ? "" : jobj.get("userdep").toString();
-		budname = (jobj.get("budname") == null) ? "" : jobj.get("budname").toString();
-		cretime = (jobj.get("cretime") == null) ? "" : jobj.get("cretime").toString();
+		userId = (jobj.get("NICK_NM") == null) ? "" : jobj.get("NICK_NM").toString();
+		userschool = (jobj.get("MEMB_SC_CD") == null) ? "" : jobj.get("MEMB_SC_CD").toString();
+		userdep = (jobj.get("MEMB_DEP_CD") == null) ? "" : jobj.get("MEMB_DEP_CD").toString();
+		budname = (jobj.get("TIT") == null) ? "" : jobj.get("TIT").toString();
+		cretime = (jobj.get("CRE_DAT") == null) ? "" : jobj.get("CRE_DAT").toString();
+		content = (jobj.get("CONT") == null) ? "" : jobj.get("CONT").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("userId", userId);
-		param.put("userschool", userschool);
-		param.put("userdep", userdep);
-		param.put("budname", budname);
-		param.put("cretime", cretime);
+		param.put("NICK_NM", userId);
+		param.put("MEMB_SC_CD", userschool);
+		param.put("MEMB_DEP_CD", userdep);
+		param.put("TIT", budname);
+		param.put("CRE_DAT", cretime);
+		param.put("CONT", content);
 		
 		System.out.println("userId :".concat(userId));
 		System.out.println("userschool :".concat(userschool));
 		System.out.println("userdep :".concat(userdep));
 		System.out.println("budname :".concat(budname));
 		System.out.println("cretime :".concat(cretime));
+		System.out.println("content :".concat(content));
 		
 		
 		BudlistAdminTtableOut budlistadminttableout = new BudlistAdminTtableOut(param);

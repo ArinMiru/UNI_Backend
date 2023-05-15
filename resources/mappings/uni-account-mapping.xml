@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uni-account-mapping">
+
+  
+  <select id="selectCheckId" resultType="hashMap" parameterType="hashMap">
+    SELECT 	IF(PASS = #{LOGIN_PASS},'00','01') AS RSLT_CD 
+    FROM 	MEMB_BAS
+	WHERE 	MEMB_ID = #{LOGIN_ID}
+  </select>
+  
+  <select id="selectMembInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		A.MEMB_ID AS LOGIN_ID
+		,A.MEMB_NM
+		,A.MEMB_SC_CD
+		,A.MEMB_DEP_CD
+		,A.MEMB_NUM
+		,B.CODE_VAL AS MEMB_SC_NM
+		,C.CODE_DESC AS MEMB_DEP_NM
+		,A.TIT_CD
+		,D.CODE_VAL AS TIT_NM
+		,A.NICK_NM
+		,A.MEMB_GRA
+		,A.MEMB_EM
+		,A.PROF_IMG_PATH
+		,IF(E.CERT_DIV_CD = '01','Y','N') AS COLL_CERT_IND
+	FROM MEMB_BAS A 
+	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+	LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+	LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+	LEFT JOIN CERT_MEMB_HIST E ON E.MEMB_ID = A.MEMB_ID AND E.CERT_DIV_CD = '01'
+	WHERE A.MEMB_ID = #{LOGIN_ID}
+  </select>
+  
+  <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM OPEN_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'> 
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
+		</if>
+		ORDER BY Z.CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectOpenImgInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.FILE_PATH
+		,B.IMG_SEQ
+	FROM 	OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
+	WHERE 	B.CRE_SEQ = A.CRE_SEQ
+	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='!"04".equals(TIT_CD)'> 
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+
+  <insert id="insertMembInfo" parameterType="HashMap">
+  <!-- 23.05.13 select -> insert 로 수정 완료 -->
+  <!-- 23.05.13 value 값 수정 완료 -->
+  	INSERT INTO MEMB_BAS (MEMB_ID,PASS,MEMB_NM) VALUES (#{MEMB_ID},#{PASS},#{MEMB_NM})
+  </insert>
+  
+  <update id="updateMembuniCertUpd" parameterType="Hashmap"> 
+  <!-- 23.05.10 대학인증 회원수정 (김도원) -->
+  	UPDATE MEMB_BAS set
+		MEMB_SC_CD 		= #{MEMB_SC_CD}
+		,MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+		,MEMB_NUM 		= #{MEMB_NUM}
+		,MEMB_EM 		= #{MEMB_EM}
+		,UPD_DAT		= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID}
+  </update>
+  
+  <update id="updateMembPassUpd" parameterType="Hashmap">
+  <!-- 23.05.10 비밀번호 변경 (김도원) -->
+  	UPDATE MEMB_BAS set
+		PASS 		= #{PASS}
+		,UPD_DAT	= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID}
+  </update>
+  
+  <update id="updateMembNicUpd" parameterType="Hashmap">
+  	<!-- 23.05.10 닉네임 변경 (김도원) -->
+  	UPDATE MEMB_BAS set
+ 		NICK_NM 	= #{NICK_NM}
+ 		,UPD_DAT	= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID}
+  </update>
+  
+  <update id="updateMembAlmInfoUpd" parameterType="Hashmap">
+  	<!-- 23.05.10 알림정보수정 (김도원) -->
+  	UPDATE USE_NOTICE_BAS set
+		APP_NOTICE_YN 	= #{APP_NOTICE_YN}
+		,DEP_NOTICE_YN 	= #{DEP_NOTICE_YN}
+		,UPD_DAT		= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID}	
+  </update>
+  
+  <update id="updateMembInfoUpd" parameterType="Hashmap">
+  	<!-- 23.05.10 프로파일 이미지변경 (김도원) -->
+  	<!-- 주의사항 이미지 파일명을 회원 id 로 변경하여 저장한다.(확장자는 유지) -->
+	UPDATE MEMB_BAS set
+ 		PROF_IMG_PATH = #{PROF_IMG_PATH}
+ 		,UPD_DAT		= SYSDATE()
+	WHERE MEMB_ID = #{MEMB_ID}
+  </update>  
+  
+  <select id="selectMembIdchk" resultType="String" parameterType="HashMap">
+  	<!-- 23.05.10 회원 ID 중복 체크 (김도원) -->
+  	SELECT 'Y' FROM dual
+   	WHERE EXISTS (
+   		SELECT MEMB_ID FROM MEMB_BAS 
+   		WHERE MEMB_ID = #{MEMB_ID})
+  </select>
+  
+  <select id="selectMembNicchk" resultType="String" parameterType="HashMap">
+  	<!-- 23.05.10 닉네임 중복 체크 (김도원) -->
+	SELECT 'Y' FROM dual
+   	WHERE EXISTS (
+   		SELECT MEMB_ID FROM MEMB_BAS 
+   		WHERE NICK_NM = #{NICK_NM})
+  </select>  
+  
+  <update id="updateOpenLikeUpd" parameterType="Hashmap">
+	UPDATE OPEN_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateFreeLikeUpd" parameterType="Hashmap">
+	UPDATE FREE_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateQuesLikeUpd" parameterType="Hashmap">
+	UPDATE QUES_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateSugLikeUpd" parameterType="Hashmap">
+	UPDATE SUG_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateGallLikeUpd" parameterType="Hashmap">
+	UPDATE GALL_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  <update id="updateMarkLikeUpd" parameterType="Hashmap">
+	UPDATE MARK_BUB_BAS set
+ 		 LIKE_CNT		= IFNULL(LIKE_CNT,0) + 1 			
+	WHERE MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND   MEMB_DEP_CD 	= #{MEMB_DEP_CD}
+	AND   CRE_SEQ 		= #{CRE_SEQ}
+  </update>  
+  
+  
+</mapper>

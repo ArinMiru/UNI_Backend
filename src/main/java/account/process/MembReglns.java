@@ -1,84 +1,76 @@
+/*
+ * 2023.05.09 김도원 수정 (주석 제거 및 API 명세서 기반으로 변경)\
+ * MembReglns : 회원가입
+ * 
+ * 2023.05.10 김도원 수정 (uni-account-mapping.xml query 작성 및 try{} 코드 수정)
+ * insertMembInfo : 회원가입
+ */
+
+/*
+ * 
+ * 
+ */
+
 package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class MembReglns {    
 	
-	private JSONArray jary = new JSONArray();
-	private JSONObject jobj = new JSONObject();
+	// MAIN 생성용 OBJECT
+	private JSONObject jObjMain = new JSONObject();
 	
 	public MembReglns (Map<String, Object> param) throws IOException {
-	//public LonginTtableOut (String userId,String userType,String userPasswrd) throws IOException {
 		
-		// SQL ������ ���� �⺻ ���� ����
-		String resource = "/mybatis-config.xml";
-		InputStream inputStream = Resources.getResourceAsStream(resource);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		
-		try {
-			SqlSession session = sqlSessionFactory.openSession();
-			
-			//pstmt.setString(1, userPasswrd);
-			//pstmt.setString(2, userId);
-			//pstmt.setString(3, userType);
-			
-			Map<String, Object> rtn = new HashMap<String, Object>();
-			
-			rtn = session.selectOne("uni-mapping.selectInfo",param);
-			
-			System.out.println(rtn.get("IND"));
-			
-			// rsltCd �׸� �߰�
-			// �÷������� JSON �׸� �� ���� ����
-			//jobj.put("FLAG", rtn.get("IND"));
-			// userId �׸� �߰�
-			jobj.put("userId", param.get("userId"));
-			// userType �׸� �߰�
-			jobj.put("userType", param.get("userType"));
-			// userPasswrd �׸� �߰� ( ������ ���� �������� ���� )
-			jobj.put("userPasswrd", param.get("userPasswrd"));
+		// SQL 접속장버
+				String resource = "/mybatis-config.xml";
+				// database.properties 읽기
+				InputStream inputStream = Resources.getResourceAsStream(resource);
+				// maria db 접속하여 db 세션 획득
+				SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+				
+				SqlSession session = sqlSessionFactory.openSession();
+				
+		        try {
+		            Map<String, Object> rtn = null;
 
-			// ������ �����Ѱ� �ݾ��ֽ�
-			
-            JSONObject jo=new JSONObject();
-			jo.put("FLAG", rtn.get("IND"));
-			jo.put("FLAG1", rtn.get("NUM"));
-			jary.add(jo);
-		    
-			// �ð�ǥ�� TT_LIST ��� ��ǥ������ �迭 ���·� ����
-			jobj.put("TT_LIST", jary);
+		            System.out.println("param :"+param.toString());
 
-	    } catch(Exception e) {
-			e.printStackTrace();
-	    } finally {
-	    	
-	    }
+		            // 수정된 부분: update 메소드를 사용하도록 변경
+		            int updatedRows = session.update("uni-account-mapping.insertMembInfo",param);
+		            rtn = new HashMap<String, Object>();
+
+		            if (updatedRows > 0) {
+		                rtn.put("RSLT_CD", "00"); // 00: 정상
+		            } else {
+		                rtn.put("RSLT_CD", "99"); // 99: 기타 오류
+		            }
+
+		            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
+		            
+		            session.commit();
+					
+			    } catch(Exception e) {
+					e.printStackTrace();
+					jObjMain.put("RSLT_CD","99");
+			    } finally {
+			    	// 사용다한 세션 닫아주기
+			    	if (session != null) session.close();
+			    }
 	}
     
 	public JSONObject getResult() {
-		// ������� ����
-		return jobj;
+		return jObjMain;
 	}
 
 }

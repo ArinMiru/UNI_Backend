@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uni-home-mapping">
+  
+  <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,Z.MEMB_ID
+			,Z.CRE_SEQ	
+			,Z.TIT
+			,Z.CONT
+			,Z.LIKE_CNT
+			,DATE_FORMAT(Z.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+		FROM OPEN_BUB_BAS Z,MEMB_BAS A
+		   	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+			LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
+		AND Z.MEMB_ID = A.MEMB_ID
+		<if test='!"04".equals(TIT_CD)'>
+		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
+        </if>		
+		ORDER BY Z.CRE_DAT DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+  
+  <select id="selectOpenImgInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.FILE_PATH
+		,B.IMG_SEQ
+	FROM OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
+	WHERE 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='!"04".equals(TIT_CD)'>
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  <select id="selectOpenBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(open_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertOpenBubInfo" parameterType="HashMap">
+    INSERT INTO OPEN_BUB_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,LIKE_CNT
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,0
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <insert id="insertOpenImgInfo" parameterType="HashMap">
+    INSERT INTO OPEN_BUB_IMG_HIST(
+    	CRE_SEQ
+		,IMG_SEQ
+		,ORIG_FILE_NM
+		,MOD_FILE_NM
+		,FILE_PATH
+		,CRE_DAT
+    ) VALUES (
+    	#{CRE_SEQ}
+		,NEXTVAL(open_img_seq)
+		,#{ORIG_FILE_NM}
+		,#{MOD_FILE_NM}
+		,#{FILE_PATH}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateOpenBubInfo" parameterType="HashMap">
+    UPDATE OPEN_BUB_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteOpenImgInfo" parameterType="HashMap">
+    DELETE FROM OPEN_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </delete>
+  
+   <delete id="deleteOpenBubInfo" parameterType="HashMap">
+    DELETE FROM OPEN_BUB_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteOpenAllImgInfo" parameterType="HashMap">
+    DELETE FROM OPEN_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectOpenDelImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	OPEN_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </select>
+  
+  <select id="selectOpenDelAllImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	OPEN_BUB_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </select>
+  
+  <select id="selectSchdBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT
+		A.YEAR
+		,A.MONTH
+		,DATE_FORMAT(A.DAY1,'%d') AS DAY
+		,SUBSTR(_UTF8'일월화수목금토',A.YOIL,1) AS DAY_DESC
+		,A.YOIL
+		,COUNT(B.CRE_SEQ) AS CNT
+	FROM (
+ 		WITH RECURSIVE MON_CAL AS (
+    		SELECT 1 AS NO
+    		UNION ALL
+    		SELECT 1+MON_CAL.NO
+      		FROM MON_CAL
+      		<![CDATA[
+     		WHERE MON_CAL.NO < DATE_FORMAT(LAST_DAY(CURDATE()),'%d')
+     		]]>
+     	)
+ 	SELECT 	DATE_FORMAT(CURDATE(),'%Y') AS YEAR,
+ 			DATE_FORMAT(CURDATE(),'%m') AS MONTH,
+ 			DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY) AS DAY1,
+ 			DAYOFWEEK(DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY)) AS YOIL
+ 	FROM MON_CAL) A LEFT JOIN SCHD_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD AND B.MEMB_ID = #{MEMB_ID}
+ 	AND 	B.MEMB_SC_CD = #{MEMB_SC_CD}
+ 	<if test='!"04".equals(TIT_CD)'> 
+ 	AND 	B.MEMB_DEP_CD = #{MEMB_DEP_CD}
+ 	</if>
+ 	GROUP BY YEAR,MONTH,DAY,YOIL
+ 	ORDER BY A.DAY1
+  </select>
+  
+  <select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT
+		CRE_SEQ
+		,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d') AS STRT_SCHD_YMD
+		,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d') AS END_SCHD_YMD
+		,TIT
+		,CONT
+		,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+	FROM 	SCHD_BAS 
+  	WHERE 	CONVERT(#{SEARCH_DATE},DATE) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
+  	AND 	MEMB_ID = #{MEMB_ID}
+  	AND 	MEMB_SC_CD = #{MEMB_SC_CD}
+ 	<if test='!"04".equals(TIT_CD)'> 
+ 	AND 	MEMB_DEP_CD = #{MEMB_DEP_CD}
+ 	</if>
+  </select>
+  
+  <select id="selectSchdBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(schd_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertSchdBubInfo" parameterType="HashMap">
+    INSERT INTO SCHD_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,STRT_SCHD_YMD
+		,END_SCHD_YMD
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{STRT_SCHD_YMD}
+		,#{END_SCHD_YMD}
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateSchdBubInfo" parameterType="HashMap">
+    UPDATE SCHD_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteSchdImgInfo" parameterType="HashMap">
+    DELETE FROM SCHD_BAS 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectCostBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT
+		A.YEAR
+		,A.MONTH
+		,DATE_FORMAT(A.DAY1,'%d') AS DAY
+		,SUBSTR(_UTF8'일월화수목금토',A.YOIL,1) AS DAY_DESC
+		,A.YOIL
+		,SUM(IF(B.COST_ATM_TYPE = '01',B.COST_AMT,0)) AS IN_COST_AMT
+		,SUM(IF(B.COST_ATM_TYPE = '02',B.COST_AMT,0)) AS OUT_COST_AMT
+	FROM (
+ 		WITH RECURSIVE MON_CAL AS (
+    		SELECT 1 AS NO
+    		UNION ALL
+    		SELECT 1+MON_CAL.NO
+      		FROM MON_CAL
+      		<![CDATA[
+     		WHERE MON_CAL.NO < DATE_FORMAT(LAST_DAY(CURDATE()),'%d')
+     		]]>
+     	)
+ 	SELECT 	DATE_FORMAT(CURDATE(),'%Y') AS YEAR,
+ 			DATE_FORMAT(CURDATE(),'%m') AS MONTH,
+ 			DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY) AS DAY1,
+ 			DAYOFWEEK(DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY)) AS YOIL
+ 	FROM MON_CAL) A LEFT JOIN DEP_COST_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD 
+ 	AND 	B.MEMB_SC_CD = #{MEMB_SC_CD}
+ 	<if test='!"04".equals(TIT_CD)'>  
+ 	AND 	B.MEMB_DEP_CD = #{MEMB_DEP_CD}
+ 	</if>
+ 	GROUP BY YEAR,MONTH,DAY,YOIL
+ 	ORDER BY A.DAY1
+  </select>
+  
+  <select id="selectCostBubDtlInfo" resultType="HashMap" parameterType="HashMap">
+	SELECT
+		CRE_SEQ
+		,COST_ATM_TYPE
+		,COST_AMT
+		,TIT
+		,CONT
+		,COST_TYPE
+	FROM DEP_COST_BAS
+	WHERE 	MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='!"04".equals(TIT_CD)'> 
+	AND 	MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>	
+	AND 	COST_CRE_DAT = CONVERT(#{SEARCH_DATE},DATE)
+  </select>
+  
+  <select id="selectCostImgDtlInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		B.FILE_PATH
+		,B.IMG_SEQ
+	FROM DEP_COST_BAS A , DEP_COST_IMG_HIST B
+	WHERE 	A.MEMB_SC_CD = #{MEMB_SC_CD}
+	<if test='!"04".equals(TIT_CD)'> 
+	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
+	AND 	A.CRE_SEQ = #{CRE_SEQ}
+  </select>
+  
+  
+  <select id="selectCostBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(cost_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertCostBubInfo" parameterType="HashMap">
+    INSERT INTO DEP_COST_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,COST_ATM_TYPE
+		,COST_AMT
+		,COST_TYPE
+		,TIT
+		,CONT
+		,CRE_DAT    
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,#{COST_ATM_TYPE}
+		,#{COST_AMT}
+		,#{COST_TYPE}
+		,#{TIT}
+		,#{CONT}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <insert id="insertCostImgInfo" parameterType="HashMap">
+    INSERT INTO DEP_COST_IMG_HIST(
+    	CRE_SEQ
+		,IMG_SEQ
+		,ORIG_FILE_NM
+		,MOD_FILE_NM
+		,FILE_PATH
+		,CRE_DAT
+    ) VALUES (
+    	#{CRE_SEQ}
+		,NEXTVAL(open_img_seq)
+		,#{ORIG_FILE_NM}
+		,#{MOD_FILE_NM}
+		,#{FILE_PATH}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <update id="updateCostBubInfo" parameterType="HashMap">
+    UPDATE DEP_COST_BAS SET
+    	TIT 	= #{TIT}
+		,CONT 	= #{CONT}
+		,COST_ATM_TYPE 	= #{COST_ATM_TYPE}
+		,COST_AMT 		= #{COST_AMT}
+		,COST_TYPE 		= #{COST_TYPE}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteCostImgInfo" parameterType="HashMap">
+    DELETE FROM DEP_COST_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </delete>
+  
+   <delete id="deleteCostBubInfo" parameterType="HashMap">
+    DELETE FROM DEP_COST_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <delete id="deleteCostAllImgInfo" parameterType="HashMap">
+    DELETE FROM DEP_COST_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <select id="selectCostDelImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	DEP_COST_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+	AND		IMG_SEQ 	= #{IMG_SEQ}
+  </select>
+  
+  <select id="selectCostDelAllImgInfo" resultType="String" parameterType="HashMap">
+    SELECT 	FILE_PATH
+    FROM 	DEP_COST_IMG_HIST 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </select>
+  
+  <select id="selectVotBubInfo" resultType="HashMap" parameterType="HashMap">
+    SELECT 
+		*
+	FROM (
+		SELECT
+			ROW_NUMBER() OVER() AS R_NUM
+			,Z.MEMB_ID
+			,Z.CRE_SEQ
+			,Z.VOT_TITLE
+			,Z.VOT_TYPE_CD
+			,DATE_FORMAT(Z.VOT_EXPR_DATE,'%Y-%m-%d %H:%i') AS VOT_EXPR_DATE
+			,Z.VOT_DESC
+			,CASE
+  				WHEN IFNULL(E.VOT_SEQ,0) = 0 THEN 'VB' 
+  				WHEN DATE_FORMAT(CURDATE(),'%Y-%m-%i') > Z.VOT_EXPR_DATE THEN 'VF'
+  				ELSE 'VE'
+ 			 END AS VOT_GO_CD
+			,B.CODE_VAL AS MEMB_SC_NM
+			,C.CODE_DESC AS MEMB_DEP_NM
+			,D.CODE_VAL AS TIT_NM
+			,A.NICK_NM
+			,GROUP_CONCAT(DISTINCT E.VOT_SEQ  ORDER BY E.VOT_SEQ ASC SEPARATOR ',') AS VOT_SEL_SEQ
+			,GROUP_CONCAT(DISTINCT CONCAT(F.VOT_SEQ,':',F.VOT_DESC) ORDER BY F.VOT_SEQ ASC SEPARATOR ',') AS VOT_INFO
+		FROM VOT_BAS Z 	LEFT JOIN VOT_STAT 	E ON E.CRE_SEQ = Z.CRE_SEQ AND E.MEMB_ID = #{MEMB_ID}
+		                LEFT JOIN VOT_DTL 	F ON F.CRE_SEQ = E.CRE_SEQ 
+   						LEFT JOIN MEMB_BAS 	A ON A.MEMB_ID =  Z.MEMB_ID AND Z.MEMB_SC_CD = #{MEMB_SC_CD} 
+   						<if test='!"04".equals(TIT_CD)'> 
+						AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
+						</if>
+						LEFT JOIN CD_BAS 	B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+						LEFT JOIN CD_BAS 	C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+						LEFT JOIN CD_BAS 	D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD		
+		ORDER BY Z.VOT_EXPR_DATE DESC
+ 	) A
+ 	<![CDATA[
+	WHERE A.R_NUM >= (IF(1 = #{REQ_PAGE},0,#{REQ_PAGE}-1) * IF(1 = #{REQ_PAGE},0,#{LIST_UNIT_CNT})) + 1
+	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
+	]]>
+  </select>
+ 
+  
+</mapper>

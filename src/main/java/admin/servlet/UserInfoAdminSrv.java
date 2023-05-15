@@ -1,3 +1,10 @@
+/*
+ * 2023.05.09 김도원 <개발 중지>
+ * 
+ * 2023.05.15 개발 담당 : 안재경
+ * userInfo : 사용자 정보 
+ */
+
 package admin.servlet;
 
 import java.io.BufferedReader;

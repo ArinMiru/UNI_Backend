@@ -1,3 +1,10 @@
+/*
+ * 2023.05.09 김도원 <생성>
+ * 
+ * 2023.05.15 개발 담당 : 안재경
+ * userInfo : 사용자 정보
+ */
+
 package admin.process;
 
 import java.io.IOException;

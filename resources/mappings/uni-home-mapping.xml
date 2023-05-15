@@ -511,4 +511,29 @@
     WHERE 	CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
+  <insert id="insertVotVotInfo" parameterType="HashMap">
+    <foreach item = 'item' collection = 'VOT_SEQ' index = 'index' separator = ';'>
+	INSERT INTO VOT_STAT(CRE_SEQ, VOT_SEQ, MEMB_ID) VALUES (#{CRE_SEQ}, CAST(#{item} AS UNSIGND), #{MEMB_ID})
+  	</foreach>
+  </insert>
+  
+  <select id="selectVotBubStat" resultType="HashMap">
+    SELECT
+		A.VOT_TOT 
+		,B.VOT_SEQ
+		,B.VOT_SUB_TOT
+		,ROUND(B.VOT_SUB_TOT / A.VOT_TOT * 100) AS PRCT
+	FROM
+		(SELECT 
+		 	COUNT(*) AS VOT_TOT
+		FROM VOT_STAT
+		WHERE CRE_SEQ = #{CRE_SEQ}) A
+		,(SELECT 
+       		VOT_SEQ,      
+		 	COUNT(*) VOT_SUB_TOT
+		FROM VOT_STAT
+		WHERE CRE_SEQ = #{CRE_SEQ}
+		GROUP BY CRE_SEQ,VOT_SEQ) B
+  </select>
+  
 </mapper>

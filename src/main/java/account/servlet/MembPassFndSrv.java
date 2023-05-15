@@ -87,7 +87,7 @@ public class MembPassFndSrv extends HttpServlet {
 		System.out.println("userId :".concat(userId));
 		System.out.println("userEmail :".concat(userEmail));
 		
-		account.process.MembPassFnd membpassfnd = new account.process.MembPassFnd(param);
+		MembPassFnd membpassfnd = new MembPassFnd(param);
 		
 		resltObj = membpassfnd.getResult();
 	

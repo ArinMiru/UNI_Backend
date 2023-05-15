@@ -35,6 +35,7 @@ public class SchdBubTtableOut {
 			param.put("MEMB_ID", jobj.get("LOGIN_ID"));
 			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
 			param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
+			param.put("TIT_CD", jobj.get("TIT_CD"));
 			param.put("STRT_SCHD_YMD", jobj.get("STRT_SCHD_YMD"));
 			param.put("END_SCHD_YMD", jobj.get("END_SCHD_YMD"));			
 			param.put("TIT", jobj.get("TIT"));

@@ -1,7 +1,7 @@
 /*
  * 2023.05.09 김도원 <생성>
  * 
- * 2023.05.15 개발 담당 : 안재경
+ * 2023.05.15 개발 담당 : 최서은
  * userInfo : 사용자 정보
  */
 
@@ -9,18 +9,8 @@ package admin.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;

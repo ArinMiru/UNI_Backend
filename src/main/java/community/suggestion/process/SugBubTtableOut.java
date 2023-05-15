@@ -35,6 +35,7 @@ public class SugBubTtableOut {
 			param.put("MEMB_ID", jobj.get("LOGIN_ID"));
 			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
 			param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
+			param.put("TIT_CD", jobj.get("TIT_CD"));
 			param.put("TIT", jobj.get("TIT"));
 			param.put("CONT", jobj.get("CONT"));
 			param.put("SEC_YN", jobj.get("SEC_YN"));

@@ -89,8 +89,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -99,8 +99,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
@@ -230,8 +230,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -240,8 +240,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
@@ -377,8 +377,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -387,8 +387,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
@@ -435,9 +435,6 @@
     WHERE 	CRE_SEQ 	= #{CRE_SEQ}
     AND		ANS_SEQ 	= #{ANS_SEQ}
   </delete>
-  
-  
-  
   
   <select id="selectMarkBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT 
@@ -525,8 +522,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -535,8 +532,8 @@
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'> 
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   

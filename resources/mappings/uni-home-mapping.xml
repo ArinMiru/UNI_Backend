@@ -101,8 +101,10 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -115,8 +117,10 @@
    <delete id="deleteOpenBubInfo" parameterType="HashMap">
     DELETE FROM OPEN_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
@@ -222,8 +226,10 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -352,7 +358,9 @@
 		,COST_TYPE 		= #{COST_TYPE}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
@@ -365,7 +373,9 @@
    <delete id="deleteCostBubInfo" parameterType="HashMap">
     DELETE FROM DEP_COST_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
@@ -427,5 +437,103 @@
 	]]>
   </select>
  
+ <select id="selectVotBubSeq" resultType="long">
+    SELECT 
+		NEXTVAL(vot_cre_seq)
+	FROM DUAL
+  </select>
+  
+  <insert id="insertVotBubInfo" parameterType="HashMap">
+    INSERT INTO VOT_BAS(
+    	MEMB_SC_CD
+		,MEMB_DEP_CD
+		,MEMB_ID
+		,CRE_SEQ
+		,VOT_CRE_DATE
+		,VOT_TITLE
+		,VOT_TYPE_CD
+		,VOT_EXPR_DATE
+		,VOT_DESC
+		,CRE_DAT
+    ) VALUES (
+    	#{MEMB_SC_CD}
+		,#{MEMB_DEP_CD}
+		,#{MEMB_ID}
+		,#{CRE_SEQ}
+		,CONVERT(#{VOT_CRE_DATE},DATE)
+		,#{VOT_TITLE}
+		,#{VOT_TYPE_CD}
+		,CONVERT(#{VOT_EXPR_DATE},DATE)
+		,#{VOT_DESC}
+		,SYSDATE()
+    )
+  </insert>
+  
+  <insert id="insertVotDtlInfo" parameterType="HashMap">
+  	<foreach item = 'item' collection = 'VOT_INFO' index = 'index' separator = ';'>
+	INSERT INTO VOT_DTL(CRE_SEQ, VOT_SEQ, VOT_DESC) VALUES (#{CRE_SEQ}, #{index}+1, #{item})
+  	</foreach>
+  </insert>
+  
+  <update id="updateVotBubInfo" parameterType="HashMap">
+    UPDATE VOT_BAS SET
+    	VOT_CRE_DATE 	= CONVERT(#{VOT_CRE_DATE},DATE)
+		,VOT_TITLE 		= #{VOT_TITLE}
+		,VOT_TYPE_CD 	= #{VOT_TYPE_CD}
+		,VOT_EXPR_DATE	= CONVERT(#{VOT_EXPR_DATE},DATE)
+		,VOT_DESC 		= #{VOT_DESC}
+		,UPD_DAT		= SYSDATE()
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </update>
+  
+  <delete id="deleteVotBubInfo" parameterType="HashMap">
+    DELETE FROM VOT_BAS 
+    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
+	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
+	AND		MEMB_ID 	= #{MEMB_ID}
+	</if>
+	AND		CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+   <delete id="deleteVotDtlInfo" parameterType="HashMap">
+    DELETE FROM VOT_DTL 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+   <delete id="deleteVotStatInfo" parameterType="HashMap">
+    DELETE FROM VOT_STAT 
+    WHERE 	CRE_SEQ 	= #{CRE_SEQ}
+  </delete>
+  
+  <insert id="insertVotVotInfo" parameterType="HashMap">
+    <foreach item = 'item' collection = 'VOT_SEQ' index = 'index' separator = ';'>
+	INSERT INTO VOT_STAT(CRE_SEQ, VOT_SEQ, MEMB_ID) VALUES (#{CRE_SEQ}, CAST(#{item} AS UNSIGND), #{MEMB_ID})
+  	</foreach>
+  </insert>
+  
+  <select id="selectVotBubStat" resultType="HashMap">
+    SELECT
+		A.VOT_TOT 
+		,B.VOT_SEQ
+		,B.VOT_SUB_TOT
+		,ROUND(B.VOT_SUB_TOT / A.VOT_TOT * 100) AS PRCT
+	FROM
+		(SELECT 
+		 	COUNT(*) AS VOT_TOT
+		FROM VOT_STAT
+		WHERE CRE_SEQ = #{CRE_SEQ}) A
+		,(SELECT 
+       		VOT_SEQ,      
+		 	COUNT(*) VOT_SUB_TOT
+		FROM VOT_STAT
+		WHERE CRE_SEQ = #{CRE_SEQ}
+		GROUP BY CRE_SEQ,VOT_SEQ) B
+  </select>
   
 </mapper>

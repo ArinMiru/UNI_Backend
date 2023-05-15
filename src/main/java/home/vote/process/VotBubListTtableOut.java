@@ -61,7 +61,7 @@ public class VotBubListTtableOut {
 			}
 								
 			jobj.put("RSLT_CD", "00");
-			jobj.put("SUG_BUB", jarySub);
+			jobj.put("VOT_BUB", jarySub);
 
 	    } catch(Exception e) {
 			e.printStackTrace();

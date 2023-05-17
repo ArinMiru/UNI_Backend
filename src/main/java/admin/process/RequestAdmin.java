@@ -1,8 +1,8 @@
 /*
- * 2023.05.09 김도원 <생성>
+ * 2023.05.17 안재경 <생성>
  * 
- * 2023.05.15 개발 담당 : 안재경
- * 게시물 모니터링
+ * 게시판 모니터링 (건의 계시판)
+ * 
  */
 
 package admin.process;
@@ -20,12 +20,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class BudlistAdminTtableOut {    
+public class RequestAdmin {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobjMain = new JSONObject();
 	
-	public BudlistAdminTtableOut (Map<String, Object> param) throws IOException {
+	public RequestAdmin (Map<String, Object> param) throws IOException {
 		
 		String resource = "/mybatis-config.xml";
 		InputStream inputStream = Resources.getResourceAsStream(resource);

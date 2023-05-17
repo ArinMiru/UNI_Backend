@@ -2,7 +2,10 @@
  * 2023.05.09 김도원 <생성>
  * 
  * 2023.05.15 개발 담당 : 안재경
- * 게시물 모니터링
+ * 
+ * 2023.05.17 파일이름 수정 BudlistAdminTtableOut.java -> FreeAdmin
+ * 
+ * 게시판모니터링 (자유게시판)
  */
 
 package admin.servlet;
@@ -19,19 +22,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import admin.process.BudlistAdminTtableOut;
+import admin.process.FreeAdmin;
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/BudListAdminSvc")
-public class BudlistAdmintSrv extends HttpServlet {
+@WebServlet("/FreeAdminSrv")
+public class FreeAdminSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BudlistAdmintSrv() {
+    public FreeAdminSrv() {
         super();  
     } 
 
@@ -97,9 +100,9 @@ public class BudlistAdmintSrv extends HttpServlet {
 		System.out.println("content :".concat(content));
 		
 		
-		BudlistAdminTtableOut budlistadminttableout = new BudlistAdminTtableOut(param);
+		FreeAdmin freeadmin = new FreeAdmin(param);
 		
-		resltObj = budlistadminttableout.getResult();
+		resltObj = freeadmin.getResult();
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

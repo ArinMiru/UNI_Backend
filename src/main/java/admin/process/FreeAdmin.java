@@ -2,7 +2,10 @@
  * 2023.05.09 김도원 <생성>
  * 
  * 2023.05.15 개발 담당 : 안재경
- * 게시물 모니터링
+ * 
+ * 2023.05.17 파일이름 수정 BudlistAdminTtableOut.java -> FreeAdmin
+ * 
+ * 게시판모니터링 (자유게시판)
  */
 
 package admin.process;
@@ -20,12 +23,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class BudlistAdminTtableOut {    
+public class FreeAdmin {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobjMain = new JSONObject();
 	
-	public BudlistAdminTtableOut (Map<String, Object> param) throws IOException {
+	public FreeAdmin (Map<String, Object> param) throws IOException {
 		
 		String resource = "/mybatis-config.xml";
 		InputStream inputStream = Resources.getResourceAsStream(resource);

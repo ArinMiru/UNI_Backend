@@ -1,8 +1,8 @@
 /*
- * 2023.05.09 김도원 <생성>
+ * 2023.05.17 안재경 <생성>
  * 
- * 2023.05.15 개발 담당 : 안재경
- * 게시물 모니터링
+ * 게시판 모니터링 (건의 계시판)
+ * 
  */
 
 package admin.servlet;
@@ -19,19 +19,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import admin.process.BudlistAdminTtableOut;
+import admin.process.RequestAdmin;
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/BudListAdminSvc")
-public class BudlistAdmintSrv extends HttpServlet {
+@WebServlet("/RequestAdminSrv")
+public class RequestAdminSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BudlistAdmintSrv() {
+    public RequestAdminSrv() {
         super();  
     } 
 
@@ -97,9 +97,9 @@ public class BudlistAdmintSrv extends HttpServlet {
 		System.out.println("content :".concat(content));
 		
 		
-		BudlistAdminTtableOut budlistadminttableout = new BudlistAdminTtableOut(param);
+		RequestAdmin requestadmin = new RequestAdmin(param);
 		
-		resltObj = budlistadminttableout.getResult();
+		resltObj = requestadmin.getResult();
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

@@ -3,6 +3,9 @@
  * 
  * 2023.05.15 개발 담당 : 최서은
  * userInfo : 사용자 정보 
+ * 
+ * 2023.05.18 16:06 최서은
+ * 학교 코드대로 분류하도록 수정 
  */
 
 package admin.servlet;
@@ -47,10 +50,7 @@ public class UserInfoAdminSrv extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String userId="";
-		String userType="";
-		String userschool="";
-		String usersdep="";
+		String schoolCode="";
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -71,21 +71,13 @@ public class UserInfoAdminSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
-		userId = (jobj.get("id") == null) ? "" : jobj.get("id").toString();
-		userType = (jobj.get("userType") == null) ? "" : jobj.get("userType").toString();
-		userschool = (jobj.get("school") == null) ? "" : jobj.get("school").toString();
-		usersdep = (jobj.get("usersdep") == null) ? "" : jobj.get("usersdep").toString();
+		schoolCode = (jobj.get("MEMB_SC_CD") == null) ? "" : jobj.get("MEMB_SC_CD").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("userId", userId);
-		param.put("userType", userType);
-		param.put("userschool", userschool);
-		param.put("usersdep", usersdep);
+		param.put("MEMB_SC_CD", schoolCode);
 		
-		System.out.println("userId :".concat(userId));
-		System.out.println("userschool :".concat(userschool));
-		System.out.println("usersdep :".concat(usersdep));
+		System.out.println("MEMB_SC_CD :".concat(schoolCode));
 		
 		
 		UserInfoAdminTtableOut userinfoadminTtableOut = new UserInfoAdminTtableOut(param);

@@ -3,13 +3,16 @@
  * 
  * 2023.05.15 개발 담당 : 최서은
  * userInfo : 사용자 정보
+ * 
+ * 2023.05.18 16:06 최서은
+ * 사용자 정보를 배열로 선언
  */
 
 package admin.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -22,47 +25,57 @@ import net.sf.json.JSONObject;
 
 public class UserInfoAdminTtableOut {    
 	
-	private JSONArray jary = new JSONArray();
-	private JSONObject jobj = new JSONObject();
-	
+	private JSONObject jObjMain = new JSONObject();
+
 	public UserInfoAdminTtableOut (Map<String, Object> param) throws IOException {
 		
 		String resource = "/mybatis-config.xml"; // 변경 예정
+		
 		InputStream inputStream = Resources.getResourceAsStream(resource);
+		
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
+		SqlSession session = sqlSessionFactory.openSession();
+		
 		try {
-			SqlSession session = sqlSessionFactory.openSession();
 			
-			Map<String, Object> rtn = new HashMap<String, Object>();
+			JSONArray jarySub = new JSONArray();
+			JSONObject jObjSub = new JSONObject();
 			
-			rtn = session.selectOne("uni-mapping.selectInfo",param);
+			List<Map<String, Object>> rtnList = null;	
 			
-			System.out.println(rtn.get("IND"));
+			rtnList = session.selectList("uni-account-mapping.**",param);
 			
-			jobj.put("userId", param.get("userId"));
-			jobj.put("userType", param.get("userType"));
-			jobj.put("userschool", param.get("userschool"));
-			jobj.put("usersdep", param.get("usersdep"));
+			for(int i=0; i < rtnList.size()	;i++) 
+			{
+				jObjSub.put("MEMB_NM", rtnList.get(i).get("MEMB_NM"));
+				jObjSub.put("MEMB_SC_CD", rtnList.get(i).get("MEMB_SC_CD"));
+				jObjSub.put("MEMB_DEP_CD", rtnList.get(i).get("MEMB_DEP_CD"));
+				jObjSub.put("MEMB_SC_NM", rtnList.get(i).get("MEMB_SC_NM"));
+				jObjSub.put("MEMB_DEP_NM", rtnList.get(i).get("MEMB_DEP_NM"));
+				jObjSub.put("TIT_CD", rtnList.get(i).get("TIT_CD"));
+				jObjSub.put("TIT_NM", rtnList.get(i).get("TIT_NM"));
+				jObjSub.put("NICK_NM", rtnList.get(i).get("NICK_NM"));
+				jObjSub.put("MEMB_GRA", rtnList.get(i).get("MEMB_GRA"));
+				jObjSub.put("MEMB_EM", rtnList.get(i).get("MEMB_EM"));
+				jObjSub.put("PROF_IMG_PATH", rtnList.get(i).get("PROF_IMG_PATH"));
+			}
 			
-            JSONObject jo=new JSONObject();
-			jo.put("FLAG", rtn.get("IND"));
-			jo.put("FLAG1", rtn.get("NUM"));
-			jary.add(jo);
-		    
-			//mybatis query file 작성 후 변경 예정
 			
-			jobj.put("TT_LIST", jary);
+			jarySub.add(jObjSub);
+			
+			jObjMain.put("USER_LIST", jarySub);
 
 	    } catch(Exception e) {
 			e.printStackTrace();
+			jObjMain.put("RSLT_CD", "99");
 	    } finally {
-	    	
+	    	if (session != null) session.close();
 	    }
 	}
     
 	public JSONObject getResult() {
-		return jobj;
+		return jObjMain;
 	}
 
 }

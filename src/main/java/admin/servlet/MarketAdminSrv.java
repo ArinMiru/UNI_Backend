@@ -3,7 +3,8 @@
  * 
  * 게시판 모니터링 (장터 계시판)
  * 
- * 사진도 모니터링 대상인지??
+ * 2023.05.19 안재경 <수정>
+ * 서블릿파일 미수정 process 내 장터게시판 모니터링 배열부분만 수정됨.
  */
 
 package admin.servlet;
@@ -96,6 +97,8 @@ public class MarketAdminSrv extends HttpServlet {
 		System.out.println("budname :".concat(budname));
 		System.out.println("cretime :".concat(cretime));
 		System.out.println("content :".concat(content));
+		
+		
 		
 		
 		MarketAdmin marketadmin = new MarketAdmin(param);

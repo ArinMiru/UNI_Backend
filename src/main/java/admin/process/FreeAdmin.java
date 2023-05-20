@@ -5,6 +5,11 @@
  * 
  * 2023.05.17 파일이름 수정 BudlistAdminTtableOut.java -> FreeAdmin
  * 
+ * 2023.05.18 전체적으로 수정이 필요한부분 : 학교코드를 front단에서 입력받아와 해당 코드와 일치하는 정보만
+ * 가져올수 있도록 조건식을 설정해야함 if문만 이용해도 충분할거같음.
+ * 
+ * 
+ * 
  * 게시판모니터링 (자유게시판)
  */
 
@@ -41,18 +46,23 @@ public class FreeAdmin {
 			rtnList = session.selectList("uni-account-mapping.selectBubInfo",param);
 			
 			for (int i = 0;i < rtnList.size();i++) {
+				
 				jobjMain.put("NICK_NM", rtnList.get(i).get("NICK_NM"));
 				jobjMain.put("MEMB_SC_CD", rtnList.get(i).get("MEMB_SC_CD"));
 				jobjMain.put("MEMB_DEP_CD", rtnList.get(i).get("MEMB_DEP_CD"));
 				jobjMain.put("TIT", rtnList.get(i).get("TIT"));
 				jobjMain.put("CRE_DAT", rtnList.get(i).get("CRE_DAT"));
 				jobjMain.put("CONT", rtnList.get(i).get("CONT"));
+					
 				
-				jary.add(rtnList);
-				}
+				
+			}
+			jary.add(rtnList);		
+				
 			
 			
-	
+			
+		
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {

@@ -5,6 +5,8 @@
  * 
  * 2023.05.17 파일이름 수정 BudlistAdminTtableOut.java -> FreeAdmin
  * 
+ * 2023.05.19 입력받을 학교코드 SccdIn추가. 근데 이 방식이 아닌거같다는 생각이 많이듬,,
+ * 
  * 게시판모니터링 (자유게시판)
  */
 
@@ -56,6 +58,7 @@ public class FreeAdminSrv extends HttpServlet {
 		String budname="";
 		String cretime="";
 		String content="";
+		String SccdIn="";
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -82,6 +85,7 @@ public class FreeAdminSrv extends HttpServlet {
 		budname = (jobj.get("TIT") == null) ? "" : jobj.get("TIT").toString();
 		cretime = (jobj.get("CRE_DAT") == null) ? "" : jobj.get("CRE_DAT").toString();
 		content = (jobj.get("CONT") == null) ? "" : jobj.get("CONT").toString();
+		SccdIn = (jobj.get("SC_CD_IN") == null) ? "" : jobj.get("SC_CD_IN").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
@@ -91,12 +95,14 @@ public class FreeAdminSrv extends HttpServlet {
 		param.put("TIT", budname);
 		param.put("CRE_DAT", cretime);
 		param.put("CONT", content);
+		param.put("SC_CD_IN", SccdIn);
 		
 		System.out.println("userId :".concat(userId));
 		System.out.println("userschool :".concat(userschool));
 		System.out.println("userdep :".concat(userdep));
 		System.out.println("budname :".concat(budname));
 		System.out.println("cretime :".concat(cretime));
+		System.out.println("content :".concat(content));
 		System.out.println("content :".concat(content));
 		
 		

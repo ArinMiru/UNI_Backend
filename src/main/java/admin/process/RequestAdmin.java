@@ -3,6 +3,7 @@
  * 
  * 게시판 모니터링 (건의 계시판)
  * 
+ * 2023.05.23 김도원 실행 sql id 값 변경(selectSugBubInfo)
  */
 
 package admin.process;
@@ -35,7 +36,7 @@ public class RequestAdmin {
 			
 			List<Map<String, Object>> rtnList = null;
 
-			rtnList = session.selectList("uni-account-mapping.selectBubInfo",param);
+			rtnList = session.selectList("uni-account-mapping.selectSugBubInfo",param);
 			
 			for (int i = 0;i < rtnList.size();i++) {
 				jobjMain.put("NICK_NM", rtnList.get(i).get("NICK_NM"));

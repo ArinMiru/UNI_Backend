@@ -8,7 +8,7 @@
  * 2023.05.18 전체적으로 수정이 필요한부분 : 학교코드를 front단에서 입력받아와 해당 코드와 일치하는 정보만
  * 가져올수 있도록 조건식을 설정해야함 if문만 이용해도 충분할거같음.
  * 
- * 
+ * 2023.05.23 김도원 실행 sql id 값 변경(selectFreeBubInfo)
  * 
  * 게시판모니터링 (자유게시판)
  */
@@ -43,7 +43,7 @@ public class FreeAdmin {
 			
 			List<Map<String, Object>> rtnList = null;
 
-			rtnList = session.selectList("uni-account-mapping.selectBubInfo",param);
+			rtnList = session.selectList("uni-account-mapping.selectFreeBubInfo",param);
 			
 			for (int i = 0;i < rtnList.size();i++) {
 				

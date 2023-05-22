@@ -5,6 +5,8 @@
  * 
  * 2023.05.19 안재경 <수정>
  * 2차원 배열을 이용 게시물마다 관련정보를 불러오고 여러장으로 등록될수있는 이미지 또한 select
+ * 
+ * 2023.05.23 김도원 실행 sql id 값 변경(selectMarkBubInfo)
  */
 
 package admin.process;
@@ -37,7 +39,7 @@ public class MarketAdmin {
 			
 			List<Map<String, Object>> rtnList = null;
 
-			rtnList = session.selectList("uni-account-mapping.selectBubInfo",param);
+			rtnList = session.selectList("uni-account-mapping.selectMarkBubInfo",param);
 			
 			for (int i = 0;i < rtnList.size();i++) {
 				jobjMain.put("NICK_NM", rtnList.get(i).get("NICK_NM"));

@@ -1,8 +1,10 @@
 /*
- * 2023.05.09 김도원 <생성>
+ * 2023.05.17 안재경 <생성>
  * 
- * 2023.05.15 개발 담당 : 안재경
- * 게시물 모니터링
+ * 게시판 모니터링 (장터 계시판)
+ * 
+ * 2023.05.19 안재경 <수정>
+ * 서블릿파일 미수정 process 내 장터게시판 모니터링 배열부분만 수정됨.
  */
 
 package admin.servlet;
@@ -19,19 +21,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
-import admin.process.BudlistAdminTtableOut;
+import admin.process.MarketAdmin;
 
 /**
  * Servlet implementation class LoginSrv
  */
-@WebServlet("/BudListAdminSvc")
-public class BudlistAdmintSrv extends HttpServlet {
+@WebServlet("/MarketAdminSrv")
+public class MarketAdminSrv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BudlistAdmintSrv() {
+    public MarketAdminSrv() {
         super();  
     } 
 
@@ -97,9 +99,11 @@ public class BudlistAdmintSrv extends HttpServlet {
 		System.out.println("content :".concat(content));
 		
 		
-		BudlistAdminTtableOut budlistadminttableout = new BudlistAdminTtableOut(param);
 		
-		resltObj = budlistadminttableout.getResult();
+		
+		MarketAdmin marketadmin = new MarketAdmin(param);
+		
+		resltObj = marketadmin.getResult();
 		
 		System.out.println("resltObj :".concat(resltObj.toString()));
 		

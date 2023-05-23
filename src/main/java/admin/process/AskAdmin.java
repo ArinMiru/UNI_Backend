@@ -1,8 +1,10 @@
 /*
- * 2023.05.09 김도원 <생성>
+ * 2023.05.17 안재경 <생성>
  * 
- * 2023.05.15 개발 담당 : 안재경
- * 게시물 모니터링
+ * 게시판 모니터링 (질문 계시판)
+ * 
+ * 2023.05.23 김도원 실행 sql id 값 변경(selectQuesBubInfo)
+ * 
  */
 
 package admin.process;
@@ -20,12 +22,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class BudlistAdminTtableOut {    
+public class AskAdmin {    
 	
 	private JSONArray jary = new JSONArray();
 	private JSONObject jobjMain = new JSONObject();
 	
-	public BudlistAdminTtableOut (Map<String, Object> param) throws IOException {
+	public AskAdmin (Map<String, Object> param) throws IOException {
 		
 		String resource = "/mybatis-config.xml";
 		InputStream inputStream = Resources.getResourceAsStream(resource);
@@ -35,7 +37,7 @@ public class BudlistAdminTtableOut {
 			
 			List<Map<String, Object>> rtnList = null;
 
-			rtnList = session.selectList("uni-account-mapping.selectBubInfo",param);
+			rtnList = session.selectList("uni-account-mapping.selectQuesBubInfo",param);
 			
 			for (int i = 0;i < rtnList.size();i++) {
 				jobjMain.put("NICK_NM", rtnList.get(i).get("NICK_NM"));

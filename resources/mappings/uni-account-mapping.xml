@@ -35,6 +35,31 @@
 	WHERE A.MEMB_ID = #{LOGIN_ID}
   </select>
   
+  <select id="selectMembInfoAdmin" resultType="HashMap" parameterType="HashMap">
+  <!-- 2023.05.18 관리자 사용자정보/ 김도원 생성 -->
+    SELECT 
+		A.MEMB_ID
+		,A.MEMB_NM
+		,A.MEMB_SC_CD
+		,A.MEMB_DEP_CD
+		,A.MEMB_NUM
+		,B.CODE_VAL AS MEMB_SC_NM
+		,C.CODE_DESC AS MEMB_DEP_NM
+		,A.TIT_CD
+		,D.CODE_VAL AS TIT_NM
+		,A.NICK_NM
+		,A.MEMB_GRA
+		,A.MEMB_EM
+		,A.PROF_IMG_PATH
+		,IF(E.CERT_DIV_CD = '01','Y','N') AS COLL_CERT_IND
+	FROM MEMB_BAS A 
+	LEFT JOIN CD_BAS B ON B.CODE_TYPE = 'MEMB_SC_CD' AND B.CODE = A.MEMB_SC_CD
+	LEFT JOIN CD_BAS C ON C.CODE_TYPE = 'MEMB_DEP_CD' AND C.CODE = A.MEMB_DEP_CD
+	LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+	LEFT JOIN CERT_MEMB_HIST E ON E.MEMB_ID = A.MEMB_ID AND E.CERT_DIV_CD = '01'
+	WHERE A.MEMB_ID = #{MEMB_SC_CD}
+  </select>
+  
   <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT 
 		*
@@ -197,5 +222,28 @@
 	AND   CRE_SEQ 		= #{CRE_SEQ}
   </update>  
   
+  <select id="selectCheckEmail" resultType="hashMap" parameterType="hashMap">
+    SELECT 	IF(MEMB_EM = #{MEMB_EM},'00','07') AS RSLT_CD 
+    FROM 	MEMB_BAS
+	WHERE 	MEMB_ID = #{MEMB_ID}
+  </select>
+  
+  <insert id="insertCertInfo" parameterType="Hashmap">
+	INSERT INTO CERT_MEMB_HIST(
+		MEMB_ID
+		,CRE_SEQ
+		,CERT_DIV_CD
+		,CERT_DATE
+		,CERT_NUM
+		,CHK_NUM
+	) VALUES (
+		#{MEMB_ID}
+		,NEXTVAL(cert_cre_seq)
+		,#{CERT_DIV_CD}
+		,SYSDATE()
+		,#{CERT_NUM}
+		,#{CHK_NUM}
+	)
+  </insert>  
   
 </mapper>

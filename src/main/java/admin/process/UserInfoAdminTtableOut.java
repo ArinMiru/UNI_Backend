@@ -6,6 +6,9 @@
  * 
  * 2023.05.18 16:06 최서은
  * 사용자 정보를 배열로 선언
+ * 
+ * 2023.05.24 최서은
+ * 관리자 사용자 정보 쿼리 추가
  */
 
 package admin.process;
@@ -44,7 +47,7 @@ public class UserInfoAdminTtableOut {
 			
 			List<Map<String, Object>> rtnList = null;	
 			
-			rtnList = session.selectList("uni-account-mapping.**",param);
+			rtnList = session.selectList("uni-account-mapping.selectMembInfoAdmin",param);
 			
 			for(int i=0; i < rtnList.size()	;i++) 
 			{

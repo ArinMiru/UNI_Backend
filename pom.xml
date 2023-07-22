@@ -45,6 +45,11 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
+        <dependency>
+    		<groupId>org.apache.tomcat</groupId>
+    		<artifactId>tomcat-util</artifactId>
+    		<version>9.0.31</version>
+		</dependency>
         <!-- 추가된 의존성들 끝 -->
     </dependencies>
 </project>

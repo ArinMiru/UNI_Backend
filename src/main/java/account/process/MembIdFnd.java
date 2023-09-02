@@ -36,31 +36,24 @@ public class MembIdFnd {
 		// maria db 접속하여 db 세션 획득
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		
+		SqlSession session = sqlSessionFactory.openSession();
+		
 		try {
-			SqlSession session = sqlSessionFactory.openSession();
-			
 			Map<String, Object> rtn = null;
+			rtn = session.selectOne("uni-account-mapping.selectIdEmail",param);
 			
-			System.out.println("param :"+param.toString());
+			// 로그인결과코드 JSON MAIN 항목추가
+			if (rtn == null) {
+				jObjMain.put("RSLT_CD","99");
+			} 
 			
-			rtn = session.selectOne("uni-account-mapping.selectCheckEmail",param);
-			
-			
-			if ("99".equals(rtn.get("RSLT_CD"))) {	
-				// 99 : 기타오류
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			}			
-			
-			if ("00".equals(rtn.get("RSLT_CD"))) {
-				// 00 : 정상 (코드 이메일로 정상 발송)
-				jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-				jObjMain.put("CERT_SEQ", rtn.get("CERT_SEQ"));
-			}
+			jObjMain.put("RSLT_CD",rtn.get("RSLT_CD"));
+			jObjMain.put("MEMB_ID",rtn.get("MEMB_ID"));
 			
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {
-	    	
+	    	if (session != null) session.close();
 	    }
 	}
     

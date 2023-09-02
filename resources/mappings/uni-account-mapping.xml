@@ -223,12 +223,30 @@
   </update>  
   
   <select id="selectCheckEmail" resultType="hashMap" parameterType="hashMap">
+  <!-- 비밀번호 찾기 -->
     SELECT 	IF(MEMB_EM = #{MEMB_EM},'00','07') AS RSLT_CD 
     FROM 	MEMB_BAS
 	WHERE 	MEMB_ID = #{MEMB_ID}
   </select>
+
+  <select id="selectIdEmail" resultType="hashMap" parameterType="hashMap">
+  <!-- 아이디 찾기 -->
+    SELECT 	IF(COUNT(*) = 0,'07','00') AS RSLT_CD
+            ,MEMB_ID
+    FROM 	MEMB_BAS
+	WHERE 	MEMB_EM = #{MEMB_EM}
+  </select>
+  
+  <select id="selectCertInfo" resultType="hashMap" parameterType="hashMap">
+  <!-- 이메일 인증코드 확인 -->
+    SELECT 	IF(CHK_NUM = #{INPUT_CD},'00','07') AS RSLT_CD 
+    FROM 	CERT_MEMB_HIST
+	WHERE 	MEMB_ID = #{MEMB_ID}
+	AND 	CERT_NUM = #{CERT_NUM}
+  </select>
   
   <insert id="insertCertInfo" parameterType="Hashmap">
+  <!-- ChkAndCert(코드검증 및 인증완료) -->
 	INSERT INTO CERT_MEMB_HIST(
 		MEMB_ID
 		,CRE_SEQ

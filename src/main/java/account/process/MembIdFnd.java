@@ -12,7 +12,6 @@ package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -44,7 +43,7 @@ public class MembIdFnd {
 			
 			System.out.println("param :"+param.toString());
 			
-			rtn = session.selectOne("uni-account-mapping.**",param);
+			rtn = session.selectOne("uni-account-mapping.selectCheckEmail",param);
 			
 			
 			if ("99".equals(rtn.get("RSLT_CD"))) {	

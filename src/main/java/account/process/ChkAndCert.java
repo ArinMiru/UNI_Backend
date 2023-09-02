@@ -12,7 +12,6 @@ package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -39,26 +38,15 @@ public class ChkAndCert {
 		
         try {
             SqlSession session = sqlSessionFactory.openSession();
-            Map<String, Object> rtn = null;
+            Map<String, Object> rtn = null;       
 
             System.out.println("param :"+param.toString());
 
             // 수정된 부분: update 메소드를 사용하도록 변경
-            int updatedRows = session.update("uni-account-mapping.**",param);
-            rtn = new HashMap<String, Object>();
+            rtn = session.selectOne("uni-account-mapping.selectCertInfo",param);
+            
+            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 
-            if (updatedRows == 0) {
-                rtn.put("RSLT_CD", "00"); // 00: 정상
-                jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-                jObjMain.put("MEMB_ID", rtn.get("MEMB_ID"));
-            } else if (updatedRows > 0){
-                rtn.put("RSLT_CD", "05"); // 05: 인증코드불일치
-                jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-            } else {
-                rtn.put("RSLT_CD", "99"); // 99: 기타 오류
-                jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-            }
-			
 	    } catch(Exception e) {
 			e.printStackTrace();
 	    } finally {

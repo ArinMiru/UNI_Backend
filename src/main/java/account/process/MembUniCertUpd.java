@@ -16,12 +16,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import mail.process.GmailSend;
 import net.sf.json.JSONObject;
 
 public class MembUniCertUpd {    
@@ -55,10 +58,56 @@ public class MembUniCertUpd {
             } else {
                 rtn.put("RSLT_CD", "99"); // 99: 기타 오류
             }
+            
+            if ("00".equals(rtn.get("RSLT_CD").toString()))
+			{
+			
+				UUID uuid = UUID.randomUUID();
+				String certNum = uuid + "";
+			
+				Random random = new Random();
+				StringBuffer sb = new StringBuffer();
+				for(int i=0; i<6; i++) {
+					sb.append(random.nextInt(10));
+				}
+			
+				param.put("CERT_NUM", certNum);
+				param.put("CERT_DIV_CD", "02");
+				param.put("CHK_NUM", sb.toString());
+			
+				System.out.println(param.toString());
+			
+			
+				GmailSend gmailSend = new GmailSend();
+				String toMail = param.get("MEMB_EM").toString();
+				String toTitle = "[UNI] 인증코드번호 전송";
+				String content = "인증번호 : "+sb.toString()+" 코드입력 화면에 입력해주세요.";
+			
+				System.out.println(toMail);
+				System.out.println(toTitle);
+				System.out.println(content);
+			
+				if (toMail.isEmpty()) 
+				{ 
+					jObjMain.put("RSLT_CD","04");
+				} else {
+				
+					gmailSend.GmailSet(toMail, toTitle, content);
+					long rtnCnt = session.insert("uni-account-mapping.insertCertInfo",param);
+					if (rtnCnt == 0) {
+						jObjMain.put("RSLT_CD","99");
+					} else {
+						jObjMain.put("RSLT_CD","00");
+					}
+				}
+			
+				jObjMain.put("CERT_SEQ",certNum);
+
+				session.commit();
+			}
 
             jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
             
-            session.commit();
 
 			
 	    } catch(Exception e) {

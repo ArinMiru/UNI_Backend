@@ -176,8 +176,8 @@
   <select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT
 		CRE_SEQ
-		,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d') AS STRT_SCHD_YMD
-		,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d') AS END_SCHD_YMD
+		,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d %H:%i') AS STRT_SCHD_YMD
+		,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d %H:%i') AS END_SCHD_YMD
 		,TIT
 		,CONT
 		,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT

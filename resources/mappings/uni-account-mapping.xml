@@ -40,9 +40,9 @@
     SELECT
         SCH_CD
         ,SCH_NM
-        ,IF(SCH_CD = #{sch_cd}, '00', '01') AS RSLT_CD
+        ,IF(SCH_CD = #{SCH_CD}, '00', '01') AS RSLT_CD
     FROM SCHL_DPRT_SRCH
-    WHERE SCH_CD = #{sch_cd}
+    WHERE SCH_CD = #{SCH_CD}
 </select>
 
 

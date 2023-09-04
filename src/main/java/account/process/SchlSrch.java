@@ -36,7 +36,7 @@ public class SchlSrch {
 		        jObjMain.put("RSLT_CD", "01");
 		    } else {
 		        if ("00".equals(rtn.get("RSLT_CD"))) {
-		            jObjMain.put("SCH_CD", ((Integer) rtn.get("SCH_CD")).intValue());  // Integer로 캐스팅
+		            jObjMain.put("SCH_CD", rtn.get("SCH_CD"));  // Integer로 캐스팅
 		            jObjMain.put("SCH_NM", rtn.get("SCH_NM"));
 		            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 		        } else {

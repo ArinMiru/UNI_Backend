@@ -7,6 +7,7 @@ package account.process;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -14,6 +15,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class DprtSrch {    
@@ -35,21 +37,25 @@ public class DprtSrch {
 		SqlSession session = sqlSessionFactory.openSession();
 		
 		try {
-		    Map<String, Object> rtn = null;
-		    rtn = session.selectOne("uni-account-mapping.selectSchlAndDprtSrch", param);
+			JSONArray jarySub2 = new JSONArray();
+			JSONObject jObjSub2 = new JSONObject();
+			List<Map<String, Object>> rtn = null;
+		    rtn = session.selectList("uni-account-mapping.selectSchlAndDprtSrch", param);
 		    
 		    if (rtn == null) {
 		        jObjMain.put("RSLT_CD", "01");
 		    } else {
-		        if ("00".equals(rtn.get("RSLT_CD"))) {
-		            jObjMain.put("SCH_CD", ((Integer) rtn.get("SCH_CD")).intValue());  // Integer로 캐스팅
-		            jObjMain.put("SCH_NM", rtn.get("SCH_NM"));
-		            jObjMain.put("DPRT_CD", rtn.get("DPRT_CD"));
-		            jObjMain.put("DPRT_NM", rtn.get("DPRT_NM"));
-		            jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-		        } else {
-		            jObjMain.put("RSLT_CD", "01");
+		    	for (int j=0; j < rtn.size() ;j++)
+				{
+					jObjSub2.put("SCH_CD", rtn.get(j).get("SCH_CD"));
+		    		jObjSub2.put("SCH_NM", rtn.get(j).get("SCH_NM"));
+		    		jObjSub2.put("DPRT_CD", rtn.get(j).get("DPRT_CD"));
+		    		jObjSub2.put("DPRT_NM", rtn.get(j).get("DPRT_NM"));
+		    		
+		    		jarySub2.add(jObjSub2);
 		        }
+		    	jObjMain.put("RSLT_CD", "00");			
+		    	jObjMain.put("DPRT_NM_INFO", jarySub2);   
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();

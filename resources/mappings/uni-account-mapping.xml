@@ -37,7 +37,7 @@
   
 <select id="selectSchlSrch" resultType="HashMap" parameterType="HashMap">
   <!-- 대학교명 검색 (2023.09.03 김도원) -->
-    SELECT
+    SELECT DISTINCT
         SCH_CD
         ,SCH_NM
     FROM SCHL_DPRT_SRCH
@@ -47,17 +47,13 @@
 
 <select id="selectSchlAndDprtSrch" resultType="HashMap" parameterType="HashMap">
 	<!-- 학과 검색 (2023.09.03 김도원) -->
-    SELECT
+    SELECT DISTINCT
         SCH_CD
         ,SCH_NM
         ,DPRT_CD
         ,DPRT_NM
-        ,CASE 
-            WHEN SCH_CD = #{sch_cd} AND DPRT_CD = #{dprt_cd} THEN '00'
-            ELSE '01'
-         END AS RSLT_CD
     FROM SCHL_DPRT_SRCH
-    WHERE SCH_CD = #{sch_cd} AND DPRT_CD = #{dprt_cd}
+    WHERE SCH_CD = #{SCH_CD}
 </select>
   
   <select id="selectMembInfoAdmin" resultType="HashMap" parameterType="HashMap">

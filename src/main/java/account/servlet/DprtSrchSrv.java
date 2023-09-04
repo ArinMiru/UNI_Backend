@@ -53,9 +53,7 @@ public class DprtSrchSrv extends HttpServlet {
 		//doGet(request, response);
 		
 		// 
-		int sch_cd = 0;
-		String sch_nm="";
-		String dprt_cd="";
+		String sch_cd = "";
         StringBuffer jb = new StringBuffer();
         String line = null;
 
@@ -75,18 +73,12 @@ public class DprtSrchSrv extends HttpServlet {
 
         JSONObject jobj = JSONObject.fromObject(jb.toString());
 
-        sch_cd = (jobj.get("SCH_CD") == null) ? 0 : jobj.getInt("SCH_CD");
-        sch_nm = (jobj.get("SCH_NM") == null) ? "" : jobj.get("SCH_NM").toString();
-        dprt_cd = (jobj.get("DPRT_CD") == null) ? "" : jobj.get("DPRT_CD").toString();
+        sch_cd = (jobj.get("SCH_CD") == null) ? "" : jobj.get("SCH_CD").toString();
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("SCH_CD", sch_cd);
-        param.put("SCH_NM", sch_nm);
-        param.put("DPRT_CD", dprt_cd);
 
         System.out.println("sch_cd :".concat(String.valueOf(sch_cd)));
-        System.out.println("sch_nm :".concat(String.valueOf(sch_nm)));
-        System.out.println("dprt_cd :".concat(String.valueOf(dprt_cd)));
 		
 		DprtSrch dprtsrch = new DprtSrch(param);
 		

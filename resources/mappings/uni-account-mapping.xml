@@ -40,10 +40,8 @@
     SELECT
         SCH_CD
         ,SCH_NM
-        ,IF(SCH_CD = #{SCH_CD}, '00', '01') AS RSLT_CD
     FROM SCHL_DPRT_SRCH
-    WHERE SCH_CD = #{SCH_CD}
-    LIMIT 1
+    WHERE SCH_NM LIKE '%#{SCH_NM}%';
 </select>
 
 

@@ -37,7 +37,7 @@ public class SchlSrchSrv extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        int sch_cd = 0;
+        String sch_nm = " ";
         StringBuffer jb = new StringBuffer();
         String line = null;
 
@@ -57,12 +57,12 @@ public class SchlSrchSrv extends HttpServlet {
 
         JSONObject jobj = JSONObject.fromObject(jb.toString());
 
-        sch_cd = (jobj.get("SCH_CD") == null) ? 0 : jobj.getInt("SCH_CD");
+        sch_nm = (jobj.get("SCH_NM") == null) ? "" : jobj.getString("SCH_NM");
 
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("SCH_CD", sch_cd);
+        param.put("SCH_NM", sch_nm);
 
-        System.out.println("sch_cd :".concat(String.valueOf(sch_cd)));
+        System.out.println("sch_nm :".concat(sch_nm));
 
         SchlSrch schlsrch = new SchlSrch(param);
         

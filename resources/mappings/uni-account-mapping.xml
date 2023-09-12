@@ -149,7 +149,6 @@
   <!-- 23.05.10 비밀번호 변경 (김도원) -->
   	UPDATE MEMB_BAS set
 		PASS 		= #{PASS}
-		,UPD_DAT	= SYSDATE()
 	WHERE MEMB_ID = #{MEMB_ID}
   </update>
   
@@ -157,7 +156,6 @@
   	<!-- 23.05.10 닉네임 변경 (김도원) -->
   	UPDATE MEMB_BAS set
  		NICK_NM 	= #{NICK_NM}
- 		,UPD_DAT	= SYSDATE()
 	WHERE MEMB_ID = #{MEMB_ID}
   </update>
   

@@ -12,6 +12,8 @@
 			ROW_NUMBER() OVER() AS R_NUM
 			,Z.MEMB_ID
 			,A.MEMB_NM
+			,A.MEMB_SC_CD
+			,A.MEMB_DEP_CD
 			,Z.CRE_SEQ	
 			,Z.TIT
 			,Z.CONT

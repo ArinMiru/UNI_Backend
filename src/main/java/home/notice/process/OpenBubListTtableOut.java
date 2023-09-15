@@ -47,6 +47,8 @@ public class OpenBubListTtableOut {
 			{
 				jObjSub.put("MEMB_ID", rtnList.get(i).get("MEMB_ID"));
 				jObjSub.put("MEMB_NM", rtnList.get(i).get("MEMB_NM"));
+				jObjSub.put("MEMB_SC_CD", rtnList.get(i).get("MEMB_SC_CD"));
+				jObjSub.put("MEMB_DEP_CD", rtnList.get(i).get("MEMB_DEP_CD"));
 				jObjSub.put("CRE_SEQ", rtnList.get(i).get("CRE_SEQ"));
 				jObjSub.put("TIT", rtnList.get(i).get("TIT"));
 				jObjSub.put("CONT", rtnList.get(i).get("CONT"));

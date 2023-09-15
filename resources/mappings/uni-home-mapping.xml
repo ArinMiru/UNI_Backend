@@ -11,6 +11,7 @@
 		SELECT
 			ROW_NUMBER() OVER() AS R_NUM
 			,Z.MEMB_ID
+			,Z.MEMB_NM
 			,Z.CRE_SEQ	
 			,Z.TIT
 			,Z.CONT

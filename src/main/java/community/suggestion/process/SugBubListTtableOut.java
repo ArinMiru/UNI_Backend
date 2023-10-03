@@ -70,7 +70,7 @@ public class SugBubListTtableOut {
 					jObjSub2.put("ANS_MEMB_ID", rtnListSub2.get(j).get("ANS_MEMB_ID"));
 					jObjSub2.put("ANS_SEQ", rtnListSub2.get(j).get("ANS_SEQ"));
 					jObjSub2.put("CONT", rtnListSub2.get(j).get("CONT"));
-					jObjSub2.put("SEC_YN", rtnListSub2.get(i).get("SEC_YN"));
+					jObjSub2.put("SEC_YN", rtnListSub2.get(j).get("SEC_YN"));
 					jObjSub2.put("CRE_DAT", rtnListSub2.get(j).get("CRE_DAT"));
 											
 					jarySub2.add(jObjSub2);

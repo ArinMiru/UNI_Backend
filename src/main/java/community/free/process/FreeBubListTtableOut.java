@@ -33,7 +33,7 @@ public class FreeBubListTtableOut {
 			// 공지사항은 LIST 형태로 조회되기 때문에 LIST 선언
 			List<Map<String, Object>> rtnList = null;			
 								
-			rtnList = session.selectList("uni-home-mapping.selectFreeBubInfo",param);	
+			rtnList = session.selectList("uni-community-mapping.selectFreeBubInfo",param);	
 									
 			JSONArray jarySub = new JSONArray();
 			JSONObject jObjSub = new JSONObject();

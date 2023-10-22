@@ -123,7 +123,7 @@
 		,CONT
 		,CRE_DAT    
     ) VALUES (
-		,#{MEMB_ID}
+		#{MEMB_ID}
 		,#{CRE_SEQ}
 		,#{ANS_SEQ}
 		,#{CONT}
@@ -264,7 +264,7 @@
 		,CONT
 		,CRE_DAT    
     ) VALUES (
-		,#{MEMB_ID}
+		#{MEMB_ID}
 		,#{CRE_SEQ}
 		,#{ANS_SEQ}
 		,#{CONT}
@@ -412,7 +412,7 @@
 		,SEC_YN
 		,CRE_DAT    
     ) VALUES (
-		,#{MEMB_ID}
+		#{MEMB_ID}
 		,#{CRE_SEQ}
 		,#{ANS_SEQ}
 		,#{CONT}
@@ -557,7 +557,7 @@
 		,SEC_YN
 		,CRE_DAT    
     ) VALUES (
-		,#{MEMB_ID}
+		#{MEMB_ID}
 		,#{CRE_SEQ}
 		,#{ANS_SEQ}
 		,#{CONT}

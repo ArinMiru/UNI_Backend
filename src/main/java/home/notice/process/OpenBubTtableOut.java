@@ -65,7 +65,7 @@ public class OpenBubTtableOut {
 					UUID uuid = UUID.randomUUID();
 					// 파일명 새로 구성
 					// 추후 파일 저장 경로 변경 예정
-					String saveFileNm = "C:\\UNI\\" + uuid + "_" + fileNm;
+					String saveFileNm = "http://138.2.50.90:9000/images/" + uuid + "_" + fileNm;
 				
 					// 등록,수정
 					if (0 == jObjMain.getInt("IMG_SEQ")) 

@@ -215,8 +215,8 @@
 		,#{MEMB_DEP_CD}
 		,#{MEMB_ID}
 		,#{CRE_SEQ}
-		,#{STRT_SCHD_YMD}
-		,#{END_SCHD_YMD}
+		,CONVERT(#{STRT_SCHD_YMD},DATE)
+		,CONVERT(#{END_SCHD_YMD},DATE)
 		,#{TIT}
 		,#{CONT}
 		,SYSDATE()

@@ -86,7 +86,7 @@ public class OpenBubTtableOut {
 					// 이미지 BASE64 디코딩해서 파일로 생성
 					byte decode[] = Base64.decodeBase64(fileBase);
 					FileOutputStream fos;
-					File target = new File(saveFileNm);
+					File target = new File("../images/" + uuid + "_" + fileNm);
 					target.createNewFile();
 					fos = new FileOutputStream(target);
 					fos.write(decode);

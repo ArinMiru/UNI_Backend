@@ -65,7 +65,7 @@ public class OpenBubTtableOut {
 					UUID uuid = UUID.randomUUID();
 					// 파일명 새로 구성
 					// 추후 파일 저장 경로 변경 예정
-					String saveFileNm = "C:\\UNI\\" + uuid + "_" + fileNm;
+					String saveFileNm = "http://138.2.50.90:9000/images/" + uuid + "_" + fileNm;
 				
 					// 등록,수정
 					if (0 == jObjMain.getInt("IMG_SEQ")) 
@@ -86,7 +86,7 @@ public class OpenBubTtableOut {
 					// 이미지 BASE64 디코딩해서 파일로 생성
 					byte decode[] = Base64.decodeBase64(fileBase);
 					FileOutputStream fos;
-					File target = new File(saveFileNm);
+					File target = new File("/usr/tomcat/webapps/images/" + uuid + "_" + fileNm);
 					target.createNewFile();
 					fos = new FileOutputStream(target);
 					fos.write(decode);

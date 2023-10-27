@@ -178,20 +178,18 @@
   
   <select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT
-		CRE_SEQ
-		,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d %H:%i') AS STRT_SCHD_YMD
-		,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d %H:%i') AS END_SCHD_YMD
-		,TIT
-		,CONT
-		,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-	FROM 	SCHD_BAS 
-  	WHERE 	CONVERT(#{SEARCH_DATE},DATETIME) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
-  	AND 	MEMB_ID = #{MEMB_ID}
-  	AND 	MEMB_SC_CD = #{MEMB_SC_CD}
- 	<if test='!"04".equals(TIT_CD)'> 
- 	AND 	MEMB_DEP_CD = #{MEMB_DEP_CD}
- 	</if>
-  </select>
+        CRE_SEQ
+        ,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d %H:%i') AS STRT_SCHD_YMD
+        ,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d %H:%i') AS END_SCHD_YMD
+        ,TIT
+        ,CONT
+        ,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+    FROM    SCHD_BAS 
+    WHERE   CONVERT(#{SEARCH_DATE},DATETIME) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
+    AND     MEMB_SC_CD = #{MEMB_SC_CD}
+    AND     MEMB_DEP_CD = #{MEMB_DEP_CD}
+</select>
+
   
   <select id="selectSchdBubSeq" resultType="long">
     SELECT 

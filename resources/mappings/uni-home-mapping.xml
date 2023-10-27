@@ -167,16 +167,14 @@
  			DATE_FORMAT(CURDATE(),'%m') AS MONTH,
  			DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY) AS DAY1,
  			DAYOFWEEK(DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY)) AS YOIL
- 	FROM MON_CAL) A LEFT JOIN SCHD_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD AND B.MEMB_ID = #{MEMB_ID}
+ 	FROM MON_CAL) A LEFT JOIN SCHD_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD
  	AND 	B.MEMB_SC_CD = #{MEMB_SC_CD}
- 	<if test='!"04".equals(TIT_CD)'> 
  	AND 	B.MEMB_DEP_CD = #{MEMB_DEP_CD}
- 	</if>
  	GROUP BY YEAR,MONTH,DAY,YOIL
  	ORDER BY A.DAY1
   </select>
   
-  <select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
+<select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT
         CRE_SEQ
         ,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d %H:%i') AS STRT_SCHD_YMD
@@ -187,7 +185,9 @@
     FROM    SCHD_BAS 
     WHERE   CONVERT(#{SEARCH_DATE},DATETIME) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
     AND     MEMB_SC_CD = #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
     AND     MEMB_DEP_CD = #{MEMB_DEP_CD}
+    </if>
 </select>
 
   

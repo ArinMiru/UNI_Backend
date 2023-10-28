@@ -439,6 +439,13 @@
 	AND A.R_NUM <= #{REQ_PAGE} * #{LIST_UNIT_CNT}
 	]]>
   </select>
+  
+  <select id="selectVotBubInfoAns" resultType="HashMap" parameterType="HashMap">
+    SELECT VOT_SEQ 
+	FROM VOT_STAT 
+	WHERE CRE_SEQ = #{CRE_SEQ} AND MEMB_ID = #{MEMB_ID} 
+	ORDER BY VOT_SEQ DESC
+  </select>
  
  <select id="selectVotBubSeq" resultType="long">
     SELECT 

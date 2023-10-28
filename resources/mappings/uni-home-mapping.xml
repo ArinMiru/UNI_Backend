@@ -412,8 +412,8 @@
 			,Z.VOT_DESC
 			<![CDATA[
 			,CASE
-  				WHEN DATE_FORMAT(CURDATE(),'%Y-%m-%i') > Z.VOT_EXPR_DATE THEN 'VF'
-  				WHEN DATE_FORMAT(CURDATE(),'%Y-%m-%i') <= Z.VOT_EXPR_DATE THEN 'VG'
+  				WHEN DATE_FORMAT(CURDATE(),'%Y-%m-%d') > Z.VOT_EXPR_DATE THEN 'VF'
+  				WHEN DATE_FORMAT(CURDATE(),'%Y-%m-%d') <= Z.VOT_EXPR_DATE THEN 'VG'
   				ELSE 'VE'
  			 END AS VOT_GO_CD
  			 ]]>

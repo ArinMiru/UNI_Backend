@@ -49,47 +49,13 @@ public class VotBubListTtableOut {
 				jObjSub.put("VOT_EXPR_DATE", rtnList.get(i).get("VOT_EXPR_DATE"));
 				jObjSub.put("VOT_DESC", rtnList.get(i).get("VOT_DESC"));
 				jObjSub.put("VOT_GO_CD", rtnList.get(i).get("VOT_GO_CD"));
-				//jObjSub.put("VOT_SEL_SEQ", rtnList.get(i).get("VOT_SEL_SEQ"));
+				jObjSub.put("VOT_SEL_SEQ", rtnList.get(i).get("VOT_SEL_SEQ"));
 				jObjSub.put("VOT_INFO", rtnList.get(i).get("VOT_INFO"));
 				
 				jObjSub.put("MEMB_SC_NM", rtnList.get(i).get("MEMB_SC_NM"));
 				jObjSub.put("MEMB_DEP_NM", rtnList.get(i).get("MEMB_DEP_NM"));
 				jObjSub.put("TIT_NM", rtnList.get(i).get("TIT_NM"));
 				jObjSub.put("NICK_NM", rtnList.get(i).get("NICK_NM"));
-				
-				// 응답 별도 추출
-				// 투표은 LIST 형태로 조회되기 때문에 LIST 선언
-				List<Map<String, Object>> rtnListAns = null;			
-							
-				param.put("CRE_SEQ", rtnList.get(i).get("CRE_SEQ"));
-				rtnListAns = session.selectList("uni-home-mapping.selectVotBubInfoAns",param);
-				
-				System.out.println("start 0"+rtnListAns.toString());
-				
-				String VOT_SEL_SEQ="";
-				for (int j=0; j < rtnListAns.size() ;j++)
-				{
-					System.out.println("start 1");
-					if(rtnListAns.get(j).get("VOT_SEQ") == null)
-					{
-						System.out.println("start2");
-						break;
-					
-					} else {
-						
-						if ((rtnListAns.size()-1) == j)
-						{
-							System.out.println("start3");
-							VOT_SEL_SEQ.concat(rtnListAns.get(j).get("VOT_SEQ").toString());
-						} else {
-							System.out.println("start4");
-							VOT_SEL_SEQ.concat(rtnListAns.get(j).get("VOT_SEQ").toString()).concat(",");
-						}
-					}
-				}
-				
-				jObjSub.put("VOT_SEL_SEQ", VOT_SEL_SEQ);
-				
 								
 				jarySub.add(jObjSub);
 			}

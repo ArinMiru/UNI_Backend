@@ -49,7 +49,7 @@ public class VotBubListTtableOut {
 				jObjSub.put("VOT_EXPR_DATE", rtnList.get(i).get("VOT_EXPR_DATE"));
 				jObjSub.put("VOT_DESC", rtnList.get(i).get("VOT_DESC"));
 				jObjSub.put("VOT_GO_CD", rtnList.get(i).get("VOT_GO_CD"));
-				jObjSub.put("VOT_SEL_SEQ", rtnList.get(i).get("VOT_SEL_SEQ"));
+				jObjSub.put("VOT_SEL_SEQ", rtnList.get(i).get("VOT_SEL_SEQ").toString());
 				jObjSub.put("VOT_INFO", rtnList.get(i).get("VOT_INFO"));
 				
 				jObjSub.put("MEMB_SC_NM", rtnList.get(i).get("MEMB_SC_NM"));

@@ -64,17 +64,25 @@ public class VotBubListTtableOut {
 				param.put("CRE_SEQ", rtnList.get(i).get("CRE_SEQ"));
 				rtnListAns = session.selectList("uni-home-mapping.selectVotBubInfoAns",param);
 				
+				System.out.println("start 0"+rtnListAns.toString());
+				
 				String VOT_SEL_SEQ="";
 				for (int j=0; j < rtnListAns.size() ;j++)
 				{
+					System.out.println("start 1");
 					if(rtnListAns.get(j).get("VOT_SEQ") == null)
 					{
+						System.out.println("start2");
 						break;
+					
 					} else {
+						
 						if ((rtnListAns.size()-1) == j)
 						{
+							System.out.println("start3");
 							VOT_SEL_SEQ.concat(rtnListAns.get(j).get("VOT_SEQ").toString());
 						} else {
+							System.out.println("start4");
 							VOT_SEL_SEQ.concat(rtnListAns.get(j).get("VOT_SEQ").toString()).concat(",");
 						}
 					}

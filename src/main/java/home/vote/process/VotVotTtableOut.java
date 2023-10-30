@@ -39,17 +39,22 @@ public class VotVotTtableOut {
 			
 			String votSeq = jobj.getString("VOT_SEQ");
 			String[] listVot = votSeq.split(",");
-			List<String> vot_list = new ArrayList<String>();
+			//List<String> vot_list = new ArrayList<String>();
 			
 			for(int i=0;i<listVot.length;i++)
 			{
-				vot_list.add(listVot[i]);
+				if (listVot[i] != "-1")
+				{
+				  param.put("VOT_SEQ", listVot[i]);
+				  // 투표 통계 등록
+				  session.insert("uni-home-mapping.insertVotVotInfo",param);
+				}
 			}
 			
-			param.put("VOT_SEQ", vot_list);
+			//param.put("VOT_SEQ", listVot);
 
 			// 투표 통계 등록
-			session.insert("uni-home-mapping.insertVotVotInfo",param);
+			//session.insert("uni-home-mapping.insertVotVotInfo",param);
 					
 			jObjRtn.put("RSLT_CD", "00");
 			

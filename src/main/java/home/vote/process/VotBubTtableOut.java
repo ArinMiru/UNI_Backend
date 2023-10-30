@@ -55,7 +55,17 @@ public class VotBubTtableOut {
 				// 투표 등록
 				session.insert("uni-home-mapping.insertVotBubInfo",param);
 				// 보기정보 등록
-				session.insert("uni-home-mapping.insertVotDtlInfo",param);
+				
+				
+				for(int i=0;i<listVot.length;i++)
+				{
+					if (listVot[i] != "-1")
+					{
+					  param.put("VOT_SEQ", listVot[i]);
+					  // 투표 통계 등록
+					  session.insert("uni-home-mapping.insertVotDtlInfo",param);
+					}
+				}
 								
 			}
 			
@@ -71,7 +81,17 @@ public class VotBubTtableOut {
 				
 				// 보기정보 삭제 후 등록
 				session.delete("uni-home-mapping.deleteVotDtlInfo",param);
-				session.insert("uni-home-mapping.insertVotDtlInfo",param);
+				//session.insert("uni-home-mapping.insertVotDtlInfo",param);
+				for(int i=0;i<listVot.length;i++)
+				{
+					if (listVot[i] != "-1")
+					{
+					  param.put("VOT_SEQ", listVot[i]);
+					  // 투표 통계 등록
+					  session.insert("uni-home-mapping.insertVotDtlInfo",param);
+					}
+				}
+				
 				// 통계 삭제
 				session.delete("uni-home-mapping.deleteVotStatInfo",param);
 			}

@@ -472,10 +472,8 @@
   </insert>
   
   <insert id="insertVotDtlInfo" parameterType="HashMap">
-  	<foreach item = 'item' collection = 'VOT_INFO' index = 'index' separator = ';'>
-	INSERT INTO VOT_DTL(CRE_SEQ, VOT_SEQ, VOT_DESC) VALUES (#{CRE_SEQ}, #{index}+1, #{item})
-  	</foreach>
-  </insert>
+  	INSERT INTO VOT_DTL(CRE_SEQ, VOT_SEQ, VOT_DESC) VALUES (#{CRE_SEQ}, #{VOT_SEQ}+1, #{item})
+  	</insert>
   
   <update id="updateVotBubInfo" parameterType="HashMap">
     UPDATE VOT_BAS SET

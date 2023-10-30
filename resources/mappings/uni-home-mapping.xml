@@ -514,7 +514,7 @@
   </delete>
   
   <insert id="insertVotVotInfo" parameterType="HashMap">
-    <foreach item = 'item' collection = 'VOT_SEQ' index = 'index' separator = ','>
+    <foreach item = 'item' collection = 'VOT_SEQ' index = 'index' >
    	 <if test='!"-1".equals(item)'> 
 			INSERT INTO VOT_STAT(CRE_SEQ, VOT_SEQ, MEMB_ID) VALUES (#{CRE_SEQ}, CAST(#{item} AS UNSIGNED)+1, #{MEMB_ID})
 			ON DUPLICATE KEY

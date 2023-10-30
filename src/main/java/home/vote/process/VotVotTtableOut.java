@@ -2,7 +2,9 @@ package home.vote.process;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -36,8 +38,15 @@ public class VotVotTtableOut {
 			param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 			
 			String votSeq = jobj.getString("VOT_SEQ");
-			String[] listVot = votSeq.split(","); 	
-			param.put("VOT_SEQ", listVot);
+			String[] listVot = votSeq.split(",");
+			List<String> vot_list = new ArrayList<String>();
+			
+			for(int i=0;i<listVot.length;i++)
+			{
+				vot_list.add(listVot[i]);
+			}
+			
+			param.put("VOT_SEQ", vot_list);
 
 			// 투표 통계 등록
 			session.insert("uni-home-mapping.insertVotVotInfo",param);

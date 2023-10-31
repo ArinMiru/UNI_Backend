@@ -58,6 +58,7 @@ public class OpenBubTtableOut {
 				
 					// BASE64 문자열 읽기
 					String fileBase = (jObjMain.get("FILE_BASE64") == null) ? "" : jObjMain.getString("FILE_BASE64");
+					System.out.printf("BASE64 문자열: %s%n", fileBase);
 					// 파일명 읽기
 					String fileNm = (jObjMain.get("FILE_NM") == null) ? "" : jObjMain.getString("FILE_NM");
 				
@@ -85,9 +86,13 @@ public class OpenBubTtableOut {
 				
 					// 이미지 BASE64 디코딩해서 파일로 생성
 					byte decode[] = Base64.decodeBase64(fileBase);
+					System.out.printf("디코딩 후 바이트 배열의 길이: %d%n", decode.length);
 					FileOutputStream fos;
 					File target = new File("/usr/tomcat/webapps/images/" + uuid + "_" + fileNm);
 					target.createNewFile();
+					if(!fileNm.endsWith(".webp")) {
+					    System.out.printf("예상한 파일 확장자(.webp)가 아닙니다. 실제 확장자: %s%n", fileNm.substring(fileNm.lastIndexOf(".") + 1));
+					}
 					fos = new FileOutputStream(target);
 					fos.write(decode);
 					fos.close();

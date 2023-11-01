@@ -234,7 +234,7 @@
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </update>
   
-  <delete id="deleteSchdImgInfo" parameterType="HashMap">
+  <delete id="deleteSchdBubInfo" parameterType="HashMap">
     DELETE FROM SCHD_BAS 
     WHERE 	CRE_SEQ 	= #{CRE_SEQ}
   </delete>

@@ -84,9 +84,6 @@ public class OpenBubTtableOut {
 					// base 64 정보가 없으면 다움건으로 skip
 					if (fileBase.isEmpty()) continue;
 					
-					if (fileBase.startsWith("data:")) {
-					    fileBase = fileBase.split(",")[1];
-					}
 					// 이미지 BASE64 디코딩해서 파일로 생성
 					byte decode[] = Base64.decodeBase64(fileBase);
 					System.out.printf("디코딩 후 바이트 배열의 길이: %d%n", decode.length);

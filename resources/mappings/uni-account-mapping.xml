@@ -164,7 +164,7 @@
   	UPDATE USE_NOTICE_BAS set
 		APP_NOTICE_YN 	= #{APP_NOTICE_YN}
 		,DEP_NOTICE_YN 	= #{DEP_NOTICE_YN}
-		,UPD_DAT		= SYSDATE()
+		,UPD_DAT		= NOW()
 	WHERE MEMB_ID = #{MEMB_ID}	
   </update>
   

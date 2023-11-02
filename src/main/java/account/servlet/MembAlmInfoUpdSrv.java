@@ -83,13 +83,13 @@ public class MembAlmInfoUpdSrv extends HttpServlet {
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("MEMB_EM", userId);
+		param.put("MEMB_ID", userId);
 		param.put("APP_NOTICE_YN", appNotice_YN);
 		param.put("DEP_NOTICE_YN", depNotice_YN);
 		
-		System.out.println("userEmail :".concat(userId));
-		System.out.println("userEmail :".concat(appNotice_YN));
-		System.out.println("userEmail :".concat(depNotice_YN));
+		System.out.println("userId :".concat(userId));
+		System.out.println("appNotice_YN :".concat(appNotice_YN));
+		System.out.println("depNotice_YN :".concat(depNotice_YN));
 		
 		account.process.MembAlmInfoUpd membalminfoupd = new account.process.MembAlmInfoUpd(param);
 		

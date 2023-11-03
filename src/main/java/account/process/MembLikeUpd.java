@@ -36,12 +36,12 @@ public class MembLikeUpd {
 		
         try {
         	Map<String, Object> param = new HashMap<String, Object>();
-        	param.put("LOGIN_ID", jobj.getString("LOGIN_ID"));
-			param.put("PROC_TYPE", jobj.getString("PROC_TYPE"));
-			param.put("CRE_SEQ", jobj.getInt("CRE_SEQ"));
-			param.put("MEMB_SC_CD", jobj.getString("MEMB_SC_CD"));
-			param.put("MEMB_DEP_CD", jobj.getString("MEMB_DEP_CD"));
-			param.put("TIT_CD", jobj.getString("TIT_CD"));
+        	param.put("LOGIN_ID", jobj.get("LOGIN_ID"));
+			param.put("PROC_TYPE", jobj.get("PROC_TYPE"));
+			param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
+			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
+			param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
+			param.put("TIT_CD", jobj.get("TIT_CD"));
 
             int updatedRows = 0;
             Integer likeCnt = null;

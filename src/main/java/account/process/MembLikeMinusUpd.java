@@ -69,7 +69,7 @@ public class MembLikeMinusUpd {
             }
             
             if (updatedRows > 0) {
-                likeCnt = (Integer) session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
+                likeCnt = session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
             }
 
             Map<String, Object> rtn = new HashMap<String, Object>();

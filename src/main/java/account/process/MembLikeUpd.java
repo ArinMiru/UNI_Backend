@@ -82,7 +82,7 @@ public class MembLikeUpd {
 
             Map<String, Object> rtn = new HashMap<String, Object>();
 
-            if (updatedRows > 0) {
+            if (updatedRows > 0 && likeCnt != null) {
                 rtn.put("RSLT_CD", "00"); // 00: 정상 처리
                 rtn.put("LIKE_CNT", likeCnt); // LIKE_CNT 값 추가
             } else {

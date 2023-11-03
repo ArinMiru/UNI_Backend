@@ -76,7 +76,7 @@ public class MembLikeUpd {
             System.out.println("업데이트된 행 수: " + updatedRows);
 
             if (updatedRows > 0) {
-                likeCnt = (Integer) session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
+                likeCnt = session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
                 System.out.println("LIKE_CNT 값: " + likeCnt);
             }
 

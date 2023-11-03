@@ -49,7 +49,7 @@ public class MembLikeUpd {
 			System.out.println("param 맵 데이터: " + param);
 
             int updatedRows = 0;
-            String likeCnt = "";
+            Map<String, Object> likeCnt = new HashMap<String, Object>();
             
             // LIKE_CNT 업데이트 및 조회 처리
             switch (jobj.getString("PROC_TYPE")) {

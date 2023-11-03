@@ -36,12 +36,17 @@ public class MembLikeUpd {
 		
         try {
         	Map<String, Object> param = new HashMap<String, Object>();
-        	param.put("LOGIN_ID", jobj.get("LOGIN_ID"));
+        	
+			System.out.println("jobj 데이터: " + jobj);
+        	
+			param.put("LOGIN_ID", jobj.get("LOGIN_ID"));
 			param.put("PROC_TYPE", jobj.get("PROC_TYPE"));
 			param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
 			param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
 			param.put("TIT_CD", jobj.get("TIT_CD"));
+			
+			System.out.println("param 맵 데이터: " + param);
 
             int updatedRows = 0;
             Integer likeCnt = null;
@@ -68,8 +73,11 @@ public class MembLikeUpd {
                     break;
             }
             
+            System.out.println("업데이트된 행 수: " + updatedRows);
+
             if (updatedRows > 0) {
                 likeCnt = (Integer) session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
+                System.out.println("LIKE_CNT 값: " + likeCnt);
             }
 
             Map<String, Object> rtn = new HashMap<String, Object>();
@@ -88,6 +96,7 @@ public class MembLikeUpd {
 	    } catch(Exception e) {
 			e.printStackTrace();
 			jObjMain.put("RSLT_CD", "99");
+			System.out.println("예외 발생: " + e.getMessage());
 	    } finally {
 	    	if (session != null) session.close();
 	    }

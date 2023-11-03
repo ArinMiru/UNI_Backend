@@ -54,7 +54,7 @@ public class MembLikeMinusUpd {
             // LIKE_CNT 업데이트 및 조회 처리
             switch (jobj.getString("PROC_TYPE")) {
                 case "01":
-                    updatedRows = session.update("uni-account-mapping.updateOpenMinusLikeUpd", param);
+                    updatedRows = session.update("uni-account-mapping.updateOpenLikeMinusUpd", param);
                     break;
                 case "02":
                     updatedRows = session.update("uni-account-mapping.updateFreeLikeUpd", param);

@@ -49,7 +49,7 @@ public class MembLikeUpd {
 			System.out.println("param 맵 데이터: " + param);
 
             int updatedRows = 0;
-            Integer likeCnt = null;
+            int likeCnt = 0;
             
             // LIKE_CNT 업데이트 및 조회 처리
             switch (jobj.getString("PROC_TYPE")) {
@@ -82,7 +82,7 @@ public class MembLikeUpd {
 
             Map<String, Object> rtn = new HashMap<String, Object>();
 
-            if (updatedRows > 0 && likeCnt != null) {
+            if (updatedRows > 0) {
                 rtn.put("RSLT_CD", "00"); // 00: 정상 처리
                 rtn.put("LIKE_CNT", likeCnt); // LIKE_CNT 값 추가
             } else {

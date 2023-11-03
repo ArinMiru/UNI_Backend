@@ -23,12 +23,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import net.sf.json.JSONObject;
 
-public class MembLikeUpd {    
+public class MembLikeMinusUpd {    
 	
 	// MAIN 생성용 OBJECT
 	private JSONObject jObjMain = new JSONObject();
 	
-	public MembLikeUpd (JSONObject jobj) throws IOException {
+	public MembLikeMinusUpd (JSONObject jobj) throws IOException {
 		String resource = "/mybatis-config.xml";
 		InputStream inputStream = Resources.getResourceAsStream(resource);
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -49,7 +49,7 @@ public class MembLikeUpd {
             // LIKE_CNT 업데이트 및 조회 처리
             switch (jobj.getString("PROC_TYPE")) {
                 case "01":
-                    updatedRows = session.update("uni-account-mapping.updateOpenLikeUpd", param);
+                    updatedRows = session.update("uni-account-mapping.updateOpenMinusLikeUpd", param);
                     break;
                 case "02":
                     updatedRows = session.update("uni-account-mapping.updateFreeLikeUpd", param);

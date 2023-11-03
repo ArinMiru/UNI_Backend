@@ -209,7 +209,7 @@
     	AND CRE_SEQ = #{CRE_SEQ};
    </update>
    
-  <select id="selectOpenLikeCnt" parameterType="Hashmap">
+  <select id="selectOpenLikeCnt" resultType="HashMap" parameterType="Hashmap">
   	SELECT LIKE_CNT 
   	FROM OPEN_BUB_BAS 
   	WHERE MEMB_SC_CD = #{MEMB_SC_CD}

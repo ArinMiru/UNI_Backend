@@ -38,6 +38,7 @@ public class VotBubTtableOut {
 			param.put("TIT_CD", jobj.get("TIT_CD"));
 			param.put("VOT_TITLE", jobj.get("VOT_TITLE"));
 			param.put("VOT_TYPE_CD", jobj.get("VOT_TYPE_CD"));
+			param.put("VOT_CRE_DATE", jobj.get("VOT_CRE_DATE"));
 			param.put("VOT_EXPR_DATE", jobj.get("VOT_EXPR_DATE"));
 			param.put("VOT_DESC", jobj.get("VOT_DESC"));
 			

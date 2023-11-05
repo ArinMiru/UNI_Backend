@@ -203,14 +203,52 @@
 
   <update id="updateOpenLikeMinusUpd" parameterType="Hashmap">
   	UPDATE OPEN_BUB_BAS 
-  	SET LIKE_CNT = IFNULL(LIKE_CNT, 0) - 1
+  	SET LIKE_CNT = IF(IFNULL(LIKE_CNT, 0) = 0,LIKE_CNT, IFNULL(LIKE_CNT, 0) - 1)
   	WHERE MEMB_SC_CD = #{MEMB_SC_CD}
     	AND MEMB_DEP_CD = #{MEMB_DEP_CD}
     	AND CRE_SEQ = #{CRE_SEQ};
    </update>
    
+   <insert id="insertLikeBas" parameterType="Hashmap">
+   		INSERT OPEN_LIKE_BAS(
+   		MEMB_SC_CD
+   		,MEMB_DEP_CD
+   		,MEMB_ID
+   		,CRE_SEQ
+   		,LIKE_YN
+   		) 
+        VALUES (
+   		#{MEMB_SC_CD}
+   		,#{MEMB_DEP_CD}
+   		,#{MEMB_ID}
+   		,#{CRE_SEQ}
+   		,'Y'
+   		)
+   		ON DUPLICATE KEY UPDATE
+   		   LIKE_YN = 'Y'
+   </insert>
+   
+   <insert id="insertUnLikeBas" parameterType="Hashmap">
+   		INSERT OPEN_LIKE_BAS(
+   		MEMB_SC_CD
+   		,MEMB_DEP_CD
+   		,MEMB_ID
+   		,CRE_SEQ
+   		,LIKE_YN
+   		) 
+        VALUES (
+   		#{MEMB_SC_CD}
+   		,#{MEMB_DEP_CD}
+   		,#{MEMB_ID}
+   		,#{CRE_SEQ}
+   		,'N'
+   		)
+   		ON DUPLICATE KEY UPDATE
+   		   LIKE_YN = 'N'
+   </insert>
+   
   <select id="selectOpenLikeCnt" resultType="HashMap" parameterType="Hashmap">
-  	SELECT LIKE_CNT 
+  	SELECT IFNULL(LIKE_CNT, 0) LIKE_CNT 
   	FROM OPEN_BUB_BAS 
   	WHERE MEMB_SC_CD = #{MEMB_SC_CD}
     	AND MEMB_DEP_CD = #{MEMB_DEP_CD}

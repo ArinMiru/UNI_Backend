@@ -77,12 +77,16 @@ public class MembLikeUpd {
 
             if (updatedRows > 0) {
                 likeCnt = session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
-                System.out.println("LIKE_CNT 값: " + likeCnt);
+                System.out.println("LIKE_CNT 값: " + likeCnt.get("LIKE_CNT"));
             }
+            
+            int upLikeRows =0;
+            upLikeRows= session.update("uni-account-mapping.insertLikeBas", param);
+            
 
             Map<String, Object> rtn = new HashMap<String, Object>();
 
-            if (updatedRows > 0 && likeCnt != null) {
+            if (updatedRows > 0 && likeCnt != null && upLikeRows > 0) {
                 rtn.put("RSLT_CD", "00"); // 00: 정상 처리
                 rtn.put("LIKE_CNT", likeCnt); // LIKE_CNT 값 추가
             } else {

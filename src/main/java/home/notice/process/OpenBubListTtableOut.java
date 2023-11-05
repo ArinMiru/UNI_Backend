@@ -59,6 +59,7 @@ public class OpenBubListTtableOut {
 				jObjSub.put("MEMB_DEP_NM", rtnList.get(i).get("MEMB_DEP_NM"));
 				jObjSub.put("TIT_NM", rtnList.get(i).get("TIT_NM"));
 				jObjSub.put("NICK_NM", rtnList.get(i).get("NICK_NM"));
+				jObjSub.put("LIKE_YN", rtnList.get(i).get("LIKE_YN"));
 							
 				JSONArray jarySub2 = new JSONArray();
 				JSONObject jObjSub2 = new JSONObject();

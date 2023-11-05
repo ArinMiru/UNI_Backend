@@ -77,10 +77,13 @@ public class MembLikeMinusUpd {
                 likeCnt = session.selectOne("uni-account-mapping.selectOpenLikeCnt", param);
                 System.out.println("LIKE_CNT 값: " + likeCnt);
             }
+            
+            int unLikeRows =0;
+            unLikeRows= session.update("uni-account-mapping.insertUnLikeBas", param);
 
             Map<String, Object> rtn = new HashMap<String, Object>();
 
-            if (updatedRows > 0 && likeCnt != null) {
+            if (updatedRows > 0 && likeCnt != null && unLikeRows > 0) {
                 rtn.put("RSLT_CD", "00"); // 00: 정상 처리
                 rtn.put("LIKE_CNT", likeCnt); // LIKE_CNT 값 추가
             } else {

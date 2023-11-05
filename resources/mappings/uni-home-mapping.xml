@@ -9,7 +9,7 @@
 		*
 	FROM (
 		SELECT
-			ROW_NUMBER() OVER() AS R_NUM
+			ROW_NUMBER() OVER(ORDER BY CRE_DAT DESC) AS R_NUM
 			,Z.MEMB_ID
 			,A.MEMB_NM
 			,A.MEMB_SC_CD
@@ -23,10 +23,16 @@
 			,B.DPRT_NM AS MEMB_DEP_NM
 			,D.CODE_VAL AS TIT_NM
 			,A.NICK_NM
+			,IFNULL((SELECT LIKE_YN
+			         FROM OPEN_LIKE_BAS
+			         WHERE MEMB_ID = Z.MEMB_ID 
+			         AND MEMB_SC_CD = Z.MEMB_SC_CD 
+			         AND MEMB_DEP_CD = Z.MEMB_DEP_CD
+			         AND CRE_SEQ	= Z.CRE_SEQ ),'N') LIKE_YN
 		FROM OPEN_BUB_BAS Z,MEMB_BAS A
 		   	LEFT JOIN SCHL_DPRT_SRCH B ON B.SCH_CD = A.MEMB_SC_CD
 						              AND B.DPRT_CD = A.MEMB_DEP_CD
-			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD 
 		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
 		AND Z.MEMB_ID = A.MEMB_ID
 		<if test='!"04".equals(TIT_CD)'>
@@ -50,6 +56,7 @@
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
+			B.CRE_SEQ = A.CRE_SEQ
   </select>
   
   <select id="selectOpenBubSeq" resultType="long">
@@ -403,7 +410,7 @@
 		*
 	FROM (
 		SELECT
-			ROW_NUMBER() OVER() AS R_NUM
+			ROW_NUMBER() OVER(ORDER BY VOT_EXPR_DATE DESC) AS R_NUM
 			,Z.MEMB_ID
 			,Z.CRE_SEQ
 			,Z.VOT_TITLE

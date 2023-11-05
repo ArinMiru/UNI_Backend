@@ -479,8 +479,8 @@
   </insert>
   
   <insert id="insertVotDtlInfo" parameterType="HashMap">
-  	INSERT INTO VOT_DTL(CRE_SEQ, VOT_SEQ, VOT_DESC) VALUES (#{CRE_SEQ}, #{VOT_SEQ}+1, #{item})
-  	</insert>
+  	INSERT INTO VOT_DTL(CRE_SEQ, VOT_SEQ, VOT_DESC) VALUES (#{CRE_SEQ}, #{VOT_SEQ}+1, #{VOT_DESC})
+  </insert>
   
   <update id="updateVotBubInfo" parameterType="HashMap">
     UPDATE VOT_BAS SET

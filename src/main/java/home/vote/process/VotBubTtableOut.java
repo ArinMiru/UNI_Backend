@@ -62,7 +62,8 @@ public class VotBubTtableOut {
 				{
 					if (listVot[i] != "-1")
 					{
-					  param.put("VOT_SEQ", listVot[i]);
+					  param.put("VOT_SEQ", i);
+					  param.put("VOT_DESC", listVot[i]);
 					  // 투표 통계 등록
 					  session.insert("uni-home-mapping.insertVotDtlInfo",param);
 					}
@@ -87,7 +88,8 @@ public class VotBubTtableOut {
 				{
 					if (listVot[i] != "-1")
 					{
-					  param.put("VOT_SEQ", listVot[i]);
+						param.put("VOT_SEQ", i);
+						param.put("VOT_DESC", listVot[i]);
 					  // 투표 통계 등록
 					  session.insert("uni-home-mapping.insertVotDtlInfo",param);
 					}

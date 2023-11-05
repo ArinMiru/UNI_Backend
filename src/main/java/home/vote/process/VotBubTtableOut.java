@@ -102,6 +102,7 @@ public class VotBubTtableOut {
 			// 03 삭제
 			if ("03".equals(jobj.getString("PROC_TYPE")))
 			{
+				param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 				// 투표 삭제
 				session.delete("uni-home-mapping.deleteVotBubInfo",param);	
 				// 투표 답변 삭제

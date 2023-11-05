@@ -500,11 +500,7 @@
   
   <delete id="deleteVotBubInfo" parameterType="HashMap">
     DELETE FROM VOT_BAS 
-    WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"04".equals(TIT_CD)'> 
-	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	AND		MEMB_ID 	= #{MEMB_ID}
-	</if>
+    WHERE 	MEMB_ID 	= #{MEMB_ID}
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   

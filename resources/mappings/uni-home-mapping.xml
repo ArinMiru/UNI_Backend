@@ -56,7 +56,7 @@
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
-			B.CRE_SEQ = A.CRE_SEQ
+	AND		B.CRE_SEQ = A.CRE_SEQ
   </select>
   
   <select id="selectOpenBubSeq" resultType="long">

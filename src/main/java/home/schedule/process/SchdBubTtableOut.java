@@ -65,6 +65,7 @@ public class SchdBubTtableOut {
 			if ("03".equals(jobj.getString("PROC_TYPE")))
 			{
 				// 스케쥴게시판 삭제
+				param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 				session.delete("uni-home-mapping.deleteSchdBubInfo",param);	
 			}
 					

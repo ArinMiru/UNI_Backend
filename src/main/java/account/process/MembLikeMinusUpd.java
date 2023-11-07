@@ -39,7 +39,7 @@ public class MembLikeMinusUpd {
         	
         	System.out.println("jobj 데이터: " + jobj);
         	
-        	param.put("LOGIN_ID", jobj.get("LOGIN_ID"));
+        	param.put("MEMB_ID", jobj.get("LOGIN_ID"));
 			param.put("PROC_TYPE", jobj.get("PROC_TYPE"));
 			param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 			param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));

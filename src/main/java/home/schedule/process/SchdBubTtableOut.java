@@ -62,30 +62,39 @@ public class SchdBubTtableOut {
 			}
 			
 			// 03 삭제
-			if ("03".equals(jobj.getString("PROC_TYPE")))
-			{
-				// 스케쥴게시판 삭제
-				param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
-				session.delete("uni-home-mapping.deleteSchdBubInfo",param);	
-			}
-					
-			jObjRtn.put("RSLT_CD", "00");
-			
-			// db 저장 확정
-			session.commit();
+			if ("03".equals(jobj.getString("PROC_TYPE"))) {
+		        // 스케쥴게시판 삭제
+		        param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
+		        int deleteResult = session.delete("uni-home-mapping.deleteSchdBubInfo", param);
+		        
+		        // 삭제 결과에 따른 검증
+		        if (deleteResult > 0) {
+		            System.out.println("삭제 성공: " + deleteResult + " 개의 행이 삭제되었습니다.");
+		        } else {
+		            System.out.println("삭제 실패: 삭제할 데이터가 없거나 이미 삭제되었습니다.");
+		        }
+		    }
 
-		} catch(Exception e) {
-			e.printStackTrace();
-			
-			// 등록,수정 실패시 첨부파일 위치에서 삭제
-			
-			jObjRtn.put("RSLT_CD", "99");
+		    // 결과 코드 설정
+		    jObjRtn.put("RSLT_CD", "00");
+
+		    // 데이터베이스 작업 커밋
+		    session.commit();
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+
+		    // 에러 발생시 결과 코드 설정
+		    jObjRtn.put("RSLT_CD", "99");
+		    System.out.println("데이터베이스 작업 중 예외 발생: " + e.getMessage());
 		} finally {
-			// 사용다한 세션 닫아주기
-			if (session != null) session.close();   	
+		    // 세션 닫기
+		    if (session != null) {
+		        session.close();
+		        System.out.println("세션을 닫았습니다.");
+		    }
 		}
-	}
-    
+	}    
 	public JSONObject getResult() {
 		return jObjRtn;
 	}

@@ -232,6 +232,8 @@
     UPDATE SCHD_BAS SET
     	TIT 	= #{TIT}
 		,CONT 	= #{CONT}
+		,STRT_SCHD_YMD = CONVERT(#{STRT_SCHD_YMD},DATE)
+		,END_SCHD_YMD = CONVERT(#{END_SCHD_YMD},DATE)
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
     <if test='!"04".equals(TIT_CD)'>

@@ -69,6 +69,7 @@ public class FreeBubListTtableOut {
 					jObjSub2.put("ANS_SEQ", rtnListSub2.get(j).get("ANS_SEQ"));
 					jObjSub2.put("CONT", rtnListSub2.get(j).get("CONT"));
 					jObjSub2.put("CRE_DAT", rtnListSub2.get(j).get("CRE_DAT"));
+					jObjSub2.put("TOTAL_ANS", rtnListSub2.get(j).get("TOTAL_ANS"));
 											
 					jarySub2.add(jObjSub2);
 				}

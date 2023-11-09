@@ -39,18 +39,22 @@
   
   <select id="selectFreeAnsInfo" resultType="HashMap" parameterType="HashMap">
     SELECT 
-		B.ANS_MEMB_ID
-		,B.ANS_SEQ
-		,B.CONT
-		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-	FROM FREE_BUB_BAS A , FREE_BUB_ANS_BAS B
-	WHERE 	B.CRE_SEQ = A.CRE_SEQ
-	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='!"04".equals(TIT_CD)'> 
-	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
-	AND 	A.CRE_SEQ = #{CRE_SEQ}
+        B.ANS_MEMB_ID
+        ,B.ANS_SEQ
+        ,B.CONT
+        ,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+        ,(SELECT COUNT(*)
+          FROM FREE_BUB_ANS_BAS C
+          WHERE C.CRE_SEQ = A.CRE_SEQ) AS TOTAL_ANS
+    FROM FREE_BUB_BAS A, FREE_BUB_ANS_BAS B
+    WHERE B.CRE_SEQ = A.CRE_SEQ
+    AND A.MEMB_SC_CD = #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'>
+    AND A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+    </if>
+    AND A.CRE_SEQ = #{CRE_SEQ}
   </select>
+  
   
   
   <select id="selectFreeBubSeq" resultType="long">
@@ -180,18 +184,22 @@
   
   <select id="selectQuesAnsInfo" resultType="HashMap" parameterType="HashMap">
     SELECT 
-		B.ANS_MEMB_ID
-		,B.ANS_SEQ
-		,B.CONT
-		,DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-	FROM QUES_BUB_BAS A , QUES_BUB_ANS_BAS B
-	WHERE 	B.CRE_SEQ = A.CRE_SEQ
-	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='!"04".equals(TIT_CD)'> 
-	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
-	</if>
-	AND 	A.CRE_SEQ = #{CRE_SEQ}
-  </select>
+        B.ANS_MEMB_ID,
+        B.ANS_SEQ,
+        B.CONT,
+        DATE_FORMAT(B.CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT,
+        (SELECT COUNT(*)
+         FROM QUES_BUB_ANS_BAS
+         WHERE CRE_SEQ = A.CRE_SEQ) AS TOTAL_ANS
+    FROM QUES_BUB_BAS A
+    INNER JOIN QUES_BUB_ANS_BAS B ON B.CRE_SEQ = A.CRE_SEQ
+    WHERE A.MEMB_SC_CD = #{MEMB_SC_CD}
+    <if test='!"04".equals(TIT_CD)'> 
+    AND A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+    </if>
+    AND A.CRE_SEQ = #{CRE_SEQ}
+</select>
+  
   
   
   <select id="selectQuesBubSeq" resultType="long">

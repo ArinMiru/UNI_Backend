@@ -63,8 +63,6 @@ public class TokenOut {
 			jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			jObjMain.put("MEMB_ID", rtn.get("LOGIN_ID"));
 			
-			session.commit();
-			
 	    } catch(Exception e) {
 			e.printStackTrace();
 			jObjMain.put("RSLT_CD", "99");

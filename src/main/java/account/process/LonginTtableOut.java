@@ -94,7 +94,7 @@ public class LonginTtableOut {
 				jObjMain.put("TOKEN_ID", token);
 				
 				rtn1.put("TOKEN_ID", token);
-				rtn1.put("LOGIN_ID", rtn1.get("LOGIN_ID"));
+				//rtn1.put("LOGIN_ID", rtn1.get("LOGIN_ID"));
 				// 토큰 등록
 				session.insert("uni-account-mapping.insertTokenInfo",rtn1);	
 				

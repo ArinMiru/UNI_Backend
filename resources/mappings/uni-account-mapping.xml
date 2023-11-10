@@ -318,7 +318,7 @@
 	AND 	CERT_NUM = #{CERT_NUM}
   </select>
   
-  <insert id="insertCertInfo" parameterType="Hashmap">
+  <insert id="insertCertInfo" parameterType="hashmap">
   <!-- ChkAndCert(코드검증 및 인증완료) -->
 	INSERT INTO CERT_MEMB_HIST(
 		MEMB_ID
@@ -337,7 +337,7 @@
 	)
   </insert>  
   
-  <insert id="insertTokenInfo" parameterType="Hashmap">
+  <insert id="insertTokenInfo" parameterType="hashmap">
 	INSERT INTO TOKEN_INFO(
 		TOKEN_ID
 		,MEMB_ID

@@ -50,7 +50,7 @@ public class LonginTtableOut {
 				rtn = session.selectOne("uni-account-mapping.selectCheckId",param);
 			} else {
 				rtn = session.selectOne("uni-account-mapping.tokenCheckId",param);
-				param.put("LOGIN_ID", rtn.get("LOGIN_ID"));
+				param.put("LOGIN_ID", rtn.get("MEMB_ID"));
 			}
 			
 			// 로그인결과코드 JSON MAIN 항목추가

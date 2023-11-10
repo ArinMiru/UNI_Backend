@@ -53,8 +53,9 @@ public class LoginSrv extends HttpServlet {
 		//doGet(request, response);
 		
 		// 
-		String userId=""; 		
-		String userPasswrd="";	
+		String userId="";
+		String userPasswrd="";
+		String tokenId="";
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -83,14 +84,17 @@ public class LoginSrv extends HttpServlet {
 
 		userId = (jobj.get("LOGIN_ID") == null) ? "" : jobj.get("LOGIN_ID").toString(); // 로그인 ID : LOGIN_ID 
 		userPasswrd = (jobj.get("LOGIN_PASS") == null) ? "" : jobj.get("LOGIN_PASS").toString(); // 로그인 비밀번호 : LOGIN_PASS
+		tokenId = (jobj.get("TOKEN_ID") == null) ? "" : jobj.get("TOKEN_ID").toString(); // 로그인 비밀번호 : LOGIN_PASS
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("LOGIN_ID", userId);
 		param.put("LOGIN_PASS", userPasswrd);
-
+		param.put("TOKEN_ID", tokenId);
+		
 		System.out.println("userId :".concat(userId));
 		System.out.println("userPasswrd :".concat(userPasswrd));
+		System.out.println("token_id :".concat(tokenId));
 		
 		LonginTtableOut longinTtableOut = new LonginTtableOut(param);
 		

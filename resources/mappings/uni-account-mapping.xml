@@ -337,4 +337,32 @@
 	)
   </insert>  
   
+  <insert id="insertTokenInfo" parameterType="Hashmap">
+	INSERT INTO TOKEN_INFO(
+		TOKEN_ID
+		,MEMB_ID
+		,START_DAT
+		,END_DAT
+	) VALUES (
+		#{TOKEN_ID}
+		,#{LOGIN_ID}
+		,SYSDATE()
+		,SYSDATE()+30
+	)
+  </insert> 
+  
+  <select id="tokenCheckId" resultType="hashMap" parameterType="hashMap">
+    SELECT 	LOGIN_ID, '00' AS RSLT_CD 
+    FROM 	TOKEN_INFO
+	WHERE 	TOKEN_ID = #{TOKEN_ID}
+	AND     SYSDATE() BETWEEN START_DAT AND END_DAT  
+  </select>
+  
+  <update id="tokenIdExp" parameterType="hashMap">
+    UPDATE TOKEN_INFO SET 
+    END_DAT = SYSDATE() 
+	WHERE 	TOKEN_ID = #{TOKEN_ID}  
+  </update>
+  
+  
 </mapper>

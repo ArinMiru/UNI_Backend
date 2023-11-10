@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -43,14 +44,21 @@ public class LonginTtableOut {
 			
 			System.out.println("param :"+param.toString());
 			
-			// 로그인 검증 SQL 호출
-			rtn = session.selectOne("uni-account-mapping.selectCheckId",param);
+			if (param.get("TOKEN_ID").toString().isEmpty())
+			{
+				// 로그인 검증 SQL 호출
+				rtn = session.selectOne("uni-account-mapping.selectCheckId",param);
+			} else {
+				rtn = session.selectOne("uni-account-mapping.tokenCheckId",param);
+			}
 			
 			// 로그인결과코드 JSON MAIN 항목추가
 			if (rtn == null) {
 				rtn = new HashMap<String, Object>();
 				rtn.put("RSLT_CD", "01");
 			} 
+			
+			param.put("LOGIN_ID", rtn.get("LOGIN_ID"));
 			
 			// 로그인결과코드 JSON MAIN 항목추가
 			jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
@@ -76,6 +84,20 @@ public class LonginTtableOut {
 				jObjMain.put("MEMB_EM", rtn1.get("MEMB_EM"));
 				jObjMain.put("PROF_IMG_PATH", rtn1.get("PROF_IMG_PATH"));
 				jObjMain.put("COLL_CERT_IND", rtn1.get("COLL_CERT_IND"));
+				
+				UUID uuid = UUID.randomUUID();
+				
+				String token = rtn1.get("LOGIN_ID").toString();
+				// 토큰 구성
+				token = token + uuid;
+				
+				jObjMain.put("TOKEN_ID", token);
+				
+				rtn1.put("TOKEN_ID", token);
+				rtn1.put("LOGIN_ID", rtn1.get("LOGIN_ID"));
+				// 토큰 등록
+				session.insert("uni-account-mapping.insertTokenInfo",rtn1);	
+				
 			}
 
 	    } catch(Exception e) {

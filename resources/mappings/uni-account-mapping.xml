@@ -347,7 +347,7 @@
 		#{TOKEN_ID}
 		,#{LOGIN_ID}
 		,SYSDATE()
-		,SYSDATE()+30
+		,DATE_ADD(SYSDATE(),interval 30 day)
 	)
   </insert> 
   

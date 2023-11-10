@@ -84,22 +84,26 @@ public class LonginTtableOut {
 				jObjMain.put("MEMB_EM", rtn1.get("MEMB_EM"));
 				jObjMain.put("PROF_IMG_PATH", rtn1.get("PROF_IMG_PATH"));
 				jObjMain.put("COLL_CERT_IND", rtn1.get("COLL_CERT_IND"));
+			
+				if (param.get("TOKEN_ID").toString().isEmpty())
+				{
+					UUID uuid = UUID.randomUUID();
 				
-				UUID uuid = UUID.randomUUID();
+					String token = rtn1.get("LOGIN_ID").toString();
+					// 토큰 구성
+					token = token + uuid;
 				
-				String token = rtn1.get("LOGIN_ID").toString();
-				// 토큰 구성
-				token = token + uuid;
+					jObjMain.put("TOKEN_ID", token);
 				
-				jObjMain.put("TOKEN_ID", token);
+					rtn1.put("TOKEN_ID", token);
+					//rtn1.put("LOGIN_ID", rtn1.get("LOGIN_ID"));
+					// 토큰 등록
+					int i = session.insert("uni-account-mapping.insertTokenInfo",rtn1);	
 				
-				rtn1.put("TOKEN_ID", token);
-				//rtn1.put("LOGIN_ID", rtn1.get("LOGIN_ID"));
-				// 토큰 등록
-				int i = session.insert("uni-account-mapping.insertTokenInfo",rtn1);	
-				
-				if (i>0) session.commit();
-				
+					if (i>0) session.commit();
+				} else {
+					jObjMain.put("TOKEN_ID", rtn.get("TOKEN_ID"));
+				}
 			}
 
 	    } catch(Exception e) {

@@ -352,7 +352,7 @@
   </insert> 
   
   <select id="tokenCheckId" resultType="hashMap" parameterType="hashMap">
-    SELECT 	LOGIN_ID, '00' AS RSLT_CD 
+    SELECT 	LOGIN_ID,TOKEN_ID, '00' AS RSLT_CD 
     FROM 	TOKEN_INFO
 	WHERE 	TOKEN_ID = #{TOKEN_ID}
 	AND     SYSDATE() BETWEEN START_DAT AND END_DAT  

@@ -44,12 +44,13 @@ public class LonginTtableOut {
 			
 			System.out.println("param :"+param.toString());
 			
-			if (param.get("TOKEN_ID").toString().trim().isEmpty())
+			if (param.get("TOKEN_ID").toString().isEmpty())
 			{
 				// 로그인 검증 SQL 호출
 				rtn = session.selectOne("uni-account-mapping.selectCheckId",param);
 			} else {
 				rtn = session.selectOne("uni-account-mapping.tokenCheckId",param);
+				param.put("LOGIN_ID", rtn.get("LOGIN_ID"));
 			}
 			
 			// 로그인결과코드 JSON MAIN 항목추가
@@ -58,8 +59,7 @@ public class LonginTtableOut {
 				rtn.put("RSLT_CD", "01");
 			} 
 			
-			param.put("LOGIN_ID", rtn.get("LOGIN_ID"));
-			
+		
 			// 로그인결과코드 JSON MAIN 항목추가
 			jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			

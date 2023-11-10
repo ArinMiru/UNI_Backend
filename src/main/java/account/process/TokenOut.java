@@ -52,8 +52,6 @@ public class TokenOut {
 			{
 				upd = session.update("uni-account-mapping.tokenIdExp",param);
 			}
-		
-			session.commit();
 			
 			// 로그인결과코드 JSON MAIN 항목추가
 			if (rtn == null || upd == 0) {
@@ -64,6 +62,8 @@ public class TokenOut {
 			// 로그인결과코드 JSON MAIN 항목추가
 			jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
 			jObjMain.put("MEMB_ID", rtn.get("LOGIN_ID"));
+			
+			session.commit();
 			
 	    } catch(Exception e) {
 			e.printStackTrace();

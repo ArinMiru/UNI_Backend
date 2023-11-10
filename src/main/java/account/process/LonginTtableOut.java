@@ -98,7 +98,8 @@ public class LonginTtableOut {
 				// 토큰 등록
 				int i = session.insert("uni-account-mapping.insertTokenInfo",rtn1);	
 				
-				System.out.println("i :"+i);
+				if (i>0) session.commit();
+				
 			}
 
 	    } catch(Exception e) {

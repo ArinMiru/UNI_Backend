@@ -52,6 +52,8 @@ public class TokenOut {
 			{
 				upd = session.update("uni-account-mapping.tokenIdExp",param);
 			}
+		
+			session.commit();
 			
 			// 로그인결과코드 JSON MAIN 항목추가
 			if (rtn == null || upd == 0) {

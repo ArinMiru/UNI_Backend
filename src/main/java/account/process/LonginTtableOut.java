@@ -44,7 +44,7 @@ public class LonginTtableOut {
 			
 			System.out.println("param :"+param.toString());
 			
-			if (param.get("TOKEN_ID").toString().isEmpty())
+			if (param.get("TOKEN_ID").toString().trim().isEmpty())
 			{
 				// 로그인 검증 SQL 호출
 				rtn = session.selectOne("uni-account-mapping.selectCheckId",param);

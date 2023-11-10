@@ -84,7 +84,7 @@ public class LoginSrv extends HttpServlet {
 
 		userId = (jobj.get("LOGIN_ID") == null) ? "" : jobj.get("LOGIN_ID").toString(); // 로그인 ID : LOGIN_ID 
 		userPasswrd = (jobj.get("LOGIN_PASS") == null) ? "" : jobj.get("LOGIN_PASS").toString(); // 로그인 비밀번호 : LOGIN_PASS
-		tokenId = (jobj.get("TOKEN_ID") == null) ? "" : jobj.get("TOKEN_ID").toString(); // 로그인 비밀번호 : LOGIN_PASS
+		tokenId = (jobj.get("TOKEN_ID") == null) ? " " : jobj.get("TOKEN_ID").toString(); // 로그인 비밀번호 : LOGIN_PASS
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		

@@ -97,6 +97,9 @@ public class LonginTtableOut {
 				
 					rtn1.put("TOKEN_ID", token);
 					//rtn1.put("LOGIN_ID", rtn1.get("LOGIN_ID"));
+					// 기존 토큰 만료
+					session.update("uni-account-mapping.updateTokenExp",rtn1);
+					
 					// 토큰 등록
 					int i = session.insert("uni-account-mapping.insertTokenInfo",rtn1);	
 				

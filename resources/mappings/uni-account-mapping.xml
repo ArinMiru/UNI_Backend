@@ -364,5 +364,10 @@
 	WHERE 	TOKEN_ID = #{TOKEN_ID}  
   </update>
   
+  <update id="updateTokenExp" parameterType="hashMap">
+    UPDATE TOKEN_INFO SET 
+    END_DAT = SYSDATE() 
+	WHERE 	MEMB_ID = #{LOGIN_ID}  
+  </update>
   
 </mapper>

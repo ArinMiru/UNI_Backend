@@ -44,24 +44,31 @@ public class TokenOut {
 			System.out.println("param :"+param.toString());
 			
 			// 로그인 검증 SQL 호출
-			if (param.get("TYPE").equals("C"))
+	/*		if (param.get("TYPE").equals("C"))
 			{
 				rtn = session.selectOne("uni-account-mapping.tokenCheckId",param);
-			}
+				if (rtn == null) {
+					rtn = new HashMap<String, Object>();
+					rtn.put("RSLT_CD", "01");
+				}
+			} 
+	*/
 			if (param.get("TYPE").equals("D"))
+				// 로그아웃 했을때 토큰 만료
 			{
 				upd = session.update("uni-account-mapping.tokenIdExp",param);
-			}
-			
-			// 로그인결과코드 JSON MAIN 항목추가
-			if (rtn == null || upd == 0) {
-				rtn = new HashMap<String, Object>();
-				rtn.put("RSLT_CD", "01");
+				if (upd == 0) {
+					rtn = new HashMap<String, Object>();
+					rtn.put("RSLT_CD", "01");
+				} else {
+					rtn = new HashMap<String, Object>();
+					rtn.put("RSLT_CD", "00");
+				}
 			} 
 			
 			// 로그인결과코드 JSON MAIN 항목추가
 			jObjMain.put("RSLT_CD", rtn.get("RSLT_CD"));
-			jObjMain.put("MEMB_ID", rtn.get("LOGIN_ID"));
+		//	jObjMain.put("MEMB_ID", rtn.get("LOGIN_ID"));
 			
 	    } catch(Exception e) {
 			e.printStackTrace();

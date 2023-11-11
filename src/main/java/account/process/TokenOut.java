@@ -63,6 +63,7 @@ public class TokenOut {
 				} else {
 					rtn = new HashMap<String, Object>();
 					rtn.put("RSLT_CD", "00");
+					session.commit();
 				}
 			} 
 			

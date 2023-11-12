@@ -63,6 +63,7 @@ public class SugBubTtableOut {
 			// 03 삭제
 			if ("03".equals(jobj.getString("PROC_TYPE")))
 			{
+				param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 				// 건의게시판 삭제
 				session.delete("uni-community-mapping.deleteSugBubInfo",param);	
 				// 건의게시판 답변 삭제

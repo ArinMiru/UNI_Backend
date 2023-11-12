@@ -67,6 +67,8 @@ public class FreeBubTtableOut {
 				session.delete("uni-community-mapping.deleteFreeBubInfo",param);	
 				// 자유게시판 답변 삭제
 				session.delete("uni-community-mapping.deleteFreeAnsAllInfo",param);
+				
+				session.commit();
 			}
 					
 			jObjRtn.put("RSLT_CD", "00");

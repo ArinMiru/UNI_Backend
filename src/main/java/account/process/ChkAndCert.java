@@ -40,6 +40,7 @@ public class ChkAndCert {
             SqlSession session = sqlSessionFactory.openSession();
             Map<String, Object> rtn = null;       
 
+            
             System.out.println("param :"+param.toString());
 
             // 수정된 부분: update 메소드를 사용하도록 변경

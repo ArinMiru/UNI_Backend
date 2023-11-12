@@ -315,7 +315,7 @@
     SELECT 	IF(CHK_NUM = #{INPUT_CD},'00','07') AS RSLT_CD 
     FROM 	CERT_MEMB_HIST
 	WHERE 	MEMB_ID = #{MEMB_ID}
-	AND 	CERT_NUM = #{CERT_NUM}
+	AND 	CERT_NUM = #{CERT_SEQ}
   </select>
   
   <insert id="insertCertInfo" parameterType="hashmap">

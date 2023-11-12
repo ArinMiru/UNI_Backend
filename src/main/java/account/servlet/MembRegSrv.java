@@ -50,6 +50,7 @@ public class MembRegSrv extends HttpServlet {
 		String userId=""; 		// 회원 ID : MEMB_ID 
 		String userPasswrd="";	// 비밀번호 : PASS
 		String userName="";	    // 회원명 : MEMB_NM
+		String nickName="";     // 닉네임 : NICK_NM
 		
 		StringBuffer jb = new StringBuffer();
 		String line = null;
@@ -73,16 +74,19 @@ public class MembRegSrv extends HttpServlet {
 		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString();
 		userName = (jobj.get("PASS") == null) ? "" : jobj.get("PASS").toString();
 		userPasswrd = (jobj.get("MEMB_NM") == null) ? "" : jobj.get("MEMB_NM").toString();
+		nickName = (jobj.get("NICK_NM") == null) ? "" : jobj.get("NICK_NM").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("MEMB_ID", userId);
 		param.put("PASS", userPasswrd);
 		param.put("MEMB_NM", userName);
+		param.put("NICK_NM", nickName);
 		
 		System.out.println("userId :".concat(userId));
 		System.out.println("userPasswrd :".concat(userPasswrd));
 		System.out.println("userName :".concat(userName));
+		System.out.println("nickName :".concat(nickName));
 		
 
 		account.process.MembReglns membreglns = new account.process.MembReglns(param);

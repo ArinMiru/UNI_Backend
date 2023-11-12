@@ -55,6 +55,7 @@ public class MembUniCertUpdSrv extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		String userId="";	// 회원 ID
+		String userGra="";  // 회원 학년
 		String userSccd=""; // 학교코드
 		String userDepcd=""; // 학과코드
 		String userNum=""; // 학번
@@ -80,6 +81,7 @@ public class MembUniCertUpdSrv extends HttpServlet {
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
 		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString();
+		userGra = (jobj.get("MEMB_GRA") == null) ? "" : jobj.get("MEMB_GRA").toString();
 		userSccd = (jobj.get("MEMB_SC_CD") == null) ? "" : jobj.get("MEMB_SC_CD").toString();
 		userDepcd = (jobj.get("MEMB_DEP_CD") == null) ? "" : jobj.get("MEMB_DEP_CD").toString();
 		userNum = (jobj.get("MEMB_NUM") == null) ? "" : jobj.get("MEMB_NUM").toString();
@@ -88,12 +90,14 @@ public class MembUniCertUpdSrv extends HttpServlet {
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("MEMB_ID", userId);
+		param.put("MEMB_GRA", userGra);
 		param.put("MEMB_SC_CD", userSccd);
 		param.put("MEMB_DEP_CD", userDepcd);
 		param.put("MEMB_NUM", userNum);
 		param.put("MEMB_EM", userEm);
 		
 		System.out.println("userId :".concat(userId)); 		 // 회원ID : MEMB_ID
+		System.out.println("userGra :".concat(userGra));     // 학년 : MEMB_GRA
 		System.out.println("userSccd :".concat(userSccd));   // 학교코드 : MEMB_SC_CD
 		System.out.println("userDepcd :".concat(userDepcd)); // 학과코드 : MEMB_DEP_CD
 		System.out.println("userNum :".concat(userNum));     // 학번 : MEMB_NUM

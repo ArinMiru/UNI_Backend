@@ -72,8 +72,8 @@ public class MembRegSrv extends HttpServlet {
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
 		userId = (jobj.get("MEMB_ID") == null) ? "" : jobj.get("MEMB_ID").toString();
-		userName = (jobj.get("PASS") == null) ? "" : jobj.get("PASS").toString();
-		userPasswrd = (jobj.get("MEMB_NM") == null) ? "" : jobj.get("MEMB_NM").toString();
+		userPasswrd = (jobj.get("PASS") == null) ? "" : jobj.get("PASS").toString();
+		userName = (jobj.get("MEMB_NM") == null) ? "" : jobj.get("MEMB_NM").toString();
 		nickName = (jobj.get("NICK_NM") == null) ? "" : jobj.get("NICK_NM").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();

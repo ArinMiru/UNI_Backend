@@ -145,7 +145,10 @@ public class OpenBubTtableOut {
 					// 공지사항 수정
 					param.put("CRE_SEQ", jobj.get("CRE_SEQ"));
 					session.update("uni-home-mapping.updateOpenBubInfo",param);
-							
+					
+					// 이미지 파일 삭제
+					session.delete("uni-home-mapping.deleteOpenAllImgInfo",param);
+				
 					for(int i=0;i<fileAddList.size();i++)
 					{
 								
@@ -160,6 +163,7 @@ public class OpenBubTtableOut {
 						session.insert("uni-home-mapping.insertOpenImgInfo",imgParam);
 					}
 					
+					/*
 					for(int i=0;i<fileDelList.size();i++)
 					{
 						
@@ -182,6 +186,7 @@ public class OpenBubTtableOut {
 						// 이미지 파일 삭제
 						session.delete("uni-home-mapping.deleteOpenImgInfo",imgParam);
 					}
+					*/
 
 				}
 			}

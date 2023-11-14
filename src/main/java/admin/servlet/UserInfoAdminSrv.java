@@ -50,6 +50,8 @@ public class UserInfoAdminSrv extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String userName="";
+		String dprtCode="";
 		String schoolCode="";
 		
 		StringBuffer jb = new StringBuffer();
@@ -71,12 +73,18 @@ public class UserInfoAdminSrv extends HttpServlet {
 		}
 		JSONObject jobj = JSONObject.fromObject(jb.toString());
 		
+		userName = (jobj.get("MEMB_NM") == null) ? "" : jobj.get("MEMB_NM").toString();
+		dprtCode = (jobj.get("MEMB_DEP_CD") == null) ? "" : jobj.get("MEMB_DEP_CD").toString();
 		schoolCode = (jobj.get("MEMB_SC_CD") == null) ? "" : jobj.get("MEMB_SC_CD").toString();
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
+		param.put("MEMB_NM", userName);
+		param.put("MEMB_DEP_CD", dprtCode);
 		param.put("MEMB_SC_CD", schoolCode);
 		
+		System.out.println("MEMB_NM :".concat(userName));
+		System.out.println("MEMB_DEP_CD :".concat(dprtCode));
 		System.out.println("MEMB_SC_CD :".concat(schoolCode));
 		
 		

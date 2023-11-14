@@ -56,40 +56,33 @@
     WHERE SCH_CD = #{SCH_CD}
 </select>
   
-<select id="selectMembInfoAdmin" resultType="HashMap" parameterType="HashMap">
-    SELECT
-    A.MEMB_ID
-    ,A.MEMB_NM
-    ,A.MEMB_SC_CD
-    ,A.MEMB_DEP_CD
-    ,A.MEMB_NUM
-    ,B.SCH_NM AS MEMB_SC_NM
-    ,B.DPRT_NM AS MEMB_DEP_NM
-    ,A.TIT_CD
-    ,D.CODE_VAL AS TIT_NM
-    ,A.NICK_NM
-    ,A.MEMB_GRA
-    ,A.MEMB_EM
-    ,A.PROF_IMG_PATH
-    ,IF(E.CERT_DIV_CD = '01','Y','N') AS COLL_CERT_IND
-    FROM MEMB_BAS A
-        LEFT JOIN SCHL_DPRT_SRCH B ON B.SCH_CD = A.MEMB_SC_CD
-        AND B.DPRT_CD = A.MEMB_DEP_CD
-        LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
-        LEFT JOIN CERT_MEMB_HIST E ON E.MEMB_ID = A.MEMB_ID AND E.CERT_DIV_CD = '01'
-    <where>
-        <if test="MEMB_SC_CD != null">
-            AND A.MEMB_SC_CD = #{MEMB_SC_CD}
-        </if>
-        <if test="MEMB_DEP_CD != null">
-            AND A.MEMB_DEP_CD = #{MEMB_DEP_CD}
-        </if>
-        <if test="MEMB_NM != null">
-            AND A.MEMB_NM = #{MEMB_NM}
-        </if>
-    </where>
-</select>
-
+  <select id="selectMembInfoAdmin" resultType="HashMap" parameterType="HashMap">
+  <!-- 2023.05.18 관리자 사용자정보/ 김도원 생성 -->
+    SELECT 
+		A.MEMB_ID
+		,A.MEMB_NM
+		,A.MEMB_SC_CD
+		,A.MEMB_DEP_CD
+		,A.MEMB_NUM
+        ,B.SCH_NM AS MEMB_SC_NM
+		,B.DPRT_NM AS MEMB_DEP_NM
+		,A.TIT_CD
+		,D.CODE_VAL AS TIT_NM
+		,A.NICK_NM
+		,A.MEMB_GRA
+		,A.MEMB_EM
+		,A.PROF_IMG_PATH
+		,IF(E.CERT_DIV_CD = '01','Y','N') AS COLL_CERT_IND
+	FROM MEMB_BAS A 
+    LEFT JOIN SCHL_DPRT_SRCH B ON B.SCH_CD = A.MEMB_SC_CD
+						      AND B.DPRT_CD = A.MEMB_DEP_CD
+	LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
+	LEFT JOIN CERT_MEMB_HIST E ON E.MEMB_ID = A.MEMB_ID AND E.CERT_DIV_CD = '01'
+	<where> 
+		A.MEMB_SC_CD = #{MEMB_SC_CD}
+		A.MEMB_DEP_CD = #{MEMB_DEP_CD}
+	</where>
+  </select>
   
   <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT 

@@ -78,7 +78,7 @@
 						      AND B.DPRT_CD = A.MEMB_DEP_CD
 	LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
 	LEFT JOIN CERT_MEMB_HIST E ON E.MEMB_ID = A.MEMB_ID AND E.CERT_DIV_CD = '01'
-	WHERE A.MEMB_ID = #{MEMB_SC_CD}
+	WHERE A.MEMB_SC_CD = #{MEMB_SC_CD}
   </select>
   
   <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">

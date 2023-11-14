@@ -51,6 +51,7 @@ public class UserInfoAdminTtableOut {
 			
 			for(int i=0; i < rtnList.size()	;i++) 
 			{
+				jObjSub.put("MEMB_ID", rtnList.get(i).get("MEMB_ID"));
 				jObjSub.put("MEMB_NM", rtnList.get(i).get("MEMB_NM"));
 				jObjSub.put("MEMB_SC_CD", rtnList.get(i).get("MEMB_SC_CD"));
 				jObjSub.put("MEMB_DEP_CD", rtnList.get(i).get("MEMB_DEP_CD"));
@@ -62,10 +63,8 @@ public class UserInfoAdminTtableOut {
 				jObjSub.put("MEMB_GRA", rtnList.get(i).get("MEMB_GRA"));
 				jObjSub.put("MEMB_EM", rtnList.get(i).get("MEMB_EM"));
 				jObjSub.put("PROF_IMG_PATH", rtnList.get(i).get("PROF_IMG_PATH"));
+				jarySub.add(jObjSub);
 			}
-			
-			
-			jarySub.add(jObjSub);
 			
 			jObjMain.put("USER_LIST", jarySub);
 

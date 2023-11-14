@@ -78,21 +78,8 @@
 						      AND B.DPRT_CD = A.MEMB_DEP_CD
 	LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
 	LEFT JOIN CERT_MEMB_HIST E ON E.MEMB_ID = A.MEMB_ID AND E.CERT_DIV_CD = '01'
-	<where>
-        <if test="MEMB_SC_CD != null">
-            A.MEMB_SC_CD = #{MEMB_SC_CD}
-        </if>
-        <if test="MEMB_DEP_CD != null">
-            <choose>
-                <when test="MEMB_SC_CD != null">
-                    AND A.MEMB_DEP_CD = #{MEMB_DEP_CD}
-                </when>
-                <otherwise>
-                    A.MEMB_DEP_CD = #{MEMB_DEP_CD}
-                </otherwise>
-            </choose>
-        </if>
-    </where>
+	WHERE A.MEMB_SC_CD = #{MEMB_SC_CD}
+      AND A.MEMB_DEP_CD = #{MEMB_DEP_CD}
   </select>
   
   <select id="selectOpenBubInfo" resultType="HashMap" parameterType="HashMap">

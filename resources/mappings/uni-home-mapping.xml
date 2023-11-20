@@ -502,8 +502,7 @@
   
   <delete id="deleteVotBubInfo" parameterType="HashMap">
     DELETE FROM VOT_BAS 
-    WHERE 	MEMB_ID 	= #{MEMB_ID}
-	AND		CRE_SEQ 	= #{CRE_SEQ}
+    WHERE	CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   
    <delete id="deleteVotDtlInfo" parameterType="HashMap">

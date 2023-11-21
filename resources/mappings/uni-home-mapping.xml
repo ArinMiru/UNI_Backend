@@ -127,10 +127,7 @@
    <delete id="deleteOpenBubInfo" parameterType="HashMap">
     DELETE FROM OPEN_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"04".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
-	AND		MEMB_ID 	= #{MEMB_ID}
-	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
   </delete>
   

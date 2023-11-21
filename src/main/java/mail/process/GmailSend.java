@@ -25,7 +25,7 @@ public class GmailSend{
 		Authenticator auth = new MyAuthentication();
 		Session session = Session.getDefaultInstance(p, auth);
 		MimeMessage msg = new MimeMessage(session);
-		String fromName = "admin"; //송신자 닉네임
+		String fromName = "OpenSoop"; //송신자 닉네임
 		String charSet = "UTF-8";
 		try{
 			msg.setSentDate(new Date());

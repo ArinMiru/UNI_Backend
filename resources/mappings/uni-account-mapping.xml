@@ -147,7 +147,7 @@
 	FROM 	OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-	<if test='!"04".equals(TIT_CD)'> 
+    <if test='!"02" AND !"03".equals(TIT_CD)'>
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}

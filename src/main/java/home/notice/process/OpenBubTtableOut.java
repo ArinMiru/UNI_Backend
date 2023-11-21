@@ -199,6 +199,7 @@ public class OpenBubTtableOut {
 				param.put("MEMB_ID", jobj.get("LOGIN_ID"));
 				param.put("MEMB_SC_CD", jobj.get("MEMB_SC_CD"));
 				param.put("MEMB_DEP_CD", jobj.get("MEMB_DEP_CD"));
+				param.put("TIT_CD", jobj.get("TIT_CD"));
 				param.put("CRE_SEQ", jobj.get("CRE_SEQ"));	
 				
 				// 삭제할 이미지 목록 가져오기

@@ -318,7 +318,7 @@
 			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD
 		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
 		AND Z.MEMB_ID = A.MEMB_ID
-        <if test='!"02" AND !"03".equals(TIT_CD)'> 
+        <if test='!"02" && !"03".equals(TIT_CD)'>
 		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
 		ORDER BY Z.CRE_DAT DESC
@@ -339,7 +339,7 @@
 	FROM SUG_BUB_BAS A , SUG_BUB_ANS_BAS B
 	WHERE 	B.CRE_SEQ = A.CRE_SEQ
 	AND 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'> 
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -383,7 +383,7 @@
 		,SEC_YN = #{SEC_YN}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
 	</if>
@@ -393,7 +393,7 @@
    <delete id="deleteSugBubInfo" parameterType="HashMap">
     DELETE FROM SUG_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
 	</if>

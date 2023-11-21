@@ -35,7 +35,7 @@
 			LEFT JOIN CD_BAS D ON D.CODE_TYPE = 'TIT_CD' AND D.CODE = A.TIT_CD 
 		WHERE Z.MEMB_SC_CD = #{MEMB_SC_CD}
 		AND Z.MEMB_ID = A.MEMB_ID
-		<if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 		AND Z.MEMB_DEP_CD = #{MEMB_DEP_CD}
         </if>		
 		ORDER BY Z.CRE_DAT DESC
@@ -52,7 +52,7 @@
 		,B.IMG_SEQ
 	FROM OPEN_BUB_BAS A , OPEN_BUB_IMG_HIST B
 	WHERE 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -111,7 +111,7 @@
 		,CONT 	= #{CONT}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
 	</if>
@@ -127,7 +127,7 @@
    <delete id="deleteOpenBubInfo" parameterType="HashMap">
     DELETE FROM OPEN_BUB_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
 	</if>
@@ -192,7 +192,7 @@
     FROM    SCHD_BAS 
     WHERE   CONVERT(#{SEARCH_DATE},DATETIME) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
     AND     MEMB_SC_CD = #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'> 
+    <if test='!"02" && !"03".equals(TIT_CD)'>
     AND     MEMB_DEP_CD = #{MEMB_DEP_CD}
     </if>
 </select>
@@ -236,7 +236,7 @@
 		,END_SCHD_YMD = CONVERT(#{END_SCHD_YMD},DATE)
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
 	</if>
@@ -273,7 +273,7 @@
  			DAYOFWEEK(DATE_ADD(DATE_FORMAT(CURDATE(),'%Y-%m-01'),INTERVAL NO-1 DAY)) AS YOIL
  	FROM MON_CAL) A LEFT JOIN DEP_COST_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD 
  	AND 	B.MEMB_SC_CD = #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
  	AND 	B.MEMB_DEP_CD = #{MEMB_DEP_CD}
  	</if>
  	GROUP BY YEAR,MONTH,DAY,YOIL
@@ -302,7 +302,7 @@
 		,B.IMG_SEQ
 	FROM DEP_COST_BAS A , DEP_COST_IMG_HIST B
 	WHERE 	A.MEMB_SC_CD = #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'> 
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND 	A.MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND 	A.CRE_SEQ = #{CRE_SEQ}
@@ -368,7 +368,7 @@
 		,COST_TYPE 		= #{COST_TYPE}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
@@ -383,7 +383,7 @@
    <delete id="deleteCostBubInfo" parameterType="HashMap">
     DELETE FROM DEP_COST_BAS 
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	</if>
 	AND		CRE_SEQ 	= #{CRE_SEQ}
@@ -493,7 +493,7 @@
 		,VOT_DESC 		= #{VOT_DESC}
 		,UPD_DAT		= SYSDATE()
     WHERE 	MEMB_SC_CD 	= #{MEMB_SC_CD}
-    <if test='!"02" AND !"03".equals(TIT_CD)'>
+    <if test='!"02" && !"03".equals(TIT_CD)'>
 	AND		MEMB_DEP_CD = #{MEMB_DEP_CD}
 	AND		MEMB_ID 	= #{MEMB_ID}
 	</if>

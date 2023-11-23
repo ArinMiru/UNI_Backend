@@ -23,13 +23,21 @@
 			,B.DPRT_NM AS MEMB_DEP_NM
 			,D.CODE_VAL AS TIT_NM
 			,A.NICK_NM
-			,(SELECT CASE WHEN COUNT(1) > 0 THEN 'Y' ELSE 'N' END
-            FROM OPEN_LIKE_BAS
-            WHERE MEMB_ID = Z.MEMB_ID 
-            AND MEMB_SC_CD = Z.MEMB_SC_CD 
-            AND MEMB_DEP_CD = Z.MEMB_DEP_CD
-            AND CRE_SEQ = Z.CRE_SEQ 
-            AND LIKE_YN = 'Y') AS LIKE_YN
+			,CASE 
+  		 		WHEN (SELECT LIKE_YN
+         			FROM OPEN_LIKE_BAS
+         			WHERE MEMB_ID = Z.MEMB_ID 
+         			AND MEMB_SC_CD = Z.MEMB_SC_CD 
+         			AND MEMB_DEP_CD = Z.MEMB_DEP_CD
+         			AND CRE_SEQ = Z.CRE_SEQ ) IS NULL OR 
+        			(SELECT LIKE_YN
+         			FROM OPEN_LIKE_BAS
+         			WHERE MEMB_ID = Z.MEMB_ID 
+         			AND MEMB_SC_CD = Z.MEMB_SC_CD 
+         			AND MEMB_DEP_CD = Z.MEMB_DEP_CD
+         			AND CRE_SEQ = Z.CRE_SEQ ) = 'N' THEN 'N'
+   				ELSE 'Y'
+			END AS LIKE_YN
 		FROM OPEN_BUB_BAS Z,MEMB_BAS A
 		   	LEFT JOIN SCHL_DPRT_SRCH B ON B.SCH_CD = A.MEMB_SC_CD
 						              AND B.DPRT_CD = A.MEMB_DEP_CD

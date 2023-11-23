@@ -26,15 +26,15 @@
 			,CASE 
   		 		WHEN (SELECT LIKE_YN
          			FROM OPEN_LIKE_BAS
-         			WHERE MEMB_ID = Z.MEMB_ID 
-         			AND MEMB_SC_CD = Z.MEMB_SC_CD 
-         			AND MEMB_DEP_CD = Z.MEMB_DEP_CD
+         			WHERE MEMB_ID = #{LOGIN_ID} 
+         			AND MEMB_SC_CD = #{MEMB_SC_CD}
+         			AND MEMB_DEP_CD = #{MEMB_DEP_CD}
          			AND CRE_SEQ = Z.CRE_SEQ ) IS NULL OR 
         			(SELECT LIKE_YN
          			FROM OPEN_LIKE_BAS
-         			WHERE MEMB_ID = Z.MEMB_ID 
-         			AND MEMB_SC_CD = Z.MEMB_SC_CD 
-         			AND MEMB_DEP_CD = Z.MEMB_DEP_CD
+         			WHERE MEMB_ID = #{LOGIN_ID} 
+         			AND MEMB_SC_CD = #{MEMB_SC_CD}
+         			AND MEMB_DEP_CD = #{MEMB_DEP_CD}
          			AND CRE_SEQ = Z.CRE_SEQ ) = 'N' THEN 'N'
    				ELSE 'Y'
 			END AS LIKE_YN

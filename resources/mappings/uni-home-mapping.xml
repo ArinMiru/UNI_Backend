@@ -186,22 +186,51 @@
  	GROUP BY YEAR,MONTH,DAY,YOIL
  	ORDER BY A.DAY1
   </select>
-  
-<select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
+
+  <select id="selectYMDSchdBubInfo" resultType="HashMap" parameterType="HashMap">
     SELECT
-        CRE_SEQ
-        ,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d %H:%i') AS STRT_SCHD_YMD
-        ,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d %H:%i') AS END_SCHD_YMD
-        ,TIT
-        ,CONT
-        ,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
-    FROM    SCHD_BAS 
-    WHERE   CONVERT(#{SEARCH_DATE},DATETIME) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
-    AND     MEMB_SC_CD = #{MEMB_SC_CD}
-    <if test='!"04".equals(TIT_CD)'>
-    AND     MEMB_DEP_CD = #{MEMB_DEP_CD}
-    </if>
-</select>
+		A.YEAR
+		,A.MONTH
+		,DATE_FORMAT(A.DAY1,'%d') AS DAY
+		,SUBSTR(_UTF8'일월화수목금토',A.YOIL,1) AS DAY_DESC
+		,A.YOIL
+		,COUNT(B.CRE_SEQ) AS CNT
+	FROM (
+ 		WITH RECURSIVE MON_CAL AS (
+    		SELECT 1 AS NO
+    		UNION ALL
+    		SELECT 1+MON_CAL.NO
+      		FROM MON_CAL
+      		<![CDATA[
+     		WHERE MON_CAL.NO < DATE_FORMAT(LAST_DAY(STR_TO_DATE(CONCAT(#{SELECTEDYEAR}, '-', #{SELECTEDMONTH}, '-01'), '%Y-%m-%d')),'%d')
+     		]]>
+     	)
+ 	SELECT 	DATE_FORMAT(STR_TO_DATE(CONCAT(#{SELECTEDYEAR}, '-', #{SELECTEDMONTH}, '-01'), '%Y-%m-%d'),'%Y') AS YEAR,
+ 			DATE_FORMAT(STR_TO_DATE(CONCAT(#{SELECTEDYEAR}, '-', #{SELECTEDMONTH}, '-01'), '%Y-%m-%d'),'%m') AS MONTH,
+ 			DATE_ADD(DATE_FORMAT(STR_TO_DATE(CONCAT(#{SELECTEDYEAR}, '-', #{SELECTEDMONTH}, '-01'), '%Y-%m-%d'),'%Y-%m-01'),INTERVAL NO-1 DAY) AS DAY1,
+ 			DAYOFWEEK(DATE_ADD(DATE_FORMAT(STR_TO_DATE(CONCAT(#{SELECTEDYEAR}, '-', #{SELECTEDMONTH}, '-01'), '%Y-%m-%d'),'%Y-%m-01'),INTERVAL NO-1 DAY)) AS YOIL
+ 	FROM MON_CAL) A LEFT JOIN SCHD_BAS B ON A.DAY1 BETWEEN B.STRT_SCHD_YMD AND B.END_SCHD_YMD
+  	AND 	B.MEMB_SC_CD = #{MEMB_SC_CD}
+  	AND 	B.MEMB_DEP_CD = #{MEMB_DEP_CD}
+  	GROUP BY YEAR,MONTH,DAY,YOIL
+  	ORDER BY A.DAY1
+  </select>
+  
+  <select id="selectSchdDtlBubInfo" resultType="HashMap" parameterType="HashMap">
+     SELECT
+         CRE_SEQ
+         ,DATE_FORMAT(STRT_SCHD_YMD,'%Y-%m-%d %H:%i') AS STRT_SCHD_YMD
+         ,DATE_FORMAT(END_SCHD_YMD,'%Y-%m-%d %H:%i') AS END_SCHD_YMD
+         ,TIT
+         ,CONT
+         ,DATE_FORMAT(CRE_DAT,'%Y-%m-%d %H:%i') AS CRE_DAT
+     FROM    SCHD_BAS 
+     WHERE   CONVERT(#{SEARCH_DATE},DATETIME) BETWEEN STRT_SCHD_YMD AND END_SCHD_YMD 
+     AND     MEMB_SC_CD = #{MEMB_SC_CD}
+     <if test='!"04".equals(TIT_CD)'>
+     AND     MEMB_DEP_CD = #{MEMB_DEP_CD}
+     </if>
+  </select>
 
   
   <select id="selectSchdBubSeq" resultType="long">
